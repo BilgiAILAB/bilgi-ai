@@ -1,0 +1,32 @@
+#file-list {
+    padding: 100px;
+}
+
+.preview-files {
+    margin-left: 10px;
+}
+
+.preview-files i {
+    margin-left: 5px;
+}
+
+.portfolio-info-card.contact-info:hover {
+    border-style: groove;
+    border-color: #a0a0a0;
+    border-width: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.portfolio-info-card.contact-info {
+    border-style: groove;
+    border-color: white;
+    border-width: 2px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.btn.btn-outline-primary.btn-lg.new-project {
+    margin-bottom: 10px;
+}
+

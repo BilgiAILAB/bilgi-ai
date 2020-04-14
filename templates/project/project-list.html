@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <main class="page cv-page">
+    <section class="portfolio-block cv">
+      <div class="container">
+        <div class="work-experience group">
+          <div class="heading">
+            <h2 class="text-center">Projects</h2>
+          </div>
+          <div>
+            <div class="row text-center">
+              <div class="col">
+                <h3 style="visibility: hidden;">You have no projects!</h3>
+              </div>
+            </div>
+            <div class="row text-right">
+              <div class="col"><a class="btn btn-outline-primary btn-lg new-project" role="button"
+                                  href="{% url 'create_project' %}">Create new project</a></div>
+            </div>
+          </div>
+          <div>
+            <div class="row">
+              {% for project in projects %}
+                <div class="col-md-6 m-auto" style="padding: 0;">
+                  <div class="contact-info portfolio-info-card">
+                    <h2>{{ project.title }}</h2>
+                    <div class="row">
+                      <div class="col-1"><i class="icon ion-android-calendar icon"></i></div>
+                      <div class="col-9"><span>{{ project.date }}</span></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-1"><i class="icon ion-android-document icon"></i></div>
+                      <div class="col-9"><span>{{ project.get_files|length }} Files
+                        <a class="preview-files"
+                           data-target="#previewModal{{ project.id }}"
+                           data-toggle="modal" href="#">
+                          Preview
+                        </a></span></div>
+
+                      <div class="modal fade" id="previewModal{{ project.id }}" tabindex="-1" role="dialog"
+                           aria-labelledby="previewModalLabel"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="previewModalLabel">Modal title</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <ul>
+                                {% for file in project.get_files %}
+                                  <li>{{ file.filename }}</li>
+                                {% endfor %}
+                              </ul>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+{% endblock %}
