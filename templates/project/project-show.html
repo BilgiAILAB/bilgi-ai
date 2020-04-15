@@ -1,10 +1,119 @@
 {% extends 'base.html' %}
 
+{% block style %}
+
+  <style>
+
+    .card {
+      transition: background, color 200ms, 200ms; /* For modern browsers */
+
+    }
+
+    .card:hover {
+      border-width: 1px 1px 1px 10px;
+      background: #0ea0ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .bodycontainer {
+      max-height: 450px;
+      width: 100%;
+      margin: 0;
+      overflow-y: auto;
+    }
+
+    .table-scrollable {
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+
+{% endblock %}
+
 {% block content %}
+  <main class="page project-page">
+    <section class="portfolio-block project">
+      <div class="container">
+        <div class="heading">
+          <h2>{{ project.title }}</h2>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 offset-md-1 info">
+            <h3>File list</h3>
 
-  {% for file in project.get_files %}
+            <div class="table-responsive">
 
-  {% endfor %}
+              <div class="bodycontainer scrollable">
+                <table class="table table-hover table-striped table-condensed table-scrollable">
+                  <tbody>
+                  {% for file in project.get_files %}
 
+                    <tr>
+                      <td>{{ file.filename.title }}</td>
+                    </tr>
+
+
+                  {% endfor %} {% for file in project.get_files %}
+
+                    <tr>
+                      <td>{{ file.filename.title }}</td>
+                    </tr>
+
+
+                  {% endfor %} {% for file in project.get_files %}
+
+                    <tr>
+                      <td>{{ file.filename.title }}</td>
+                    </tr>
+
+
+                  {% endfor %} {% for file in project.get_files %}
+
+                    <tr>
+                      <td>{{ file.filename.title }}</td>
+                    </tr>
+
+
+                  {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+          </div>
+          <div class="col-12 col-md-3 offset-md-1 meta">
+            <div class="tags"><span class="meta-heading">Date</span><span>25-04-2017</span></div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+          <div class="col">
+            <div class="card">
+              <div class="card-body decision-card">
+                <h4 class="card-title">Document Similarity</h4>
+                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac
+                  facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Topic Modelling</h4>
+                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac
+                  facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
 {% endblock %}

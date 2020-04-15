@@ -7,12 +7,15 @@ from project.models import Project, ProjectFile
 
 def list_projects(request):
     projects = Project.objects.all()
+
     content = {'projects': projects}
     return render(request, "project/project-list.html", content)
 
 
 def show_project(request, pk):
-    content = {'project': get_object_or_404(Project, pk=pk)}
+    project = get_object_or_404(Project, pk=pk)
+
+    content = {'project': project}
     return render(request, "project/project-show.html", content)
 
 
@@ -31,3 +34,10 @@ def create_project(request):
         return redirect('list_projects')
 
     return render(request, "project/project-new.html")
+
+
+def remove_project(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    project.delete()
+
+    return redirect('list_projects')

@@ -1,5 +1,24 @@
 {% extends 'base.html' %}
 
+{% block style %}
+
+  <style>
+
+    .card {
+      transition: background, color 200ms, 200ms; /* For modern browsers */
+
+    }
+
+    .card:hover {
+      border-width: 2px 2px 2px 10px;
+      border-color: #0ea0ff;
+    {#background: #0ea0ff;#}{#color: white;#} cursor: pointer;
+    }
+
+  </style>
+
+{% endblock %}
+
 {% block content %}
 
   <main class="page cv-page">
@@ -24,8 +43,26 @@
             <div class="row">
               {% for project in projects %}
                 <div class="col-md-6 m-auto" style="padding: 0;">
-                  <div class="contact-info portfolio-info-card">
-                    <h2>{{ project.title }}</h2>
+                  <div class="contact-info portfolio-info-card card">
+                    <div class="row">
+                      <div class="col-auto">
+                        <a href="{% url 'show_project' project.id %}">
+                          <h2>{{ project.title }}</h2>
+                        </a>
+                      </div>
+                      <div class="col-auto ml-auto">
+                        <div class="dropdown">
+                          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
+                                  type="button"></button>
+                          <div role="menu" class="dropdown-menu">
+                            <a role="presentation" class="dropdown-item text-danger"
+                               href="{% url 'remove_project' project.id %}">Remove</a>
+                            {#                            <a role="presentation" class="dropdown-item" href="#">Second Item</a>#}
+                            {#                            <a role="presentation" class="dropdown-item" href="#">Third Item</a>#}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="col-1"><i class="icon ion-android-calendar icon"></i></div>
                       <div class="col-9"><span>{{ project.date }}</span></div>
@@ -67,6 +104,7 @@
 
 
                     </div>
+
                   </div>
                 </div>
               {% endfor %}
