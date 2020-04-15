@@ -51,16 +51,19 @@
                         </a>
                       </div>
                       <div class="col-auto ml-auto">
-                        <div class="dropdown">
-                          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
-                                  type="button"></button>
-                          <div role="menu" class="dropdown-menu">
-                            <a role="presentation" class="dropdown-item text-danger"
+
+                        <a role="presentation" class="dropdown-item text-danger"
                                href="{% url 'remove_project' project.id %}">Remove</a>
+
+{#                        <div class="dropdown">#}
+{#                          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"#}
+{#                                  type="button"></button>#}
+{#                          <div role="menu" class="dropdown-menu">#}
+{#                            #}
                             {#                            <a role="presentation" class="dropdown-item" href="#">Second Item</a>#}
                             {#                            <a role="presentation" class="dropdown-item" href="#">Third Item</a>#}
-                          </div>
-                        </div>
+{#                          </div>#}
+{#                        </div>#}
                       </div>
                     </div>
                     <div class="row">
@@ -82,7 +85,7 @@
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="previewModalLabel">Modal title</h5>
+                              <h5 class="modal-title" id="previewModalLabel">File List of {{ project.title }}</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -96,7 +99,6 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                           </div>
                         </div>
