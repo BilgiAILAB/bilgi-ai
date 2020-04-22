@@ -71,27 +71,6 @@
                             </tr>
 
 
-                          {% endfor %} {% for file in project.get_files %}
-
-                            <tr>
-                              <td>{{ file.filename.title }}</td>
-                            </tr>
-
-
-                          {% endfor %} {% for file in project.get_files %}
-
-                            <tr>
-                              <td>{{ file.filename.title }}</td>
-                            </tr>
-
-
-                          {% endfor %} {% for file in project.get_files %}
-
-                            <tr>
-                              <td>{{ file.filename.title }}</td>
-                            </tr>
-
-
                           {% endfor %}
 
 
@@ -126,8 +105,9 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    <form enctype="multipart/form-data" method="post">
+                  <form enctype="multipart/form-data" method="post" action="{% url 'add_files' project.id %}">
+
+                    <div class="modal-body">
                       {% csrf_token %}
                       <div class="form-group">
                         <label class="text-primary" for="file-list">
@@ -136,18 +116,19 @@
                         <input type="file" id="file-list" class="form-control item" name="files" accept=".pdf,.txt,.zip"
                                multiple></div>
 
-                    </form>
 
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+
                 </div>
               </div>
             </div>
 
-            <a href="{% url 'delete_project' project.id %}" type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#fileListModal">
+            <a href="{% url 'delete_project' project.id %}" type="button" class="btn btn-danger float-right">
               <i class="icon ion-android-delete icon"></i> &nbsp; Remove Project
             </a>
 

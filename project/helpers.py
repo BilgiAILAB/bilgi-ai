@@ -1,4 +1,4 @@
-from io import StringIO
+from io import StringIO, BytesIO
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
@@ -30,7 +30,7 @@ def pdf_to_text(file):
     def change_file_name_to_txt(filename):
         return ''.join(filename.split(".")[:-1]) + '.txt'
 
-    buf = StringIO()
-    buf.write(convert(file))
-    file = InMemoryUploadedFile(buf, "txt", change_file_name_to_txt(file.name), None, buf.tell(), None)
+    buf = BytesIO()
+    buf.write(convert(file).encode('utf-8'))
+    file = InMemoryUploadedFile(buf, 'text/plain', change_file_name_to_txt(file.name), 'text/plain', buf.tell(), 'utf-8')
     return file

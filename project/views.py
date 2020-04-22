@@ -46,3 +46,23 @@ def delete_project(request, pk):
     project.delete()
 
     return redirect('all_projects')
+
+
+def add_files(request, pk):
+    if request.method == 'POST':
+        project = get_object_or_404(Project, pk=pk)
+
+        files = request.FILES.getlist('files')
+        for file in files:
+            if file.name.endswith('.pdf'):
+                file = pdf_to_text(file)
+                file_instance = ProjectFile(file=file, project=project)
+                file_instance.save()
+            elif file.name.endswith('.txt'):
+                file_instance = ProjectFile(file=file, project=project)
+                file_instance.save()
+            elif file.name.endswith('.zip'):
+                pass
+
+        return redirect('show_project', pk=pk)
+    return None
