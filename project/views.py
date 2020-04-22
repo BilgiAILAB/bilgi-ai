@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-# Create your views here.
+from project.helpers import pdf_to_text
 from project.models import Project, ProjectFile
 
 
-def list_projects(request):
+def all_projects(request):
     projects = Project.objects.all()
 
     content = {'projects': projects}
@@ -25,18 +25,24 @@ def create_project(request):
         project.save()
 
         files = request.FILES.getlist('files')
-        print(request.FILES)
-        for f in files:
-            file_instance = ProjectFile(file=f, project=project)
-            file_instance.save()
+        for file in files:
+            if file.name.endswith('.pdf'):
+                file = pdf_to_text(file)
+                file_instance = ProjectFile(file=file, project=project)
+                file_instance.save()
+            elif file.name.endswith('.txt'):
+                file_instance = ProjectFile(file=file, project=project)
+                file_instance.save()
+            elif file.name.endswith('.zip'):
+                pass
 
-        return redirect('list_projects')
+        return redirect('all_projects')
 
     return render(request, "project/project-new.html")
 
 
-def remove_project(request, pk):
+def delete_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
     project.delete()
 
-    return redirect('list_projects')
+    return redirect('all_projects')
