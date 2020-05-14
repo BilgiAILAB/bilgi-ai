@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="page project-page">
+        <section class="portfolio-block project">
+            <div class="container">
+                <div class="intro">
+                    <h2 class="text-center">Project Lda Deneme</h2>
+                    <p class="text-center text-uppercase">Topics extracted from {{ filecount }} documents</p>
+                    <p class="text-right text-uppercase text-primary">Coherence
+                        value: {{ coherence_value|make_list|slice:':5'|join:'' }}</p>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="project-card-no-image">
+                            <h3 style="font-size: 24px;">Topic Word Distrubution</h3>
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%">Topic Name</th>
+                                        <th style="width: 80%">Words</th>
+                                        <th style="width: 10%"># of Documents</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for word_distribution in word_distributions %}
+                                        <tr>
+
+                                            <td>Topic {{ forloop.counter }}</td>
+
+                                            <td>
+                                                {% for word in word_distribution %}
+                                                    <div class="d-inline"><span
+                                                            class="badge badge-pill badge-primary"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="{{ word.1 }}"
+                                                            style="font-size: 16px;">{{ word.0 }}</span>
+                                                    </div>
+                                                {% endfor %}
+                                            </td>
+                                            {% for key, value in doc_dist.items %}
+                                                {% if forloop.parentloop.counter == forloop.counter %}
+                                                    <td>{{ value|length }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                        </tr>
+
+
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            {{ word_distributions }}
+                            <br>
+                            <br>
+                            {{ topic_distributions }}
+                            <br>
+                            <br>
+                            {{ doc_dist }}
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+{% endblock %}

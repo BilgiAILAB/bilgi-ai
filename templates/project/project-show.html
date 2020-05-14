@@ -2,165 +2,177 @@
 
 {% block style %}
 
-  <style>
+    <style>
 
-    .card {
-      transition: background, color 200ms, 200ms; /* For modern browsers */
+        .card {
+            transition: background, color 200ms, 200ms; /* For modern browsers */
 
-    }
+        }
 
-    .card:hover {
-      border-width: 1px 1px 1px 10px;
-      background: #0ea0ff;
-      color: white;
-      cursor: pointer;
-    }
+        .card:hover {
+            border-width: 1px 1px 1px 10px;
+            background: #0ea0ff;
+            color: white;
+            cursor: pointer;
+        }
 
-    .bodycontainer {
-      max-height: 450px;
-      width: 100%;
-      margin: 0;
-      overflow-y: auto;
-    }
+        .bodycontainer {
+            max-height: 450px;
+            width: 100%;
+            margin: 0;
+            overflow-y: auto;
+        }
 
-    .table-scrollable {
-      margin: 0;
-      padding: 0;
-    }
+        .table-scrollable {
+            margin: 0;
+            padding: 0;
+        }
 
-  </style>
+    </style>
 
 {% endblock %}
 
 {% block content %}
-  <main class="page project-page">
-    <section class="portfolio-block project">
-      <div class="container">
-        <div class="heading">
-          <h2>{{ project.title }}</h2>
-        </div>
-        <div class="row">
-          <div class="col info">
-
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fileListModal">
-              <i class="icon ion-android-document icon"></i> &nbsp; {{ project.get_files|length }} Files
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="fileListModal" tabindex="-1" role="dialog" aria-labelledby="fileListModalLabel"
-                 aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="fileListModalLabel">File List</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="table-responsive">
-
-                      <div class="bodycontainer scrollable">
-                        <table class="table table-hover table-striped table-condensed table-scrollable">
-                          <tbody>
-                          {% for file in project.get_files %}
-
-                            <tr>
-                              <td>{{ file.filename.title }}</td>
-                            </tr>
-
-
-                          {% endfor %}
-
-
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
+    <main class="page project-page">
+        <section class="portfolio-block project">
+            <div class="container">
+                <div class="heading">
+                    <h2>{{ project.title }}</h2>
                 </div>
-              </div>
-            </div>
+                <div class="row">
+                    <div class="col info">
 
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#fileUploadModal">
-              <i class="icon ion-android-add icon"></i> &nbsp; Add New Files
-            </button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fileListModal">
+                            <i class="icon ion-android-document icon"></i> &nbsp; {{ project.get_files|length }} Files
+                        </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="fileUploadModal" tabindex="-1" role="dialog"
-                 aria-labelledby="fileUploadModalLabel"
-                 aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="fileUploadModalLabel">Upload File</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <form enctype="multipart/form-data" method="post" action="{% url 'add_files' project.id %}">
+                        <!-- Modal -->
+                        <div class="modal fade" id="fileListModal" tabindex="-1" role="dialog"
+                             aria-labelledby="fileListModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="fileListModalLabel">File List</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
 
-                    <div class="modal-body">
-                      {% csrf_token %}
-                      <div class="form-group">
-                        <label class="text-primary" for="file-list">
-                          File List (allowed files .pdf .txt .zip)
-                        </label>
-                        <input type="file" id="file-list" class="form-control item" name="files" accept=".pdf,.txt,.zip"
-                               multiple></div>
+                                            <div class="bodycontainer scrollable">
+                                                <table class="table table-hover table-striped table-condensed table-scrollable">
+                                                    <tbody>
+                                                    {% for file in project.get_files %}
+
+                                                        <tr>
+                                                            <td>{{ file.filename.title }}</td>
+                                                        </tr>
+
+
+                                                    {% endfor %}
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                data-target="#fileUploadModal">
+                            <i class="icon ion-android-add icon"></i> &nbsp; Add New Files
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="fileUploadModal" tabindex="-1" role="dialog"
+                             aria-labelledby="fileUploadModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="fileUploadModalLabel">Upload File</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form enctype="multipart/form-data" method="post"
+                                          action="{% url 'add_files' project.id %}">
+
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label class="text-primary" for="file-list">
+                                                    File List (allowed files .pdf .txt .zip)
+                                                </label>
+                                                <input type="file" id="file-list" class="form-control item" name="files"
+                                                       accept=".pdf,.txt,.zip"
+                                                       multiple></div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'delete_project' project.id %}" type="button"
+                           class="btn btn-danger float-right">
+                            <i class="icon ion-android-delete icon"></i> &nbsp; Remove Project
+                        </a>
 
 
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                  </form>
-
                 </div>
-              </div>
+                <h2 style="margin-top: 20px"> Select the process to apply for <span
+                        class="text-primary">{{ project.title }}</span></h2>
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body decision-card">
+                                <h4 class="card-title">Document Similarity</h4>
+                                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo
+                                    odio, dapibus ac
+                                    facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
+                                    metus.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="{% url 'topic_algorithms' project.id %}" class="stretched-link"></a>
+                                <h4 class="card-title">Topic Modelling</h4>
+                                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo
+                                    odio, dapibus ac
+                                    facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
+                                    metus.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <a href="{% url 'delete_project' project.id %}" type="button" class="btn btn-danger float-right">
-              <i class="icon ion-android-delete icon"></i> &nbsp; Remove Project
-            </a>
-
-
-          </div>
-        </div>
-        <h2 style="margin-top: 20px"> Select the process to apply for <span
-            class="text-primary">{{ project.title }}</span></h2>
-        <div class="row" style="margin-top: 30px;">
-          <div class="col">
-            <div class="card">
-              <div class="card-body decision-card">
-                <h4 class="card-title">Document Similarity</h4>
-                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac
-                  facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" style="margin-top: 30px;">
-          <div class="col">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Topic Modelling</h4>
-                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac
-                  facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+        </section>
+    </main>
 
 {% endblock %}

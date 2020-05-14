@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_static_ionicons',
     'project',
     'home',
+    'topic_modelling',
 ]
 
 MIDDLEWARE = [
