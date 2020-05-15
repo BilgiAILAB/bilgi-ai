@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from lda_web import LDA
+from topic_modelling.lda_web import LDA
 from project.models import Project
 
 
