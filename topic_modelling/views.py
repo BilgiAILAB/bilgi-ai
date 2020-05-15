@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -21,5 +20,6 @@ def apply_lda(request, pk):
         lines = file.read()
         file.close()
         corpus.append(lines)
-    output = LDA(corpus)
-    return render(request, 'topic_modelling/lda.html', output)
+    content = LDA(corpus)
+    content['project'] = project
+    return render(request, 'topic_modelling/lda.html', content)

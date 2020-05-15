@@ -90,7 +90,7 @@ def LDA(corpus):
 
     word_distributions = []
     for i in range(n_topic):
-        word_distributions.append(lda_model.show_topic(i))
+        word_distributions.append(lda_model.show_topic(i, topn=20))
 
     topic_distributions = []
     for i in range(len(data_tokens)):

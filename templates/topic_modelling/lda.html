@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
-
 {% block content %}
     <main class="page project-page">
         <section class="portfolio-block project">
             <div class="container">
                 <div class="intro">
-                    <h2 class="text-center">Project Lda Deneme</h2>
-                    <p class="text-center text-uppercase">Topics extracted from {{ filecount }} documents</p>
-                    <p class="text-right text-uppercase text-primary">Coherence
-                        value: {{ coherence_value|make_list|slice:':5'|join:'' }}</p>
+                    <h1 class="text-center mb-5">LDA: <span class="text-muted">{{ project.title }}</span></h1>
+                    <div class="float-left ">
+                        <p class="text-uppercase text-secondary">Total {{ filecount }} documents</p>
+                    </div>
+                    <div class="float-right">
+                        <p class="text-uppercase text-primary">Coherence
+                            value: {{ coherence_value|make_list|slice:':5'|join:'' }}</p>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
 
 
@@ -16,26 +20,66 @@
                     <div class="col-12">
                         <div class="project-card-no-image">
                             <h3 style="font-size: 24px;">Topic Word Distrubution</h3>
-                            <br>
+
+                            <button type="button" class="btn btn-sm btn-info m-2" data-toggle="collapse"
+                                    data-target="#filter">
+                                <i class="icon ion-ios-settings-strong m-1"
+                                   style="font-size: 20px;vertical-align: middle;"></i>
+                                <span class="align-middle">Filter</span>
+                            </button>
+
+                            <div id="filter" class="collapse show mb-2">
+                                <form class="form-inline m-1 p-1 my-form" method="post"
+                                      style="box-shadow: none;max-width: none">
+
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <label class="text-left">Keyword Count:<span
+                                                    id="myRangeValue"></span></label>
+                                            <input type="range" min="1" max="{{ word_distributions.0|length }}"
+                                                   value="10"
+                                                   class="slider" id="myRange">
+                                        </fieldset>
+                                        <fieldset>
+                                            <div class="range-slider">
+                                                <input class="range-slider__range" type="range" value="100" min="0"
+                                                       max="500">
+                                                <span class="range-slider__value">0</span>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset>
+                                            <label>Last Name</label>
+                                            <input type="text" class="form-control" placeholder="Optional">
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="form-group ml-auto">
+                                        <button class="btn btn-primary" type="submit">Apply</button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th style="width: 10%">Topic Name</th>
-                                        <th style="width: 80%">Words</th>
-                                        <th style="width: 10%"># of Documents</th>
+                                        <th style="width: 15%">Topic Name</th>
+                                        <th style="width: 98%">Words</th>
+                                        <th style="width: 1%">Count of Documents</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for word_distribution in word_distributions %}
                                         <tr>
 
-                                            <td>Topic {{ forloop.counter }}</td>
+                                            <td class="text-center h5 align-middle">Topic {{ forloop.counter }}</td>
 
-                                            <td>
+                                            <td class="align-middle">
                                                 {% for word in word_distribution %}
                                                     <div class="d-inline"><span
-                                                            class="badge badge-pill badge-primary"
+                                                            class="badge p-1 mt-1 badge-dark tag-row-{{ forloop.parentloop.counter0 }}"
                                                             data-toggle="tooltip" data-placement="top"
                                                             title="{{ word.1 }}"
                                                             style="font-size: 16px;">{{ word.0 }}</span>
@@ -44,7 +88,7 @@
                                             </td>
                                             {% for key, value in doc_dist.items %}
                                                 {% if forloop.parentloop.counter == forloop.counter %}
-                                                    <td>{{ value|length }}</td>
+                                                    <td class="text-center align-middle h2">{{ value|length }}</td>
                                                 {% endif %}
                                             {% endfor %}
 
@@ -78,8 +122,300 @@
 {% block script %}
     <script>
 
+        var colorArray = [
+            "#63b598", "#ce7d78", "#ea9e70", "#0d5ac1",
+            "#14a9ad", "#4ca2f9",
+            "#d298e2", "#6119d0", "#d2737d", "#c0a43c", "#f2510e",
+            "#651be6", "#79806e", "#cd2f00", "#9348af", "#01ac53",
+            "#c5a4fb", "#996635", "#b11573", "#4bb473", "#75d89e",
+            "#2f3f94", "#2f7b99", "#da967d", "#34891f", "#ca4751",
+            "#4b5bdc", "#0cd36d", "#250662", "#cb5bea", "#228916",
+            "#ac3e1b", "#df514a", "#539397", "#880977", "#f697c1",
+            "#f158bf", "#e145ba", "#ee91e3", "#05d371", "#4834d0",
+            "#802234", "#6749e8", "#0971f0", "#8fb413", "#b2b4f0",
+            "#c3c89d", "#c9a941", "#41d158", "#fb21a3", "#51aed9",
+            "#5bb32d", "#0807fb", "#21538e", "#89d534", "#d36647",
+            "#7fb411", "#0023b8", "#3b8c2a", "#986b53", "#f50422",
+            "#983f7a", "#ea24a3", "#79352c", "#521250", "#c79ed2",
+        ];
+
+        {#colorArray = [#}
+        {##}
+        {##}
+        {#    "#d6dd92", "#e33e52", "#b2be57", "#fa06ec",#}
+        {#    "#1bb699", "#6b2e5f", "#64820f", "#1c271", "#21538e", "#89d534", "#d36647",#}
+        {#    "#7fb411", "#0023b8", "#3b8c2a", "#986b53", "#f50422", "#983f7a", "#ea24a3",#}
+        {#    "#79352c", "#521250", "#c79ed2", "#d6dd92", "#e33e52", "#b2be57", "#fa06ec",#}
+        {#    "#1bb699", "#6b2e5f", "#64820f", "#1c271", "#9cb64a", "#996c48", "#9ab9b7",#}
+        {#    "#06e052", "#e3a481", "#0eb621", "#fc458e", "#b2db15", "#aa226d", "#792ed8",#}
+        {#    "#73872a", "#520d3a", "#cefcb8", "#a5b3d9", "#7d1d85", "#c4fd57", "#f1ae16",#}
+        {#    "#8fe22a", "#ef6e3c", "#243eeb", "#1dc18", "#dd93fd", "#3f8473", "#e7dbce",#}
+        {#    "#421f79", "#7a3d93", "#635f6d", "#93f2d7", "#9b5c2a", "#15b9ee", "#0f5997",#}
+        {#    "#409188", "#911e20", "#1350ce", "#10e5b1", "#fff4d7", "#cb2582", "#ce00be",#}
+        {#    "#32d5d6", "#17232", "#608572", "#c79bc2", "#00f87c", "#77772a", "#6995ba",#}
+        {#    "#fc6b57", "#f07815", "#8fd883", "#060e27", "#96e591", "#21d52e", "#d00043",#}
+        {#    "#b47162", "#1ec227", "#4f0f6f", "#1d1d58", "#947002", "#bde052", "#e08c56",#}
+        {#    "#28fcfd", "#bb09b", "#36486a", "#d02e29", "#1ae6db", "#3e464c", "#a84a8f",#}
+        {#    "#911e7e", "#3f16d9", "#0f525f", "#ac7c0a", "#b4c086", "#c9d730", "#30cc49",#}
+        {#    "#3d6751", "#fb4c03", "#640fc1", "#62c03e", "#d3493a", "#88aa0b", "#406df9",#}
+        {#    "#615af0", "#4be47", "#2a3434", "#4a543f", "#79bca0", "#a8b8d4", "#00efd4",#}
+        {#    "#7ad236", "#7260d8", "#1deaa7", "#06f43a", "#823c59", "#e3d94c", "#dc1c06",#}
+        {#    "#f53b2a", "#b46238", "#2dfff6", "#a82b89", "#1a8011", "#436a9f", "#1a806a",#}
+        {#    "#4cf09d", "#c188a2", "#67eb4b", "#b308d3", "#fc7e41", "#af3101", "#ff065",#}
+        {#    "#71b1f4", "#a2f8a5", "#e23dd0", "#d3486d", "#00f7f9", "#474893", "#3cec35",#}
+        {#    "#1c65cb", "#5d1d0c", "#2d7d2a", "#ff3420", "#5cdd87", "#a259a4", "#e4ac44",#}
+        {#    "#1bede6", "#8798a4", "#d7790f", "#b2c24f", "#de73c2", "#d70a9c", "#25b67",#}
+        {#    "#88e9b8", "#c2b0e2", "#86e98f", "#ae90e2", "#1a806b", "#436a9e", "#0ec0ff",#}
+        {#    "#f812b3", "#b17fc9", "#8d6c2f", "#d3277a", "#2ca1ae", "#9685eb", "#8a96c6",#}
+        {#    "#dba2e6", "#76fc1b", "#608fa4", "#20f6ba", "#07d7f6", "#dce77a", "#77ecca"]#}
+
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        });
+
+        $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
+            var color = colorArray.shift()
+            var count = {{ word_distributions.0|length }}
+                $(`.tag-row-${index}`).each(function (index2, tag) {
+                    $(tag).css('background-color', LightenDarkenColor(color, (index2 + 1) * 70 / count));
+                })
+
+        });
+
+
+        function LightenDarkenColor(col, amt) {
+
+            var usePound = false;
+
+            if (col[0] == "#") {
+                col = col.slice(1);
+                usePound = true;
+            }
+
+            var num = parseInt(col, 16);
+
+            var r = (num >> 16) + amt;
+
+            if (r > 255) r = 255;
+            else if (r < 0) r = 0;
+
+            var b = ((num >> 8) & 0x00FF) + amt;
+
+            if (b > 255) b = 255;
+            else if (b < 0) b = 0;
+
+            var g = (num & 0x0000FF) + amt;
+
+            if (g > 255) g = 255;
+            else if (g < 0) g = 0;
+
+            return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
+
+        }
+
+        $('#myRange').on("change mousemove", function () {
+            var x = parseInt($(this).val())
+            console.log(x)
+            $('#myRangeValue').html(x)
+            $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
+                $(`.tag-row-${index}:lt(${x})`).show()
+                $(`.tag-row-${index}:gt(${x - 1})`).hide()
+
+            });
+
+        });
+
+        var x = parseInt($('#myRange').val())
+        $('#myRangeValue').html(x)
+        $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
+            $(`.tag-row-${index}:lt(10)`).show()
+            $(`.tag-row-${index}:gt(9)`).hide()
+
+        });
+
+        var rangeSlider = function () {
+            var slider = $('.range-slider'),
+                range = $('.range-slider__range'),
+                value = $('.range-slider__value');
+
+            slider.each(function () {
+
+                value.each(function () {
+                    var value = $(this).prev().attr('value');
+                    $(this).html(value);
+                });
+
+                range.on('input', function () {
+                    $(this).next(value).html(this.value);
+                });
+            });
+        };
+
+        rangeSlider();
+
+
     </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+
+        /* The slider itself */
+        .slider {
+            border-radius: 20px;
+            -webkit-appearance: none; /* Override default CSS styles */
+            appearance: none;
+            width: 250px; /* Full-width */
+            height: 25px; /* Specified height */
+            background: #a8a8a8; /* Grey background */
+
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
+
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
+
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #0ea0ff; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            border-radius: 20px;
+
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #0ea0ff; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            border-radius: 20px;
+
+        }
+
+        .my-form {
+            border-radius: 5px;
+            border-color: #d4d4d4;
+            border-width: 2px;
+            border-style: solid;
+        }
+
+
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            padding: 60px 20px;
+        }
+
+        @media (min-width: 600px) {
+            body {
+                padding: 60px;
+            }
+        }
+
+        .range-slider {
+            margin: 60px 0 0 0%;
+        }
+
+        .range-slider {
+            width: 100%;
+        }
+
+        .range-slider__range {
+            -webkit-appearance: none;
+            width: calc(100% - (73px));
+            height: 10px;
+            border-radius: 5px;
+            background: #d7dcdf;
+            outline: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .range-slider__range::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2c3e50;
+            cursor: pointer;
+            transition: background 0.15s ease-in-out;
+        }
+
+        .range-slider__range::-webkit-slider-thumb:hover {
+            background: #1abc9c;
+        }
+
+        .range-slider__range:active::-webkit-slider-thumb {
+            background: #1abc9c;
+        }
+
+        .range-slider__range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border: 0;
+            border-radius: 50%;
+            background: #2c3e50;
+            cursor: pointer;
+            transition: background 0.15s ease-in-out;
+        }
+
+        .range-slider__range::-moz-range-thumb:hover {
+            background: #1abc9c;
+        }
+
+        .range-slider__range:active::-moz-range-thumb {
+            background: #1abc9c;
+        }
+
+        .range-slider__range:focus::-webkit-slider-thumb {
+            box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
+        }
+
+        .range-slider__value {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            color: #fff;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 3px;
+            background: #2c3e50;
+            padding: 5px 10px;
+            margin-left: 8px;
+        }
+
+        .range-slider__value:after {
+            position: absolute;
+            top: 8px;
+            left: -7px;
+            width: 0;
+            height: 0;
+            border-top: 7px solid transparent;
+            border-right: 7px solid #2c3e50;
+            border-bottom: 7px solid transparent;
+            content: '';
+        }
+
+        ::-moz-range-track {
+            background: #d7dcdf;
+            border: 0;
+        }
+
+        input::-moz-focus-inner, input::-moz-focus-outer {
+            border: 0;
+        }
+
+    </style>
 {% endblock %}
