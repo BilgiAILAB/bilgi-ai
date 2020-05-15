@@ -2,7 +2,7 @@ import re
 
 import gensim
 import nltk
-from gensim.models import CoherenceModel, LdaModel
+from gensim.models import CoherenceModel, LsiModel
 from nltk.tokenize import RegexpTokenizer
 
 
