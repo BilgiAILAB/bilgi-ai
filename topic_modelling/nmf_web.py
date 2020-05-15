@@ -16,7 +16,7 @@ def get_topic_dist_max(vector):
     return maximum_topic, dict_of_topics.get(maximum_topic)
 
 
-def LSA(corpus):
+def NMF(corpus):
     my_stopwords = ['acaba', 'altmış', 'altı', 'ama', 'ancak', 'arada', 'aslında', 'ayrıca', 'bana', 'bazı', 'belki',
                     'ben',
                     'benden', 'beni', 'benim', 'beri', 'beş', 'bile', 'bin', 'bir', 'birçok', 'biri', 'birkaç',
