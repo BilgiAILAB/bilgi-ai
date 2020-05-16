@@ -14,7 +14,7 @@ def get_topic_dist_max(vector):
     return maximum_topic, dict_of_topics.get(maximum_topic)
 
 
-def LSA(corpus):
+def LSA(corpus, n_topic):
     my_stopwords = ['acaba', 'altmış', 'altı', 'ama', 'ancak', 'arada', 'aslında', 'ayrıca', 'bana', 'bazı', 'belki',
                     'ben',
                     'benden', 'beni', 'benim', 'beri', 'beş', 'bile', 'bin', 'bir', 'birçok', 'biri', 'birkaç',
@@ -73,8 +73,6 @@ def LSA(corpus):
     id2word = gensim.corpora.Dictionary(data_tokens)
 
     corpus = [id2word.doc2bow(doc) for doc in data_tokens]
-
-    n_topic = 6
 
     lsi_model = LsiModel(corpus=corpus, num_topics=n_topic, id2word=id2word)
 

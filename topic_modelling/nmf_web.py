@@ -17,7 +17,7 @@ def get_topic_dist_max(vector):
     return maximum_topic, dict_of_topics.get(maximum_topic)
 
 
-def NMF(corpus):
+def NMF(corpus, n_topic):
     my_stopwords = ['acaba', 'altmış', 'altı', 'ama', 'ancak', 'arada', 'aslında', 'ayrıca', 'bana', 'bazı', 'belki',
                     'ben',
                     'benden', 'beni', 'benim', 'beri', 'beş', 'bile', 'bin', 'bir', 'birçok', 'biri', 'birkaç',
@@ -75,11 +75,9 @@ def NMF(corpus):
 
     id2word = gensim.corpora.Dictionary(data_tokens)
 
-    no_topics = 10
-
     vectorizer = TfidfVectorizer()
     A = vectorizer.fit_transform(cleaned_data)
-    nmf_model = sk_NMF(n_components=no_topics, init='nndsvd')
+    nmf_model = sk_NMF(n_components=n_topic, init='nndsvd')
     W = nmf_model.fit_transform(A)  # document topic distribution
     H = nmf_model.components_  # topic word distribution
 

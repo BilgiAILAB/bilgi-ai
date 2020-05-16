@@ -19,37 +19,45 @@ def get_params_before_apply_algorithm(request, pk, algorithm):
 
 
 def apply_algorithm(request, pk, algorithm):
-    project = get_object_or_404(Project, pk=pk)
-    files = project.get_files()
-    corpus = []
-    for file in files:
-        print(file.file.name)
-        file = open(file.file.path, "r", encoding='utf8')
-        lines = file.read()
-        file.close()
-        corpus.append(lines)
+    if request.method == 'POST':
 
-    content = {}
-    if algorithm.lower() == 'lda':
-        content = LDA(corpus)
-        content['algorithm'] = "LDA"
-        content['project'] = project
+        n_topic = int(request.POST['n_topic'])
 
-    elif algorithm.lower() == 'lsa':
-        content = LSA(corpus)
-        content['algorithm'] = "LSA"
-        content['project'] = project
+        project = get_object_or_404(Project, pk=pk)
+        files = project.get_files()
+        corpus = []
+        for file in files:
+            file = open(file.file.path, "r", encoding='utf8')
+            lines = file.read()
+            file.close()
+            corpus.append(lines)
 
-    elif algorithm.lower() == 'hdp':
-        content = HDP(corpus)
-        content['algorithm'] = "HDP"
-        content['project'] = project
+        content = {}
 
-    elif algorithm.lower() == 'nmf':
-        content = NMF(corpus)
-        content['algorithm'] = "NMF"
-        content['project'] = project
+        if algorithm.lower() == 'lda':
+            content = LDA(corpus, n_topic)
+            content['algorithm'] = "LDA"
+            content['project'] = project
 
-    content["files"] = files
+        elif algorithm.lower() == 'lsa':
+            content = LSA(corpus, n_topic)
+            content['algorithm'] = "LSA"
+            content['project'] = project
 
-    return render(request, 'topic_modelling/report.html', content)
+        elif algorithm.lower() == 'hdp':
+            content = HDP(corpus, n_topic)
+            content['algorithm'] = "HDP"
+            content['project'] = project
+
+        elif algorithm.lower() == 'nmf':
+            content = NMF(corpus, n_topic)
+            content['algorithm'] = "NMF"
+            content['project'] = project
+
+        content["files"] = files
+
+        return render(request, 'topic_modelling/report.html', content)
+
+    content = {'algorithm': algorithm}
+
+    return render(request, 'topic_modelling/params.html', content)
