@@ -77,10 +77,8 @@ def NMF(corpus):
 
     no_topics = 10
 
-    vectorizer = TfidfVectorizer(stop_words=nltk.corpus.stopwords.words('turkish'),
-                                 min_df=20,
-                                 max_df=1000,
-                                 lowercase=False)
+    vectorizer = TfidfVectorizer()
+    print(cleaned_data)
     A = vectorizer.fit_transform(cleaned_data)
     nmf_model = sk_NMF(n_components=no_topics, init='nndsvd')
     W = nmf_model.fit_transform(A)  # document topic distribution
