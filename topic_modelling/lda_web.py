@@ -4,12 +4,35 @@ import gensim
 import nltk
 from gensim.models import CoherenceModel, LdaModel
 from nltk.tokenize import RegexpTokenizer
+import plotly.graph_objects as go
 
 
 def get_topic_dist_max(vector):
     dict_of_topics = dict(vector)
     maximum_topic = max(dict_of_topics, key=dict_of_topics.get)
     return maximum_topic, dict_of_topics.get(maximum_topic)
+
+
+def LDA_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
+    topic_numbers = []
+    coherence_values = []
+
+    for num_topics in range(start=start, stop=end, step=step):
+        lda = LdaModel(corpus=corpus,
+                       id2word=id2word,
+                       num_topics=num_topics,
+                       random_state=100,
+                       update_every=1,
+                       chunksize=50,
+                       passes=10,
+                       alpha='auto',
+                       per_word_topics=True,
+                       minimum_probability=1e-8)
+        coherence = CoherenceModel(model=lda, texts=data_tokens, dictionary=id2word, coherence='c_v').get_coherence()
+        topic_numbers.append(num_topics)
+        coherence_values.append(coherence)
+    fig = go.Figure(data=go.Scatter(x=topic_numbers, y=coherence_values))
+    return fig.show()
 
 
 def LDA(corpus, n_topic):
