@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from project.models import Project
 # Create your views here.
@@ -13,13 +13,17 @@ def topic_algorithms(request, pk):
     return render(request, 'topic_modelling/index.html', content)
 
 
+def get_params_before_apply_algorithm(request, pk, algorithm):
+    if request.method == 'POST':
+        redirect('apply_algorithm', pk, algorithm)
+
+
 def apply_algorithm(request, pk, algorithm):
     project = get_object_or_404(Project, pk=pk)
     files = project.get_files()
     corpus = []
     for file in files:
-        file = file.file
-        file.open(mode='r')
+        file = open(file.file.path, "r", encoding='utf8')
         lines = file.read()
         file.close()
         corpus.append(lines)
