@@ -15,7 +15,7 @@ def topic_algorithms(request, pk):
 
 def get_params_before_apply_algorithm(request, pk, algorithm):
     if request.method == 'POST':
-        redirect('apply_algorithm', pk, algorithm)
+        redirect('apply_algorithm', pk, algorithm, )
 
 
 def apply_algorithm(request, pk, algorithm):
@@ -23,6 +23,7 @@ def apply_algorithm(request, pk, algorithm):
     files = project.get_files()
     corpus = []
     for file in files:
+        print(file.file.name)
         file = open(file.file.path, "r", encoding='utf8')
         lines = file.read()
         file.close()
@@ -48,5 +49,7 @@ def apply_algorithm(request, pk, algorithm):
         content = NMF(corpus)
         content['algorithm'] = "NMF"
         content['project'] = project
+
+    content["files"] = files
 
     return render(request, 'topic_modelling/report.html', content)

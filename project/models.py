@@ -27,5 +27,8 @@ class ProjectFile(models.Model):
     def filename(self):
         return os.path.basename(self.file.name)
 
+    def __str__(self):
+        return f'{self.id} {self.file.name} {self.project.title}'
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to=get_project_folder)

@@ -113,15 +113,20 @@
                         <div class="project-card-no-image">
                             <h3 style="font-size: 24px;">Document Topic Distrubution</h3>
                             <div class="row">
-                                {% for topic_distribution in topic_distributions|slice:':5' %}
-                                    <div class="col-4">
-                                        <div class="project-card-no-image">
-                                            <h3 style="font-size: 24px;">Document {{ forloop.counter }}</h3>
+                                {% for topic_distribution in topic_distributions|slice:':50' %}
+                                    {% for file in files %}
+                                        {% if forloop.counter == forloop.parentloop.counter %}
+                                            <div class="col-4">
+                                            <div class="project-card-no-image">
+
+
+
+                                            <h3 style="font-size: 24px;"> {{ file.filename }}</h3>
                                             {% for topic in topic_distribution %}
 
                                                 <div class="row">
                                                     <div class="col-4">
-                                                        <h6>Topic {{ forloop.counter }}:</h6>
+                                                        <h6>Topic {{ topic.0 }}:</h6>
                                                     </div>
                                                     <div class="col-8">
                                                         <h6 class="doc-topic-percentage">{{ topic.1 }}</h6>
@@ -129,9 +134,12 @@
                                                 </div>
 
                                             {% endfor %}
+                                        {% endif %}
 
-                                        </div>
-                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                                </div>
                                 {% endfor %}
                             </div>
                         </div>
