@@ -74,7 +74,7 @@ def LSA(corpus):
 
     corpus = [id2word.doc2bow(doc) for doc in data_tokens]
 
-    n_topic = 10
+    n_topic = 6
 
     lsi_model = LsiModel(corpus=corpus, num_topics=n_topic, id2word=id2word)
 

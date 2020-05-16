@@ -2,11 +2,12 @@ import re
 
 import gensim
 import nltk
+import numpy as np
 from gensim.models import CoherenceModel
 from nltk.tokenize import RegexpTokenizer
-import sklearn
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.decomposition import NMF
+from sklearn.decomposition import NMF as sk_NMF
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 def get_topic_dist_max(vector):
     dict_of_topics = dict(vector)
@@ -74,7 +75,6 @@ def NMF(corpus):
 
     id2word = gensim.corpora.Dictionary(data_tokens)
 
-
     no_topics = 10
 
     vectorizer = TfidfVectorizer(stop_words=nltk.corpus.stopwords.words('turkish'),
@@ -82,9 +82,9 @@ def NMF(corpus):
                                  max_df=1000,
                                  lowercase=False)
     A = vectorizer.fit_transform(cleaned_data)
-    nmf_model = NMF(n_components=no_topics, init='nndsvd')
-    W = nmf_model.fit_transform(A)  #document topic distribution
-    H = nmf_model.components_   #topic word distribution
+    nmf_model = sk_NMF(n_components=no_topics, init='nndsvd')
+    W = nmf_model.fit_transform(A)  # document topic distribution
+    H = nmf_model.components_  # topic word distribution
 
     feature_names = vectorizer.get_feature_names()  # terms
 
@@ -102,7 +102,6 @@ def NMF(corpus):
     topic_distributions = []
     for document in range(len(W)):
         topic_distributions.append([(topic, W[document][topic]) for topic in range(len(W[document]))])
-
 
     doc_number = len(W)
     topic_number = len(H)

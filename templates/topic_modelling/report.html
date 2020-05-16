@@ -4,13 +4,14 @@
         <section class="portfolio-block project">
             <div class="container">
                 <div class="intro">
-                    <h1 class="text-center mb-5">LDA: <span class="text-muted">{{ project.title }}</span></h1>
-                    <div class="float-left ">
-                        <p class="text-uppercase text-secondary">Total {{ filecount }} documents</p>
+                    <h1 class="text-center mb-5">{{ algorithm }}: <span class="text-muted">{{ project.title }}</span>
+                    </h1>
+                    <div class="float-left ml-1 mb-1">
+                        <span class="text-uppercase text-secondary">Total {{ filecount }} documents</span>
                     </div>
-                    <div class="float-right">
-                        <p class="text-uppercase text-primary">Coherence
-                            value: {{ coherence_value|make_list|slice:':5'|join:'' }}</p>
+                    <div class="float-right mr-1 mb-1">
+                        <span class="text-uppercase text-primary">Coherence
+                            value: {{ coherence_value|make_list|slice:':5'|join:'' }}</span>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -28,34 +29,36 @@
                                 <span class="align-middle">Filter</span>
                             </button>
 
-                            <div id="filter" class="collapse show mb-2">
-                                <form class="form-inline m-1 p-1 my-form" method="post"
+                            <div id="filter" class="collapse mb-2">
+                                <form class="form-inline m-1 p-3 my-form" method="post"
                                       style="box-shadow: none;max-width: none">
 
                                     <div class="form-group">
                                         <fieldset>
-                                            <label class="text-left">Keyword Count:<span
-                                                    id="myRangeValue"></span></label>
-                                            <input type="range" min="1" max="{{ word_distributions.0|length }}"
-                                                   value="10"
-                                                   class="slider" id="myRange">
-                                        </fieldset>
-                                        <fieldset>
+                                            <label class="">Keywords</label>
+
                                             <div class="range-slider">
-                                                <input class="range-slider__range" type="range" value="100" min="0"
-                                                       max="500">
+                                                <input class="range-slider__range" type="range" value="10" min="1"
+                                                       max="{{ word_distributions.0|length }}" id="myRange">
                                                 <span class="range-slider__value">0</span>
                                             </div>
                                         </fieldset>
-                                        <fieldset>
-                                            <label>Last Name</label>
-                                            <input type="text" class="form-control" placeholder="Optional">
+
+                                        <fieldset class="ml-5">
+                                            <label>Sort by</label>
+                                            <select class="form-control">
+                                                <optgroup label="This is a group">
+                                                    <option value="12" selected>This is item 1</option>
+                                                    <option value="13">This is item 2</option>
+                                                    <option value="14">This is item 3</option>
+                                                </optgroup>
+                                            </select>
                                         </fieldset>
                                     </div>
 
-                                    <div class="form-group ml-auto">
-                                        <button class="btn btn-primary" type="submit">Apply</button>
-                                    </div>
+                                    {#                                    <div class="form-group ml-auto">#}
+                                    {#                                        <button class="btn btn-primary" type="submit">Apply</button>#}
+                                    {#                                    </div>#}
 
                                 </form>
                             </div>
@@ -101,19 +104,48 @@
                             </div>
 
 
-                            {{ word_distributions }}
-                            <br>
-                            <br>
-                            {{ topic_distributions }}
-                            <br>
-                            <br>
-                            {{ doc_dist }}
-
-
                         </div>
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="project-card-no-image">
+                            <h3 style="font-size: 24px;">Document Topic Distrubution</h3>
+                            <div class="row">
+                                {% for topic_distribution in topic_distributions|slice:':5' %}
+                                    <div class="col-4">
+                                        <div class="project-card-no-image">
+                                            <h3 style="font-size: 24px;">Document {{ forloop.counter }}</h3>
+                                            {% for topic in topic_distribution %}
+
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <h6>Topic {{ forloop.counter }}:</h6>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <h6 class="doc-topic-percentage">{{ topic.1 }}</h6>
+                                                    </div>
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{ word_distributions }}
+                <br>
+                <br>
+                {{ topic_distributions }}
+                <br>
+                <br>
+                {{ doc_dist }}
             </div>
         </section>
     </main>
@@ -217,11 +249,6 @@
             var x = parseInt($(this).val())
             console.log(x)
             $('#myRangeValue').html(x)
-            $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
-                $(`.tag-row-${index}:lt(${x})`).show()
-                $(`.tag-row-${index}:gt(${x - 1})`).hide()
-
-            });
 
         });
 
@@ -247,65 +274,55 @@
 
                 range.on('input', function () {
                     $(this).next(value).html(this.value);
+                    var xxx = this.value
+                    $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
+                        $(`.tag-row-${index}:lt(${xxx})`).show()
+                        $(`.tag-row-${index}:gt(${xxx - 1})`).hide()
+
+                    });
                 });
             });
         };
 
         rangeSlider();
 
+        $('th').click(function () {
+            var table = $(this).parents('table').eq(0)
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+            this.asc = !this.asc
+            if (!this.asc) {
+                rows = rows.reverse()
+            }
+            for (var i = 0; i < rows.length; i++) {
+                table.append(rows[i])
+            }
+        })
 
+        function comparer(index) {
+            return function (a, b) {
+                var valA = getCellValue(a, index), valB = getCellValue(b, index)
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+            }
+        }
+
+        function getCellValue(row, index) {
+            return $(row).children('td').eq(index).text()
+        }
+
+        $('.doc-topic-percentage').each(function (index, item) {
+            item.innerText = parseFloat(item.innerText)
+        })
     </script>
 {% endblock %}
 
 {% block style %}
     <style>
-
-        /* The slider itself */
-        .slider {
-            border-radius: 20px;
-            -webkit-appearance: none; /* Override default CSS styles */
-            appearance: none;
-            width: 250px; /* Full-width */
-            height: 25px; /* Specified height */
-            background: #a8a8a8; /* Grey background */
-
-            outline: none; /* Remove outline */
-            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-            transition: opacity .2s;
-        }
-
-        /* Mouse-over effects */
-        .slider:hover {
-            opacity: 1; /* Fully shown on mouse-over */
-        }
-
-        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none; /* Override default look */
-            appearance: none;
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
-            background: #0ea0ff; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-            border-radius: 20px;
-
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
-            background: #0ea0ff; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-            border-radius: 20px;
-
-        }
-
         .my-form {
             border-radius: 5px;
             border-color: #d4d4d4;
             border-width: 2px;
             border-style: solid;
+            padding: 10px;
         }
 
 
@@ -322,10 +339,6 @@
             body {
                 padding: 60px;
             }
-        }
-
-        .range-slider {
-            margin: 60px 0 0 0%;
         }
 
         .range-slider {
@@ -415,6 +428,19 @@
 
         input::-moz-focus-inner, input::-moz-focus-outer {
             border: 0;
+        }
+
+        .form-inline label {
+            justify-content: normal;
+        }
+
+        .portfolio-navbar.fixed-top + .page {
+            padding-top: 0;
+        }
+
+
+        th {
+            cursor: pointer;
         }
 
     </style>
