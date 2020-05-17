@@ -1,19 +1,9 @@
-import re
-
-import gensim
-import nltk
-from gensim.models import CoherenceModel, LdaModel
-
+from gensim.models import LdaModel
 import plotly.graph_objects as go
-from topic_modelling import preprocess
-
-def get_topic_dist_max(vector):
-    dict_of_topics = dict(vector)
-    maximum_topic = max(dict_of_topics, key=dict_of_topics.get)
-    return maximum_topic, dict_of_topics.get(maximum_topic)
+from topic_modelling import preprocess, coherence, topic_distance, distributions
 
 
-def LDA_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
+def lda_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
     topic_numbers = []
     coherence_values = []
 
@@ -28,9 +18,9 @@ def LDA_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
                        alpha='auto',
                        per_word_topics=True,
                        minimum_probability=1e-8)
-        coherence = CoherenceModel(model=lda, texts=data_tokens, dictionary=id2word, coherence='c_v').get_coherence()
+        coh = coherence.coherence_value(model=lda, tokens=data_tokens, dictionary=id2word)
         topic_numbers.append(num_topics)
-        coherence_values.append(coherence)
+        coherence_values.append(coh)
     fig = go.Figure(data=go.Scatter(x=topic_numbers, y=coherence_values))
     return fig.show()
 
@@ -38,7 +28,7 @@ def LDA_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
 def LDA(corpus, n_topic):
 
     cleaned_data, data_tokens, id2word, corpus = preprocess.preprocess(corpus=corpus)
-
+    doc_number = len(data_tokens)
 
     lda_model = LdaModel(corpus=corpus,
                          id2word=id2word,
@@ -51,28 +41,16 @@ def LDA(corpus, n_topic):
                          per_word_topics=True,
                          minimum_probability=1e-8)
 
-    cm = CoherenceModel(model=lda_model, texts=data_tokens, dictionary=id2word, coherence='c_v')
-    coherence = cm.get_coherence()
+    coherence_v = coherence.coherence_value(model=lda_model, tokens=data_tokens, dictionary=id2word)
 
-    word_distributions = []
-    for i in range(n_topic):
-        word_distributions.append([list(word) for word in lda_model.show_topic(i, topn=20)])
+    word_distributions = distributions.word_distribution(model=lda_model, n_topic=n_topic)
 
-    topic_distributions = []
-    for i in range(len(data_tokens)):
-        topic_distributions.append([list(topic_id) for topic_id in lda_model[corpus[i]][0]])
+    topic_distributions = distributions.lda_topic_distribution(doc_number=doc_number, model=lda_model, corpus=corpus)
 
-    doc_number = len(data_tokens)
+    doc_dist = distributions.lda_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lda_model, corpus=corpus)
 
-    doc_dist = {}
-    for i in range(n_topic):
-        doc_dist.update({i: []})
-
-    for i in range(doc_number):
-        doc_dist[get_topic_dist_max(lda_model[corpus[i]][0])[0]].append(i)
-
-    output = {"filecount": len(data_tokens),
-              "coherence_value": float(coherence),
+    output = {"filecount": doc_number,
+              "coherence_value": float(coherence_v),
               "word_distributions": word_distributions,
               "topic_distributions": topic_distributions,
               "doc_dist": doc_dist,
