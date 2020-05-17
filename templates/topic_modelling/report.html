@@ -127,7 +127,10 @@
 
 
                                         <h3 style="font-size: 24px;"> {{ file }}
-                                            <span class="float-right remove-button">X</span></h3>
+                                            <span style="cursor: pointer" class="float-right remove-button text-danger"><i data-toggle="tooltip"
+                                                                                                   class="icon ion-eye-disabled"
+                                                                                                   title="Hide"></i></span>
+                                        </h3>
                                         {% for topic in topic_distribution %}
 
                                             <div class="row">
