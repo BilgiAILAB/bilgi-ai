@@ -81,11 +81,11 @@ def LSA(corpus, n_topic):
 
     word_distributions = []
     for i in range(n_topic):
-        word_distributions.append(lsi_model.show_topic(i, topn=20))
+        word_distributions.append([list(word) for word in lsi_model.show_topic(i, topn=20)])
 
     topic_distributions = []
     for i in range(len(data_tokens)):
-        topic_distributions.append(lsi_model[corpus[i]])
+        topic_distributions.append([list(topic_id) for topic_id in lsi_model[corpus[i]]])
 
     doc_number = len(data_tokens)
 
@@ -104,6 +104,7 @@ def LSA(corpus, n_topic):
               }
 
     return output
+
 
     # def my_converter(o):
     #     return o.__str__()

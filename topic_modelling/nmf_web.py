@@ -91,12 +91,12 @@ def NMF(corpus, n_topic):
 
         doc_list = []
         for term_index in top_indices[0:word_count]:
-            doc_list.append((feature_names[term_index], H[topic, term_index]))
+            doc_list.append([feature_names[term_index], H[topic, term_index]])
         word_distributions.append(doc_list)
 
     topic_distributions = []
     for document in range(len(W)):
-        topic_distributions.append([(topic, W[document][topic]) for topic in range(len(W[document]))])
+        topic_distributions.append([[topic, W[document][topic]] for topic in range(len(W[document]))])
 
     doc_number = len(W)
     topic_number = len(H)

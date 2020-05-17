@@ -79,11 +79,11 @@ def HDP(corpus, n_topic):
 
     word_distributions = []
     for i in range(n_topic):
-        word_distributions.append(hdp_model.show_topic(i))
+        word_distributions.append([list(word) for word in hdp_model.show_topic(i, topn=20)])
 
     topic_distributions = []
     for i in range(len(data_tokens)):
-        topic_distributions.append(hdp_model[corpus[i]])
+        topic_distributions.append([list(topic_id) for topic_id in hdp_model[corpus[i]]])
 
     doc_number = len(data_tokens)
     topic_number = len(hdp_model.show_topics(150))
