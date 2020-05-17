@@ -1,7 +1,6 @@
 import os
 
 from django.db import models
-
 # Create your models here.
 from django.utils.text import slugify
 
@@ -14,6 +13,9 @@ class Project(models.Model):
 
     def get_files(self):
         return ProjectFile.objects.filter(project=self)
+
+    def get_file_names(self):
+        return [str(a) for a in ProjectFile.objects.filter(project=self)]
 
     def save(self, *args, **kwargs):
         self.project_folder = slugify(self.title)
@@ -28,7 +30,7 @@ class ProjectFile(models.Model):
         return os.path.basename(self.file.name)
 
     def __str__(self):
-        return f'{self.id} {self.file.name} {self.project.title}'
+        return os.path.basename(self.file.name)
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to=get_project_folder)
