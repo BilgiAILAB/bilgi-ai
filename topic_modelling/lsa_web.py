@@ -10,7 +10,7 @@ def LSA(corpus, n_topic):
     word_distributions = distributions.word_distribution(model=lsi_model, n_topic=n_topic)
     topic_distributions = distributions.lsi_topic_distribution(doc_number=doc_number, model=lsi_model, corpus=corpus)
     doc_dist = distributions.lsi_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lsi_model, corpus=corpus)
-    output = {"filecount": len(data_tokens),
+    output = {"filecount": doc_number,
               "coherence_value": float(coherence_v),
               "word_distributions": word_distributions,
               "topic_distributions": topic_distributions,

@@ -26,10 +26,8 @@ def lda_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
 
 
 def LDA(corpus, n_topic):
-
     cleaned_data, data_tokens, id2word, corpus = preprocess.preprocess(corpus=corpus)
     doc_number = len(data_tokens)
-
     lda_model = LdaModel(corpus=corpus,
                          id2word=id2word,
                          num_topics=n_topic,
@@ -40,13 +38,9 @@ def LDA(corpus, n_topic):
                          alpha='auto',
                          per_word_topics=True,
                          minimum_probability=1e-8)
-
     coherence_v = coherence.coherence_value(model=lda_model, tokens=data_tokens, dictionary=id2word)
-
     word_distributions = distributions.word_distribution(model=lda_model, n_topic=n_topic)
-
     topic_distributions = distributions.lda_topic_distribution(doc_number=doc_number, model=lda_model, corpus=corpus)
-
     doc_dist = distributions.lda_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lda_model, corpus=corpus)
 
     output = {"filecount": doc_number,
