@@ -118,9 +118,9 @@ def LDA(corpus, n_topic):
         topic_distributions.append(lda_model[corpus[i]][0])
 
     doc_number = len(data_tokens)
-    topic_number = len(lda_model.show_topics())
+
     doc_dist = {}
-    for i in range(topic_number):
+    for i in range(n_topic):
         doc_dist.update({i: []})
 
     for i in range(doc_number):
