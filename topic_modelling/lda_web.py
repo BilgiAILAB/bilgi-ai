@@ -1,6 +1,6 @@
 from gensim.models import LdaModel
 import plotly.graph_objects as go
-from topic_modelling import preprocess, coherence, topic_distance, distributions
+from topic_modelling import preprocess, coherence, distributions
 
 
 def lda_optimum_coherence(corpus, id2word, data_tokens, start, end, step):

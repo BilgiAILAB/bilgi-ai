@@ -23,3 +23,20 @@ def lda_doc_distribution(n_topic, doc_number, model, corpus):
     for i in range(doc_number):
         doc_dist[topic_distance.get_topic_dist_max(model[corpus[i]][0])[0]].append(i)
     return doc_dist
+
+
+def lsi_topic_distribution(doc_number, model, corpus):
+    topic_distributions = []
+    for i in range(doc_number):
+        topic_distributions.append([list(topic_id) for topic_id in model[corpus[i]]])
+    return topic_distributions
+
+
+def lsi_doc_distribution(n_topic, doc_number, model, corpus):
+    doc_dist = {}
+    for i in range(n_topic):
+        doc_dist.update({i: []})
+
+    for i in range(doc_number):
+        doc_dist[topic_distance.get_topic_dist_max(model[corpus[i]])[0]].append(i)
+    return doc_dist
