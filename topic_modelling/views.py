@@ -19,11 +19,13 @@ def get_params_before_apply_algorithm(request, pk, algorithm):
 
 
 def apply_algorithm(request, pk, algorithm):
+    project = get_object_or_404(Project, pk=pk)
+    content = {'project': project, 'algorithm': algorithm}
+
     if request.method == 'POST':
 
         n_topic = int(request.POST['n_topic'])
 
-        project = get_object_or_404(Project, pk=pk)
         files = project.get_files()
         corpus = []
         for file in files:
@@ -32,32 +34,22 @@ def apply_algorithm(request, pk, algorithm):
             file.close()
             corpus.append(lines)
 
-        content = {}
-
+        output = {}
         if algorithm.lower() == 'lda':
-            content = LDA(corpus, n_topic)
-            content['algorithm'] = "LDA"
-            content['project'] = project
+            output = LDA(corpus, n_topic)
 
         elif algorithm.lower() == 'lsa':
-            content = LSA(corpus, n_topic)
-            content['algorithm'] = "LSA"
-            content['project'] = project
+            output = LSA(corpus, n_topic)
 
         elif algorithm.lower() == 'hdp':
-            content = HDP(corpus, n_topic)
-            content['algorithm'] = "HDP"
-            content['project'] = project
+            output = HDP(corpus, n_topic)
 
         elif algorithm.lower() == 'nmf':
-            content = NMF(corpus, n_topic)
-            content['algorithm'] = "NMF"
-            content['project'] = project
+            output = NMF(corpus, n_topic)
 
-        content["files"] = files
+        content.update(output)
+        content["files"] = [file.filename() for file in files]
 
         return render(request, 'topic_modelling/report.html', content)
-
-    content = {'algorithm': algorithm}
 
     return render(request, 'topic_modelling/params.html', content)
