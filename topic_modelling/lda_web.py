@@ -111,11 +111,11 @@ def LDA(corpus, n_topic):
 
     word_distributions = []
     for i in range(n_topic):
-        word_distributions.append(lda_model.show_topic(i, topn=20))
+        word_distributions.append([list(word) for word in lda_model.show_topic(i, topn=20)])
 
     topic_distributions = []
     for i in range(len(data_tokens)):
-        topic_distributions.append(lda_model[corpus[i]][0])
+        topic_distributions.append([list(topic_id) for topic_id in lda_model[corpus[i]][0]])
 
     doc_number = len(data_tokens)
 
