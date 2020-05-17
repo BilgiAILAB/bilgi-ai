@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from project.helpers import pdf_to_text
 from project.models import Project, ProjectFile
@@ -15,6 +16,12 @@ def show_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
 
     content = {'project': project}
+    breadcrumb = {
+        "Projects": reverse('all_projects'),
+        project.title: "",
+    }
+
+    content['breadcrumb'] = breadcrumb
     return render(request, "project/project-show.html", content)
 
 

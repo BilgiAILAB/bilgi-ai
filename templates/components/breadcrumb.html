@@ -1,0 +1,18 @@
+{% if breadcrumb %}
+    <div class="container">
+        <nav style="margin-top: 100px" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% for key, value in breadcrumb.items %}
+                    {% if value != "" %}
+                        <li class="breadcrumb-item"><a href="{{ value }}">{{ key }}</a></li>
+                    {% elif value == "" %}
+                        <li class="breadcrumb-item active" aria-current="page">{{ key }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </nav>
+    </div>
+{% endif %}
+
+
+{#                <li class="breadcrumb-item active" aria-current="page">Data</li>#}

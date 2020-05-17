@@ -1,0 +1,34 @@
+{% if reports %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Algorithm</th>
+                <th>Number of Topics</th>
+                <th>Coherence</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td class="text-uppercase">{{ report.algorithm }}</td>
+                    <td>{{ report.topic_counts }}</td>
+                    <td>{{ report.coherence|make_list|slice:':6'|join:'' }}</td>
+                    <td>{{ report.date }}</td>
+                    <td>
+                        <a href="{% url 'view_report' report.project.id report.algorithm report.id %}"
+                           class="btn btn-primary">View</a>
+                        <a href="{% url 'remove_report' report.project.id report.algorithm report.id %}"
+                           class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>No records to show. After you apply any algorithm they will appear here.</p>
+{% endif %}

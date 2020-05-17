@@ -4,26 +4,31 @@
         <section class="portfolio-block project">
             <div class="container">
 
-                <div class="contact-clean container">
-                    <form method="post">
-                        {% csrf_token %}
-                        <h2 class="text-center text-uppercase">
-                            {{ algorithm }}
-                        </h2>
-                        <div class="form-group">
-                            <fieldset>
-                                <label class="">Number of Topics (min: {{ 2 }}
-                                    max: {{ project.get_file_names|length }})</label>
-                                <input type="number" value="10" max="{{ project.get_file_names | length }}" min="2"
-                                       class="form-control" name="n_topic"/>
+                <div class="project-card-no-image">
+                    <h3 style="font-size: 24px;">Apply <span class="text-uppercase">{{ algorithm }}</span>
 
-                            </fieldset>
-                        </div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <fieldset>
+                                    <label class="">Number of Topics (min: {{ 2 }}
+                                        max: {{ project.get_file_names|length }})</label>
+                                    <input type="number" value="10" max="{{ project.get_file_names | length }}" min="2"
+                                           class="form-control" name="n_topic"/>
 
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit">Run</button>
-                        </div>
-                    </form>
+                                </fieldset>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Run</button>
+                            </div>
+                        </form>
+                </div>
+
+                <div class="project-card-no-image">
+                    <h3 style="font-size: 24px;">History of <span class="text-uppercase">{{ algorithm }}</span>
+                        Algorithm</h3>
+                    {% include 'topic_modelling/components/history-table.html' %}
                 </div>
 
             </div>

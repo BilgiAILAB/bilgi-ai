@@ -1,16 +1,95 @@
 {% extends 'base.html' %}
 
+{% block style %}
+
+    <style>
+
+        .card {
+            transition: background, color 200ms, 200ms; /* For modern browsers */
+            background: white;
+            color: #0ea0ff;
+
+        }
+
+        .card:hover {
+            border-width: 1px 1px 1px 10px;
+            background: #0ea0ff;
+            color: white !important;
+            cursor: pointer;
+        }
+
+    </style>
+{% endblock %}
+
 {% block content %}
     <main class="page project-page">
         <section class="portfolio-block project">
             <div class="container">
 
-                <h1><a href="{% url 'apply_algorithm' pk 'LDA' %}">LDA</a></h1>
-                <h1><a href="{% url 'apply_algorithm' pk 'LSA' %}">LSA</a></h1>
-                <h1><a href="{% url 'apply_algorithm' pk 'HDP' %}">HDP</a></h1>
-                <h1><a href="{% url 'apply_algorithm' pk 'NMF' %}">NMF</a></h1>
+                <div class="project-card-no-image">
+                    <h3 style="font-size: 24px;">Select Algorithm To Apply</h3>
+
+                    <div class="row">
+                        <div class="col-md-3 my-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1>
+                                        LDA
+                                    </h1>
+                                    <a class="stretched-link" href="{% url 'apply_algorithm' project.id 'lda' %}"></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 my-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1>
+                                        LSA
+                                    </h1>
+                                    <a class="stretched-link" href="{% url 'apply_algorithm' project.id 'lsa' %}"></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 my-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1>
+                                        HDP
+                                    </h1>
+                                    <a class="stretched-link" href="{% url 'apply_algorithm' project.id 'hdp' %}"></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 my-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1>
+                                        NMF
+                                    </h1>
+                                    <a class="stretched-link" href="{% url 'apply_algorithm' project.id 'nmf' %}"></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="project-card-no-image">
+                    <h3 style="font-size: 24px;">History of All Algorithms</h3>
+                    {% include 'topic_modelling/components/history-table.html' %}
+                </div>
 
             </div>
         </section>
     </main>
 {% endblock %}
+
+
+
+
