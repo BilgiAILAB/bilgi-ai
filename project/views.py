@@ -1,3 +1,5 @@
+import shutil
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -50,6 +52,8 @@ def create_project(request):
 
 def delete_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
+    project_folder = f'data/projects/{project.project_folder}'
+    shutil.rmtree(project_folder)
     project.delete()
 
     return redirect('all_projects')

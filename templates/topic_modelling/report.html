@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load index %}
+
 {% block content %}
     <main class="page project-page">
         <div class="container">
@@ -16,97 +18,170 @@
                 <div class="clearfix"></div>
             </div>
 
+            <form method="post" action="{% url 'set_topics' report.project.id report.algorithm report.id %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="project-card-no-image">
+                            <h3 style="font-size: 24px;">Topic Word Distrubution</h3>
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="project-card-no-image">
-                        <h3 style="font-size: 24px;">Topic Word Distrubution</h3>
+                            <button type="button" class="btn btn-sm btn-info m-2" data-toggle="collapse"
+                                    data-target="#filter">
+                                <i class="icon ion-ios-settings-strong m-1"
+                                   style="font-size: 20px;vertical-align: middle;"></i>
+                                <span class="align-middle">Filter</span>
+                            </button>
 
-                        <button type="button" class="btn btn-sm btn-info m-2" data-toggle="collapse"
-                                data-target="#filter">
-                            <i class="icon ion-ios-settings-strong m-1"
-                               style="font-size: 20px;vertical-align: middle;"></i>
-                            <span class="align-middle">Filter</span>
-                        </button>
-
-                        <div id="filter" class="collapse mb-2">
-                            <form class="form-inline m-1 p-3 my-form" method="post"
-                                  style="box-shadow: none;max-width: none">
-
-                                <div class="form-group">
-                                    <fieldset>
-                                        <label class="">Keywords</label>
-
-                                        <div class="range-slider">
-                                            <input class="range-slider__range" type="range" value="10" min="1"
-                                                   max="{{ word_distributions.0|length }}" id="myRange">
-                                            <span class="range-slider__value">0</span>
-                                        </div>
-                                    </fieldset>
-
-                                    <fieldset class="ml-5">
-                                        <label>Sort by</label>
-                                        <select class="form-control">
-                                            <optgroup label="This is a group">
-                                                <option value="12" selected>This is item 1</option>
-                                                <option value="13">This is item 2</option>
-                                                <option value="14">This is item 3</option>
-                                            </optgroup>
-                                        </select>
-                                    </fieldset>
-                                </div>
-
-                                {#                                    <div class="form-group ml-auto">#}
-                                {#                                        <button class="btn btn-primary" type="submit">Apply</button>#}
-                                {#                                    </div>#}
-
-                            </form>
-                        </div>
+                            <button data-target="#xxx" type="button" class="btn btn-primary" id="set-topic-names"
+                            >Edit Topic Names
+                            </button>
+                            <button type="submit" style="display: none" class="btn btn-success topic-input"
+                                    id="set-topic-names">Apply
+                            </button>
 
 
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th style="width: 15%">Topic Name</th>
-                                    <th style="width: 98%">Words</th>
-                                    <th style="width: 1%">Count of Documents</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for word_distribution in word_distributions %}
+                            <div id="filter" class="collapse mb-2">
+                                <form class="form-inline m-1 p-3 my-form"
+                                      style="box-shadow: none;max-width: none">
+
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <label class="">Keywords</label>
+
+                                            <div class="range-slider">
+                                                <input class="range-slider__range" type="range" value="10" min="1"
+                                                       max="{{ word_distributions.0|length }}" id="myRange">
+                                                <span class="range-slider__value">0</span>
+                                            </div>
+                                        </fieldset>
+
+                                        <fieldset class="ml-5">
+                                            <label>Sort by</label>
+                                            <select class="form-control">
+                                                <optgroup label="This is a group">
+                                                    <option value="12" selected>This is item 1</option>
+                                                    <option value="13">This is item 2</option>
+                                                    <option value="14">This is item 3</option>
+                                                </optgroup>
+                                            </select>
+                                        </fieldset>
+                                    </div>
+
+                                    {#                                    <div class="form-group ml-auto">#}
+                                    {#                                        <button class="btn btn-primary" type="submit">Apply</button>#}
+                                    {#                                    </div>#}
+
+                                </form>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
                                     <tr>
-
-                                        <td class="text-center h5 align-middle">Topic {{ forloop.counter0 }}</td>
-
-                                        <td class="align-middle">
-                                            {% for word in word_distribution %}
-                                                <div class="d-inline"><span
-                                                        class="badge p-1 mt-1 badge-dark tag-row-{{ forloop.parentloop.counter0 }}"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="{{ word.1 }}"
-                                                        style="font-size: 16px;">{{ word.0 }}</span>
-                                                </div>
-                                            {% endfor %}
-                                        </td>
-                                        {% for key, value in doc_dist.items %}
-                                            {% if forloop.parentloop.counter == forloop.counter %}
-                                                <td class="text-center align-middle h2">{{ value|length }}</td>
-                                            {% endif %}
-                                        {% endfor %}
-
+                                        <th style="width: 15%">Topic Name</th>
+                                        <th style="width: 98%">Words</th>
+                                        <th style="width: 1%">Count of Documents</th>
                                     </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for word_distribution in word_distributions %}
+                                        <tr>
+
+                                            <td class="text-center h5 align-middle">
+                                                <span class="topic-text">{{ topics|index:forloop.counter0 }}</span>
+                                                <input name="topics[]" style="display: none" class="w-100 topic-input"
+                                                       type="text"
+                                                       value="{{ topics|index:forloop.counter0 }}"/>
+                                            </td>
+
+                                            <td class="align-middle">
+                                                {% for word in word_distribution %}
+                                                    <div class="d-inline"><span
+                                                            class="badge p-1 mt-1 badge-dark tag-row-{{ forloop.parentloop.counter0 }}"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="{{ word.1 }}"
+                                                            style="font-size: 16px;">{{ word.0 }}</span>
+                                                    </div>
+                                                {% endfor %}
+                                            </td>
+                                            {% for key, value in doc_dist.items %}
+                                                {% if forloop.parentloop.counter == forloop.counter %}
+                                                    <td class="text-center align-middle h2">
+                                                    <span data-toggle="modal"
+                                                          data-target="#fileListModal{{ forloop.parentloop.counter }}"
+                                                          class="h2">{{ value|length }}</span>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade"
+                                                             id="fileListModal{{ forloop.parentloop.counter }}"
+                                                             tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="fileListModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-scrollable"
+                                                                 role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="fileListModalLabel">
+                                                                            File
+                                                                            List</h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal"
+                                                                                aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="table-responsive">
+
+                                                                            <div class="bodycontainer scrollable">
+                                                                                <table class="table table-hover table-striped table-condensed table-scrollable">
+                                                                                    <tbody>
+                                                                                    {% for x in value %}
+                                                                                        {% for file in project.get_files %}
+                                                                                            {% ifequal x forloop.counter0 %}
+                                                                                                <tr>
+                                                                                                    <td style="font-size: small">{{ file.filename.title }}</td>
+                                                                                                </tr>
+                                                                                            {% endifequal %}
+                                                                                        {% endfor %}
+                                                                                    {% endfor %}
 
 
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                                data-dismiss="modal">Close
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-primary">
+                                                                            Save
+                                                                            changes
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                        </tr>
+
+
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
-
-
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="row">
                 <div class="col-12">
@@ -127,15 +202,16 @@
 
 
                                         <h3 style="font-size: 24px;"> {{ file }}
-                                            <span style="cursor: pointer" class="float-right remove-button text-danger"><i data-toggle="tooltip"
-                                                                                                   class="icon ion-eye-disabled"
-                                                                                                   title="Hide"></i></span>
+                                            <span style="cursor: pointer" class="float-right remove-button text-danger"><i
+                                                    data-toggle="tooltip"
+                                                    class="icon ion-eye-disabled"
+                                                    title="Hide"></i></span>
                                         </h3>
                                         {% for topic in topic_distribution %}
 
                                             <div class="row">
                                                 <div class="col-4">
-                                                    <h6>Topic {{ topic.0 }}:</h6>
+                                                    <h6>{{ topics|index:topic.0 }}:</h6>
                                                 </div>
                                                 <div class="col-8">
                                                     <h6 class="doc-topic-percentage">{{ topic.1 }}</h6>
@@ -180,6 +256,17 @@
         });
         //END REMOVE BUTTON
 
+        //REMOVE BUTTON
+        $('#set-topic-names').click(function () {
+            var text = $(this).text()
+            console.log(text.includes("Edit"))
+            $(this).text(text.includes("Edit") ? "Cancel" : "Edit Topic Names")
+            $('.topic-input').toggle();
+            $('.topic-text').toggle();
+
+        });
+        //END REMOVE BUTTON
+
         // DOCUMENT SELECTION
         var myOptions = {{ files|safe }};
         var mySelect = $('#documents-select');
@@ -213,6 +300,34 @@
         //END DOCUMENT SELECTION
 
         var colorArray = [
+            "#63b598", "#ce7d78", "#ea9e70", "#0d5ac1",
+            "#14a9ad", "#4ca2f9",
+            "#d298e2", "#6119d0", "#d2737d", "#c0a43c", "#f2510e",
+            "#651be6", "#79806e", "#cd2f00", "#9348af", "#01ac53",
+            "#c5a4fb", "#996635", "#b11573", "#4bb473", "#75d89e",
+            "#2f3f94", "#2f7b99", "#da967d", "#34891f", "#ca4751",
+            "#4b5bdc", "#0cd36d", "#250662", "#cb5bea", "#228916",
+            "#ac3e1b", "#df514a", "#539397", "#880977", "#f697c1",
+            "#f158bf", "#e145ba", "#ee91e3", "#05d371", "#4834d0",
+            "#802234", "#6749e8", "#0971f0", "#8fb413", "#b2b4f0",
+            "#c3c89d", "#c9a941", "#41d158", "#fb21a3", "#51aed9",
+            "#5bb32d", "#0807fb", "#21538e", "#89d534", "#d36647",
+            "#7fb411", "#0023b8", "#3b8c2a", "#986b53", "#f50422",
+            "#983f7a", "#ea24a3", "#79352c", "#521250", "#c79ed2",
+            "#63b598", "#ce7d78", "#ea9e70", "#0d5ac1",
+            "#14a9ad", "#4ca2f9",
+            "#d298e2", "#6119d0", "#d2737d", "#c0a43c", "#f2510e",
+            "#651be6", "#79806e", "#cd2f00", "#9348af", "#01ac53",
+            "#c5a4fb", "#996635", "#b11573", "#4bb473", "#75d89e",
+            "#2f3f94", "#2f7b99", "#da967d", "#34891f", "#ca4751",
+            "#4b5bdc", "#0cd36d", "#250662", "#cb5bea", "#228916",
+            "#ac3e1b", "#df514a", "#539397", "#880977", "#f697c1",
+            "#f158bf", "#e145ba", "#ee91e3", "#05d371", "#4834d0",
+            "#802234", "#6749e8", "#0971f0", "#8fb413", "#b2b4f0",
+            "#c3c89d", "#c9a941", "#41d158", "#fb21a3", "#51aed9",
+            "#5bb32d", "#0807fb", "#21538e", "#89d534", "#d36647",
+            "#7fb411", "#0023b8", "#3b8c2a", "#986b53", "#f50422",
+            "#983f7a", "#ea24a3", "#79352c", "#521250", "#c79ed2",
             "#63b598", "#ce7d78", "#ea9e70", "#0d5ac1",
             "#14a9ad", "#4ca2f9",
             "#d298e2", "#6119d0", "#d2737d", "#c0a43c", "#f2510e",
@@ -305,7 +420,6 @@
 
         $('#myRange').on("change mousemove", function () {
             var x = parseInt($(this).val())
-            console.log(x)
             $('#myRangeValue').html(x)
 
         });

@@ -19,9 +19,9 @@
                     <td>{{ report.date }}</td>
                     <td>
                         <a href="{% url 'view_report' report.project.id report.algorithm report.id %}"
-                           class="btn btn-primary">View</a>
+                           class="btn btn-primary"><i class="icon ion-eye"></i> View</a>
                         <a href="{% url 'remove_report' report.project.id report.algorithm report.id %}"
-                           class="btn btn-danger">Remove</a>
+                           class="btn btn-danger"><i class="icon ion-trash-b"></i></a>
                     </td>
                 </tr>
             {% endfor %}

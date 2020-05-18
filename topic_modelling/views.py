@@ -71,6 +71,7 @@ def apply_algorithm(request, pk, algorithm):
         report.project = project
         report.algorithm = algorithm.lower()
         report.all_data = json.dumps(output, separators=(',', ':'), default=my_converter)
+        report.topics = json.dumps(["Topic " + str(index + 1) for index in range(len(output['word_distributions']))])
         report.save()
 
         return redirect('view_report', project.id, algorithm, report.id)
@@ -92,10 +93,16 @@ def view_report(request, project_pk, algorithm, report_pk):
     project = get_object_or_404(Project, pk=project_pk)
     report = get_object_or_404(Report, pk=report_pk, algorithm=algorithm.lower())
     files = project.get_files()
+    topics = report.get_topics()
+    print(topics)
 
-    content = {'project': project,
-               'algorithm': algorithm,
-               "files": [file.filename() for file in files]}
+    content = {
+        'project': project,
+        'algorithm': algorithm,
+        'files': [file.filename() for file in files],
+        'topics': topics,
+        'report': report
+    }
 
     content.update(report.get_output())
 
@@ -110,6 +117,16 @@ def view_report(request, project_pk, algorithm, report_pk):
     content['breadcrumb'] = breadcrumb
 
     return render(request, 'topic_modelling/report.html', content)
+
+
+def set_report_topics(request, project_pk, algorithm, report_pk):
+    if request.method == 'POST':
+        report = get_object_or_404(Report, pk=report_pk, algorithm=algorithm.lower())
+        topics = request.POST.getlist('topics[]')
+        report.topics = json.dumps(topics)
+        report.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def remove_report(request, project_pk, algorithm, report_pk):
