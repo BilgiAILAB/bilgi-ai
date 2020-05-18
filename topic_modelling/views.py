@@ -1,5 +1,6 @@
 import json
 
+import plotly
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -7,7 +8,7 @@ from django.urls import reverse
 from project.models import Project
 # Create your views here.
 from topic_modelling.hdp_web import HDP
-from topic_modelling.lda_web import LDA
+from topic_modelling.lda_web import LDA, lda_optimum_coherence
 from topic_modelling.lsa_web import LSA
 from topic_modelling.models import Report
 from topic_modelling.nmf_web import NMF
@@ -36,9 +37,17 @@ def apply_algorithm(request, pk, algorithm):
 
     content = {'project': project, 'algorithm': algorithm, 'reports': reports}
 
-    if request.method == 'POST':
+    breadcrumb = {
+        "Projects": reverse('all_projects'),
+        project.title: reverse('show_project', args=[project.id]),
+        "Topic Modelling": reverse('topic_algorithms', args=[pk]),
+        algorithm.upper(): ""
+        # algorithm.upper(): reverse('apply_algorithm', args=[pk, algorithm])
+    }
 
-        n_topic = int(request.POST['n_topic'])
+    content['breadcrumb'] = breadcrumb
+
+    if request.method == 'POST':
 
         files = project.get_files()
         corpus = []
@@ -48,7 +57,19 @@ def apply_algorithm(request, pk, algorithm):
             file.close()
             corpus.append(lines)
 
+        if request.POST['graph']:
+            start = int(request.POST['start'])
+            end = int(request.POST['end'])
+            step = int(request.POST['step'])
+            print(start, end, step)
+            fig = lda_optimum_coherence(corpus, start, end, step)
+            content["data"] = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+            return render(request, 'topic_modelling/params.html', content)
+
         output = {}
+        n_topic = int(request.POST['n_topic'])
+
         if algorithm.lower() == 'lda':
             output = LDA(corpus, n_topic)
 
@@ -75,16 +96,6 @@ def apply_algorithm(request, pk, algorithm):
         report.save()
 
         return redirect('view_report', project.id, algorithm, report.id)
-
-    breadcrumb = {
-        "Projects": reverse('all_projects'),
-        project.title: reverse('show_project', args=[project.id]),
-        "Topic Modelling": reverse('topic_algorithms', args=[pk]),
-        algorithm.upper(): ""
-        # algorithm.upper(): reverse('apply_algorithm', args=[pk, algorithm])
-    }
-
-    content['breadcrumb'] = breadcrumb
 
     return render(request, 'topic_modelling/params.html', content)
 
