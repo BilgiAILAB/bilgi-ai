@@ -104,71 +104,73 @@
                                                     </div>
                                                 {% endfor %}
                                             </td>
-                                            {% for key, value in doc_dist.items %}
-                                                {% if forloop.parentloop.counter == forloop.counter %}
-                                                    <td class="text-center align-middle h2">
+                                            {#                                            {% for key, value in doc_dist.items %}#}
+                                            {#                                                {{ forloop.parentloop.counter0 }} {{ forloop.counter0 }}#}
+                                            {#                                                <br>#}
+                                            {#                                                {% if forloop.parentloop.counter == forloop.counter %}#}
+                                            <td class="text-center align-middle h2">
                                                     <span data-toggle="modal"
-                                                          data-target="#fileListModal{{ forloop.parentloop.counter }}"
-                                                          class="h2">{{ value|length }}</span>
+                                                          data-target="#fileListModal{{ forloop.counter }}"
+                                                          class="h2">{{ doc_dist|index_dict:forloop.counter0|length }}</span>
 
-                                                        <!-- Modal -->
-                                                        <div class="modal fade"
-                                                             id="fileListModal{{ forloop.parentloop.counter }}"
-                                                             tabindex="-1"
-                                                             role="dialog"
-                                                             aria-labelledby="fileListModalLabel"
-                                                             aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-scrollable"
-                                                                 role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="fileListModalLabel">
-                                                                            File
-                                                                            List</h5>
-                                                                        <button type="button" class="close"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="table-responsive">
+                                                <!-- Modal -->
+                                                <div class="modal fade"
+                                                     id="fileListModal{{ forloop.counter }}"
+                                                     tabindex="-1"
+                                                     role="dialog"
+                                                     aria-labelledby="fileListModalLabel"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-scrollable"
+                                                         role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="fileListModalLabel">
+                                                                    File
+                                                                    List</h5>
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="table-responsive">
 
-                                                                            <div class="bodycontainer scrollable">
-                                                                                <table class="table table-hover table-striped table-condensed table-scrollable">
-                                                                                    <tbody>
-                                                                                    {% for x in value %}
-                                                                                        {% for file in project.get_files %}
-                                                                                            {% ifequal x forloop.counter0 %}
-                                                                                                <tr>
-                                                                                                    <td style="font-size: small">{{ file.filename.title }}</td>
-                                                                                                </tr>
-                                                                                            {% endifequal %}
-                                                                                        {% endfor %}
-                                                                                    {% endfor %}
+                                                                    <div class="bodycontainer scrollable">
+                                                                        <table class="table table-hover table-striped table-condensed table-scrollable">
+                                                                            <tbody>
+                                                                            {% for x in doc_dist|index_dict:forloop.counter0 %}
+                                                                                {% for file in project.get_files %}
+                                                                                    {% ifequal x forloop.counter0 %}
+                                                                                        <tr>
+                                                                                            <td style="font-size: small">{{ file.filename.title }}</td>
+                                                                                        </tr>
+                                                                                    {% endifequal %}
+                                                                                {% endfor %}
+                                                                            {% endfor %}
 
 
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                                data-dismiss="modal">Close
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-primary">
-                                                                            Save
-                                                                            changes
-                                                                        </button>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
                                                                 </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary">
+                                                                    Save
+                                                                    changes
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                {% endif %}
-                                            {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {#                                                {% endif %}#}
+                                            {#                                            {% endfor %}#}
 
                                         </tr>
 
@@ -231,17 +233,17 @@
                 </div>
             </div>
 
-            {{ files }}
-            <br>
-            <br>
-            {{ word_distributions|length }}
-            {{ word_distributions }}
-            <br>
-            <br>
-            {{ topic_distributions }}
-            <br>
-            <br>
-            {{ doc_dist }}
+{#            {{ files }}#}
+{#            <br>#}
+{#            <br>#}
+{#            {{ word_distributions|length }}#}
+{#            {{ word_distributions }}#}
+{#            <br>#}
+{#            <br>#}
+{#            {{ topic_distributions }}#}
+{#            <br>#}
+{#            <br>#}
+{#            {{ doc_dist }}#}
         </div>
         </section>
     </main>
@@ -458,31 +460,31 @@
 
         rangeSlider();
 
-        // SORTING
-        $('th').click(function () {
-            var table = $(this).parents('table').eq(0)
-            var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
-            this.asc = !this.asc
-            if (!this.asc) {
-                rows = rows.reverse()
-            }
-            for (var i = 0; i < rows.length; i++) {
-                table.append(rows[i])
-            }
-        })
-
-        function comparer(index) {
-            return function (a, b) {
-                var valA = getCellValue(a, index), valB = getCellValue(b, index)
-                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
-            }
-        }
-
-        function getCellValue(row, index) {
-            return $(row).children('td').eq(index).text()
-        }
-
-        //SORTING END
+        {#// SORTING#}
+        {#$('th').click(function () {#}
+        {#    var table = $(this).parents('table').eq(0)#}
+        {#    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))#}
+        {#    this.asc = !this.asc#}
+        {#    if (!this.asc) {#}
+        {#        rows = rows.reverse()#}
+        {#    }#}
+        {#    for (var i = 0; i < rows.length; i++) {#}
+        {#        table.append(rows[i])#}
+        {#    }#}
+        {#})#}
+        {##}
+        {#function comparer(index) {#}
+        {#    return function (a, b) {#}
+        {#        var valA = getCellValue(a, index), valB = getCellValue(b, index)#}
+        {#        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)#}
+        {#    }#}
+        {#}#}
+        {##}
+        {#function getCellValue(row, index) {#}
+        {#    return $(row).children('td').eq(index).text()#}
+        {#}#}
+        {##}
+        {#//SORTING END#}
 
         //PARSING FLOAT
         $('.doc-topic-percentage').each(function (index, item) {
@@ -602,9 +604,9 @@
         }
 
 
-        th {
-            cursor: pointer;
-        }
+        {#th {#}
+        {#    cursor: pointer;#}
+        {#}#}
 
     </style>
 {% endblock %}
