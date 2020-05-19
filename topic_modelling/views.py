@@ -57,7 +57,7 @@ def apply_algorithm(request, pk, algorithm):
             file.close()
             corpus.append(lines)
 
-        if request.POST['graph']:
+        if 'graph' in request.POST:
             start = int(request.POST['start'])
             end = int(request.POST['end'])
             step = int(request.POST['step'])
