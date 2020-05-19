@@ -3,11 +3,12 @@ import plotly.graph_objects as go
 from topic_modelling import preprocess, coherence, distributions
 
 
-def lda_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
+def lda_optimum_coherence(corpus, start, end, step):
+    cleaned_data, data_tokens, id2word, corpus = preprocess.preprocess(corpus=corpus)
     topic_numbers = []
     coherence_values = []
 
-    for num_topics in range(start=start, stop=end, step=step):
+    for num_topics in range(start, end, step):
         lda = LdaModel(corpus=corpus,
                        id2word=id2word,
                        num_topics=num_topics,
@@ -22,7 +23,7 @@ def lda_optimum_coherence(corpus, id2word, data_tokens, start, end, step):
         topic_numbers.append(num_topics)
         coherence_values.append(coh)
     fig = go.Figure(data=go.Scatter(x=topic_numbers, y=coherence_values))
-    return fig.show()
+    return fig
 
 
 def LDA(corpus, n_topic):
