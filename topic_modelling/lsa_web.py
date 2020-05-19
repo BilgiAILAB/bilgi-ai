@@ -1,5 +1,20 @@
 from gensim.models import LsiModel
 from topic_modelling import preprocess, coherence, distributions
+import plotly.graph_objects as go
+
+
+def lsa_optimum_coherence(corpus, start, end, step):
+    cleaned_data, data_tokens, id2word, corpus = preprocess.preprocess(corpus=corpus)
+    topic_numbers = []
+    coherence_values = []
+
+    for num_topics in range(start, end, step):
+        lsi_model = LsiModel(corpus=corpus, num_topics=num_topics, id2word=id2word)
+        coh = coherence.coherence_value(model=lsi_model, tokens=data_tokens, dictionary=id2word)
+        topic_numbers.append(num_topics)
+        coherence_values.append(coh)
+    fig = go.Figure(data=go.Scatter(x=topic_numbers, y=coherence_values))
+    return fig
 
 
 def LSA(corpus, n_topic):
