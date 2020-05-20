@@ -9,9 +9,9 @@ from project.models import Project
 # Create your views here.
 from topic_modelling.hdp_web import HDP
 from topic_modelling.lda_web import LDA, lda_optimum_coherence
-from topic_modelling.lsa_web import LSA
+from topic_modelling.lsa_web import LSA, lsa_optimum_coherence
 from topic_modelling.models import Report
-from topic_modelling.nmf_web import NMF
+from topic_modelling.nmf_web import NMF, nmf_optimum_coherence
 
 
 def topic_algorithms(request, pk):
@@ -31,7 +31,7 @@ def topic_algorithms(request, pk):
     return render(request, 'topic_modelling/index.html', content)
 
 
-def apply_algorithm(request, pk, algorithm):
+def apply_topic_algorithm(request, pk, algorithm):
     project = get_object_or_404(Project, pk=pk)
     reports = Report.objects.filter(project_id=pk, algorithm=algorithm.lower())
 
@@ -42,7 +42,7 @@ def apply_algorithm(request, pk, algorithm):
         project.title: reverse('show_project', args=[project.id]),
         "Topic Modelling": reverse('topic_algorithms', args=[pk]),
         algorithm.upper(): ""
-        # algorithm.upper(): reverse('apply_algorithm', args=[pk, algorithm])
+        # algorithm.upper(): reverse('apply_topic_algorithm', args=[pk, algorithm])
     }
 
     content['breadcrumb'] = breadcrumb
@@ -62,7 +62,16 @@ def apply_algorithm(request, pk, algorithm):
             end = int(request.POST['end'])
             step = int(request.POST['step'])
             print(start, end, step)
-            fig = lda_optimum_coherence(corpus, start, end, step)
+
+            if algorithm.lower() == 'lda':
+                fig = lda_optimum_coherence(corpus, start, end, step)
+
+            elif algorithm.lower() == 'lsa':
+                fig = lsa_optimum_coherence(corpus, start, end, step)
+
+            elif algorithm.lower() == 'nmf':
+                fig = nmf_optimum_coherence(corpus, start, end, step)
+
             content["data"] = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
             return render(request, 'topic_modelling/params.html', content)
@@ -105,7 +114,6 @@ def view_report(request, project_pk, algorithm, report_pk):
     report = get_object_or_404(Report, pk=report_pk, algorithm=algorithm.lower())
     files = project.get_files()
     topics = report.get_topics()
-    print(topics)
 
     content = {
         'project': project,
@@ -121,7 +129,7 @@ def view_report(request, project_pk, algorithm, report_pk):
         "Projects": reverse('all_projects'),
         project.title: reverse('show_project', args=[project.id]),
         "Topic Modelling": reverse('topic_algorithms', args=[project_pk]),
-        algorithm.upper(): reverse('apply_algorithm', args=[project_pk, algorithm]),
+        algorithm.upper(): reverse('apply_topic_algorithm', args=[project_pk, algorithm]),
         f"Report (id:{report.id})": ""
     }
 

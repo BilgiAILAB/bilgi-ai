@@ -8,7 +8,7 @@ from project.models import Project
 
 class Report(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='topic_project')
     algorithm = models.CharField(max_length=100)
     all_data = models.TextField()
     topics = models.TextField()
