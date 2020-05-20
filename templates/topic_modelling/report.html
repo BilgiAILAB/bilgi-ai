@@ -31,12 +31,10 @@
                                    style="font-size: 20px;vertical-align: middle;"></i>
                                 <span class="align-middle">Filter</span>
                             </button>
-
+                            <button type="submit" style="display: none" class="btn btn-success topic-input">Apply
+                            </button>
                             <button data-target="#xxx" type="button" class="btn btn-primary" id="set-topic-names"
                             >Edit Topic Names
-                            </button>
-                            <button type="submit" style="display: none" class="btn btn-success topic-input"
-                                    id="set-topic-names">Apply
                             </button>
 
 
@@ -189,7 +187,12 @@
                 <div class="col-12">
                     <div class="project-card-no-image">
                         <h3 style="font-size: 24px;">Document Topic Distrubution</h3>
-                        <select id='documents-select'></select>
+                        <select id='documents-select'>
+                            {% for file in files %}
+                                <option value="{{ forloop.counter0 }}">{{ file }}</option>
+                            {% endfor %}
+
+                        </select>
                         <button class="btn btn-primary" id="documents-add-button">Add</button>
                         <button class="btn btn-danger" id="documents-show-all-button">Show All</button>
                         <br>
@@ -233,17 +236,17 @@
                 </div>
             </div>
 
-{#            {{ files }}#}
-{#            <br>#}
-{#            <br>#}
-{#            {{ word_distributions|length }}#}
-{#            {{ word_distributions }}#}
-{#            <br>#}
-{#            <br>#}
-{#            {{ topic_distributions }}#}
-{#            <br>#}
-{#            <br>#}
-{#            {{ doc_dist }}#}
+            {#            {{ files }}#}
+            {#            <br>#}
+            {#            <br>#}
+            {#            {{ word_distributions|length }}#}
+            {#            {{ word_distributions }}#}
+            {#            <br>#}
+            {#            <br>#}
+            {#            {{ topic_distributions }}#}
+            {#            <br>#}
+            {#            <br>#}
+            {#            {{ doc_dist }}#}
         </div>
         </section>
     </main>
@@ -270,13 +273,8 @@
         //END REMOVE BUTTON
 
         // DOCUMENT SELECTION
-        var myOptions = {{ files|safe }};
+
         var mySelect = $('#documents-select');
-        $.each(myOptions, function (val, txt) {
-            mySelect.append(
-                $('<option></option>').val(val).html(txt)
-            );
-        });
 
         $('#documents-add-button').click(function () {
             var val = $("#documents-select option:selected").val();
@@ -471,25 +469,23 @@
         {#    for (var i = 0; i < rows.length; i++) {#}
         {#        table.append(rows[i])#}
         {#    }#}
-        {#})#}
         {##}
         {#function comparer(index) {#}
         {#    return function (a, b) {#}
         {#        var valA = getCellValue(a, index), valB = getCellValue(b, index)#}
         {#        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)#}
         {#    }#}
-        {#}#}
         {##}
         {#function getCellValue(row, index) {#}
         {#    return $(row).children('td').eq(index).text()#}
         {#}#}
-        {##}
-        {#//SORTING END#}
+            {##}
+            {#//SORTING END#}
 
-        //PARSING FLOAT
-        $('.doc-topic-percentage').each(function (index, item) {
-            item.innerText = parseFloat(item.innerText)
-        })
+            //PARSING FLOAT
+            $('.doc-topic-percentage').each(function (index, item) {
+                item.innerText = parseFloat(item.innerText)
+            })
         //PARSE END
     </script>
 {% endblock %}
@@ -606,7 +602,8 @@
 
         {#th {#}
         {#    cursor: pointer;#}
-        {#}#}
+        {
+        #}#}
 
     </style>
 {% endblock %}
