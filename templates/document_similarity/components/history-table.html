@@ -1,0 +1,62 @@
+{% if reports %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Algorithm</th>
+                <th>Selected File</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td class="text-uppercase">{{ report.algorithm }}</td>
+                    <td>{{ report.selected_document_name }}</td>
+                    <td>{{ report.date }}</td>
+                    <td>
+                        <a href="{% url 'view_similarity_report' report.project.id report.algorithm report.id %}"
+                           class="btn btn-primary"><i class="icon ion-eye"></i> View</a>
+                        <a href="{% url 'remove_similarity_report' report.project.id report.algorithm report.id %}"
+                           class="btn btn-danger"><i class="icon ion-trash-b"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        window.addEventListener('load', function () {
+
+            $('th').click(function () {
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) {
+                    rows = rows.reverse()
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i])
+                }
+            })
+
+            function comparer(index) {
+                return function (a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index)
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+                }
+            }
+
+            function getCellValue(row, index) {
+                return $(row).children('td').eq(index).text()
+            }
+        })
+    </script>
+
+{% else %}
+    <p>No records to show. After you apply any algorithm they will appear here.</p>
+{% endif %}
+

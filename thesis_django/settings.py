@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'project',
     'home',
     'topic_modelling',
+    'document_similarity'
 ]
 
 MIDDLEWARE = [

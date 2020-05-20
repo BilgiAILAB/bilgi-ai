@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/', include('project.urls')),
     path('projects/', include('topic_modelling.urls')),
+    path('projects/', include('document_similarity.urls')),
 ]

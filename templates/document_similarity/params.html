@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main class="page project-page">
+        <section class="portfolio-block project">
+            <div class="container">
+
+                <div class="project-card-no-image">
+                    <h3 style="font-size: 24px;">Apply <span
+                            class="text-uppercase">{{ algorithm }}</span></h3>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <fieldset>
+                                <label for="documents-select" class="">Select a file to compare with the others.</label>
+                                <select class="form-control" name="file" id='documents-select'>
+                                    {% for file in files %}
+                                        <option value="{{ file.id }}">{{ file }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </fieldset>
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Run</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="project-card-no-image">
+                    <h3 style="font-size: 24px;">History of <span class="text-uppercase">{{ algorithm }}</span>
+                        Algorithm</h3>
+                    {% include 'document_similarity/components/history-table.html' %}
+                </div>
+
+            </div>
+        </section>
+    </main>
+{% endblock %}
