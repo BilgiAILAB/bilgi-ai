@@ -7,6 +7,7 @@ from bokeh.resources import CDN
 from bokeh.embed import json_item, file_html
 import numpy as np
 
+
 def tsne_graph(output, topic_names, doc_names):
     n_topics = len(topic_names)
     topic_distributions = output.get('topic_distributions')
@@ -83,7 +84,7 @@ def tsne_graph(output, topic_names, doc_names):
         ("index", "$index"),
         ("desc", "@content"),
         ("Keywords", "@frequent_words")]
-    output_notebook()
+
     plot = figure(title="t-SNE Clustering of {} LDA Topics".format(n_topics),
                   plot_width=900,
                   plot_height=700,

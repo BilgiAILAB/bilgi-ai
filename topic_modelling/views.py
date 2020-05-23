@@ -77,7 +77,8 @@ def apply_topic_algorithm(request, pk, algorithm):
             return render(request, 'topic_modelling/params.html', content)
 
         output = {}
-        n_topic = int(request.POST['n_topic'])
+        if 'n_topic' in request.POST:
+            n_topic = int(request.POST['n_topic'])
 
         if algorithm.lower() == 'lda':
             output = LDA(corpus, n_topic)
@@ -86,7 +87,7 @@ def apply_topic_algorithm(request, pk, algorithm):
             output = LSA(corpus, n_topic)
 
         elif algorithm.lower() == 'hdp':
-            output = HDP(corpus, n_topic)
+            output = HDP(corpus)
 
         elif algorithm.lower() == 'nmf':
             output = NMF(corpus, n_topic)
