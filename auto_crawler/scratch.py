@@ -26,7 +26,7 @@ class pdf2txt():
         self.titlelist = []
 
         if download_dir == None:
-            self.download_dir = os.path.join(".", "download", "")
+            self.download_dir = os.path.join("../project", "download", "")
         else:
             self.download_dir = download_dir
 
@@ -98,6 +98,7 @@ class pdf2txt():
             headers = {
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"}
             html = requests.get("https://www.google.com/search", params=params, headers=headers)
+            print(html.url)
             # print(html.text)
             soup = BeautifulSoup(html.text, 'html.parser')
             # soup = BeautifulSoup(html.text, 'lxml')
@@ -206,7 +207,7 @@ class pdf2txt():
 
 
 if __name__ == "__main__":
-    pdfcrawler = pdf2txt(["yapay zeka"], pages=1)  # list의 항목을 각각 검색함
+    pdfcrawler = pdf2txt(["pozisyonel vertigo"], pages=10)  # list의 항목을 각각 검색함
     pdfcrawler.download_search_data()
     pdfcrawler.convert_pdfs()
     pdfcrawler.concate_all_txt()
