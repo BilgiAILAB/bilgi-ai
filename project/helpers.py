@@ -21,7 +21,6 @@ def pdf_to_text(file):
 
         for page in PDFPage.get_pages(infile, pagenums):
             interpreter.process_page(page)
-        infile.close()
         converter.close()
         text = output.getvalue()
         output.close()
