@@ -22,6 +22,7 @@ urlpatterns = [
     path('new', views.create_project, name='create_project'),
     path('<int:pk>', views.show_project, name='show_project'),
     path('<int:pk>/remove', views.delete_project, name='delete_project'),
-    path('<int:pk>/upload', views.add_files, name='add_files')
+    path('<int:pk>/upload', views.add_files, name='add_files'),
+    path('<int:pk>/download', views.download, name='download_files')
 
 ]

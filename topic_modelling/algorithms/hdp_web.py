@@ -2,7 +2,7 @@ from gensim.models import HdpModel
 from topic_modelling.algorithms import distributions, preprocess, coherence
 
 
-def HDP(corpus, n_topic):
+def HDP(corpus):
     n_topic = 150
     cleaned_data, data_tokens, id2word, corpus = preprocess.preprocess(corpus=corpus)
     doc_number = len(data_tokens)
