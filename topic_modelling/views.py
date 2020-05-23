@@ -10,8 +10,9 @@ from project.models import Project
 from topic_modelling.algorithms.hdp_web import HDP
 from topic_modelling.algorithms.lda_web import LDA, lda_optimum_coherence
 from topic_modelling.algorithms.lsa_web import LSA, lsa_optimum_coherence
-from topic_modelling.models import Report
 from topic_modelling.algorithms.nmf_web import NMF, nmf_optimum_coherence
+from topic_modelling.algorithms.topic_graph import tsne_graph
+from topic_modelling.models import Report
 
 
 def topic_algorithms(request, pk):
@@ -122,7 +123,9 @@ def view_report(request, project_pk, algorithm, report_pk):
         'report': report
     }
 
-    content.update(report.get_output())
+    report_output = report.get_output()
+
+    content.update(report_output)
 
     breadcrumb = {
         "Projects": reverse('all_projects'),
@@ -133,6 +136,10 @@ def view_report(request, project_pk, algorithm, report_pk):
     }
 
     content['breadcrumb'] = breadcrumb
+
+    graph = tsne_graph(report_output, topics, [file.filename() for file in files])
+
+    content['graph'] = graph
 
     return render(request, 'topic_modelling/report.html', content)
 
