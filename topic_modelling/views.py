@@ -7,11 +7,11 @@ from django.urls import reverse
 
 from project.models import Project
 # Create your views here.
-from topic_modelling.hdp_web import HDP
-from topic_modelling.lda_web import LDA, lda_optimum_coherence
-from topic_modelling.lsa_web import LSA, lsa_optimum_coherence
+from topic_modelling.algorithms.hdp_web import HDP
+from topic_modelling.algorithms.lda_web import LDA, lda_optimum_coherence
+from topic_modelling.algorithms.lsa_web import LSA, lsa_optimum_coherence
 from topic_modelling.models import Report
-from topic_modelling.nmf_web import NMF, nmf_optimum_coherence
+from topic_modelling.algorithms.nmf_web import NMF, nmf_optimum_coherence
 
 
 def topic_algorithms(request, pk):
@@ -61,7 +61,6 @@ def apply_topic_algorithm(request, pk, algorithm):
             start = int(request.POST['start'])
             end = int(request.POST['end'])
             step = int(request.POST['step'])
-            print(start, end, step)
 
             if algorithm.lower() == 'lda':
                 fig = lda_optimum_coherence(corpus, start, end, step)

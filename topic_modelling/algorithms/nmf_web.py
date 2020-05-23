@@ -2,7 +2,7 @@ import numpy as np
 from gensim.models import CoherenceModel
 from sklearn.decomposition import NMF as sk_NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
-from topic_modelling import preprocess, topic_distance
+from topic_modelling.algorithms import preprocess, topic_distance
 import plotly.graph_objects as go
 
 

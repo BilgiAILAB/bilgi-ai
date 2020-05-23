@@ -5,9 +5,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
 from document_similarity.models import Report
-from document_similarity.similarity_algorithms import documentsCosineSimilarity, documentsEuclideanDistance, \
+from document_similarity.algorithms.similarity_algorithms import documentsCosineSimilarity, documentsEuclideanDistance, \
     documentsJaccardSimilarity, documentsManhattanDistance
-from document_similarity.word2vec import documentsCosineSimilarity_v2, documentsEuclideanDistance_v2
+from document_similarity.algorithms.word2vec import documentsCosineSimilarity_v2, documentsEuclideanDistance_v2
 from project.models import Project
 
 

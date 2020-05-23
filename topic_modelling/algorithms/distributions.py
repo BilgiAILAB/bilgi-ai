@@ -1,4 +1,4 @@
-from topic_modelling import topic_distance
+from topic_modelling.algorithms import topic_distance
 
 
 def word_distribution(model, n_topic):

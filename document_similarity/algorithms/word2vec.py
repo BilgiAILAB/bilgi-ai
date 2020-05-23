@@ -7,7 +7,7 @@ from gensim.models import KeyedVectors
 from nltk.tokenize import word_tokenize
 from sklearn.metrics.pairwise import cosine_similarity
 
-from document_similarity.similarity_algorithms import stopWords
+from document_similarity.algorithms.similarity_algorithms import stopWords
 
 model = KeyedVectors.load_word2vec_format(f"{os.path.dirname(__file__)}/trmodel", binary=True)
 
@@ -85,7 +85,6 @@ def documentsCosineSimilarity_v2(doc, alldoc):
             temp.append(i)
             temp.append(cosine_similarity(document_vector(arr[doc]), document_vector(arr[i])))
             simArr.append(temp)
-    print(simArr, "DENEME")
     return simArr
 
 

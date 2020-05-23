@@ -1,5 +1,5 @@
 from gensim.models import HdpModel
-from topic_modelling import preprocess, coherence, distributions, topic_distance
+from topic_modelling.algorithms import distributions, preprocess, coherence
 
 
 def HDP(corpus, n_topic):
@@ -19,7 +19,7 @@ def HDP(corpus, n_topic):
             second_index = topic_distributions[first_index].index(topic_dist)
             topic_distributions[first_index][second_index][0] = topics_n.index(topic_dist[0])
     word_distributions = distributions.hdp_word_distribution(model=hdp_model, topics_n=topics_n)
-    doc_dist = distributions.hdp_doc_distribution(n_topic=n_topic,topics_n=topics_n, doc_number=doc_number, model=hdp_model, corpus=corpus)
+    doc_dist = distributions.hdp_doc_distribution(n_topic=n_topic, topics_n=topics_n, doc_number=doc_number, model=hdp_model, corpus=corpus)
 
     output = {"filecount": doc_number,
               "coherence_value": float(coherence_v),

@@ -1,5 +1,5 @@
 from gensim.models import LsiModel
-from topic_modelling import preprocess, coherence, distributions
+from topic_modelling.algorithms import distributions, preprocess, coherence
 import plotly.graph_objects as go
 
 
