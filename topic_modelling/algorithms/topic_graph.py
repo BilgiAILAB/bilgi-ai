@@ -83,7 +83,7 @@ def tsne_graph(output, topic_names, doc_names):
         ("index", "$index"),
         ("desc", "@content"),
         ("Keywords", "@frequent_words")]
-    output_notebook()
+
     plot = figure(title="t-SNE Clustering of {} LDA Topics".format(n_topics),
                   plot_width=900,
                   plot_height=700,

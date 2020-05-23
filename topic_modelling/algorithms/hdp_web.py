@@ -27,6 +27,7 @@ def HDP(corpus, n_topic):
               "topic_distributions": topic_distributions,
               "doc_dist": doc_dist,
               "topics_n":topics_n,
+              "data_tokens": data_tokens
               }
 
     return output
