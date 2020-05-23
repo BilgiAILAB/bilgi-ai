@@ -49,6 +49,7 @@ def LDA(corpus, n_topic):
               "word_distributions": word_distributions,
               "topic_distributions": topic_distributions,
               "doc_dist": doc_dist,
+              "data_tokens": data_tokens
               }
 
     return output
