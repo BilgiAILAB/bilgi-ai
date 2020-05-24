@@ -8,10 +8,15 @@ from bokeh.embed import json_item, file_html
 import numpy as np
 
 
-def tsne_graph(output, topic_names, doc_names):
+def tsne_graph(output, topic_names, doc_names, algorithm):
     n_topics = len(topic_names)
     topic_distributions = output.get('topic_distributions')
     data_tokens = output.get('data_tokens')
+
+    if algorithm.lower()=="hdp":
+        topic_distributions = fill_with_zero(n_topics, topic_distributions)
+
+
 
     colorArray = [
         "#63b598", "#ce7d78", "#ea9e70", "#0d5ac1",
@@ -62,11 +67,12 @@ def tsne_graph(output, topic_names, doc_names):
         for word in document:
             most_vocab[word] += 1
         freq_per_doc.append([word_tuple[0] for word_tuple in most_vocab.most_common(3)])
+    print(topic_distributions)
 
     topic_weights = []
     for document in topic_distributions:
         topic_weights.append([abs(float(topic[1])) for topic in document])
-
+    print(topic_weights)
     colorArrayy = np.array(colorArray)
     topic_num = np.argmax(topic_weights, axis=1)
     tsne_model = TSNE(n_components=2, verbose=1, random_state=0, angle=.99, init='pca')
@@ -123,3 +129,22 @@ def tsne_graph(output, topic_names, doc_names):
     print(topic_weights)
     print(topic_num)
     return file_html(plot, CDN, "tsne_lda_graph")
+
+
+def fill_with_zero(n_topics, topic_distributions):
+    new_topic = []
+    for document in topic_distributions:
+        temp = []
+        index_temp = []
+
+        for topic in document:
+            index_temp.append(topic[0])
+        j_ = 0
+        for i in range(n_topics):
+            if i in index_temp:
+                temp.append([i, document[j_][1]])
+                j_ += 1
+            else:
+                temp.append([i, 0])
+        new_topic.append(temp)
+    return new_topic
