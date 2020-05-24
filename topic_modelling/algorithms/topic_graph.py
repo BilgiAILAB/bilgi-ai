@@ -1,10 +1,9 @@
 from collections import Counter
 from sklearn.manifold import TSNE
-from bokeh.plotting import figure, output_file, show
-from bokeh.models import Label, HoverTool, Legend, value, LabelSet, ColumnDataSource, LegendItem
-from bokeh.io import output_notebook
+from bokeh.plotting import figure
+from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.resources import CDN
-from bokeh.embed import json_item, file_html
+from bokeh.embed import file_html
 import numpy as np
 
 
@@ -67,12 +66,10 @@ def tsne_graph(output, topic_names, doc_names, algorithm):
         for word in document:
             most_vocab[word] += 1
         freq_per_doc.append([word_tuple[0] for word_tuple in most_vocab.most_common(3)])
-    print(topic_distributions)
 
     topic_weights = []
     for document in topic_distributions:
         topic_weights.append([abs(float(topic[1])) for topic in document])
-    print(topic_weights)
     colorArrayy = np.array(colorArray)
     topic_num = np.argmax(topic_weights, axis=1)
     tsne_model = TSNE(n_components=2, verbose=1, random_state=0, angle=.99, init='pca')
@@ -89,10 +86,9 @@ def tsne_graph(output, topic_names, doc_names, algorithm):
         topic_no=topic_num
     ))
     TOOLTIPS = [
-        ("index", "$index"),
-        ("desc", "@content"),
+        ("File Name", "@content"),
         ("Keywords", "@frequent_words"),
-        ("Topic No", "@labels")
+        ("Topic Name", "@labels")
     ]
 
     plot = figure(title="t-SNE Clustering of {} LDA Topics".format(n_topics),
@@ -125,9 +121,6 @@ def tsne_graph(output, topic_names, doc_names, algorithm):
     hover = plot.select(dict(type=HoverTool))
     # hover.tooltips = {"content": "Title: @title"}
     plot.legend.location = "top_left"
-    print(topic_distributions)
-    print(topic_weights)
-    print(topic_num)
     return file_html(plot, CDN, "tsne_lda_graph")
 
 
