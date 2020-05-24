@@ -92,35 +92,45 @@ def add_files(request, pk):
 
 
 def download(request, pk):
-    """Download archive zip file of code snippets"""
-    response = HttpResponse(content_type='application/zip')
-    zf = zipfile.ZipFile(response, 'w')
+    if request.method == 'POST':
 
-    # create the zipfile in memory using writestr
-    # add a readme
-    # zf.writestr("README_NAME", "README_CONTENT")
-    project = get_object_or_404(Project, pk=pk)
-    # retrieve snippets from ORM and them to zipfile
-    files = ProjectFile.objects.filter(project_id=pk)
+        file_ids = request.POST.getlist('files_to_download[]')
+        files = ProjectFile.objects.filter(project_id=pk, id__in=file_ids)
 
-    for file in files:
-        if file.file_pdf is not None:
-            file_path = file.get_project_folder(file.filename_pdf())
-            fdir, fname = os.path.split(file_path)
-            zip_subdir = "pdfs"
-            zip_path = os.path.join(zip_subdir, fname)
-            # Add file, at correct path
-            zf.write(file_path, zip_path)
+        files_to_zipped = files
+        # for file_id in file_ids:
+        #     print(files)
+        #     print(file_id)
+        #     files_to_zipped.append(files[int(file_id)])
 
-        if file.file is not None:
-            file_path = file.get_project_folder(file.filename())
-            fdir, fname = os.path.split(file_path)
-            zip_subdir = "txts"
-            zip_path = os.path.join(zip_subdir, fname)
-            # Add file, at correct path
-            zf.write(file_path, zip_path)
+        """Download archive zip file of code snippets"""
+        response = HttpResponse(content_type='application/zip')
+        zf = zipfile.ZipFile(response, 'w')
 
-    ZIPFILE_NAME = f"{project.project_folder}.zip"
-    # return as zipfile
-    response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
-    return response
+        # create the zipfile in memory using writestr
+        # add a readme
+        # zf.writestr("README_NAME", "README_CONTENT")
+
+        project = get_object_or_404(Project, pk=pk)
+
+        for file in files_to_zipped:
+            if file.file_pdf != "":  # if pdf exists
+                file_path = file.get_project_folder(file.filename_pdf())
+                fdir, fname = os.path.split(file_path)
+                zip_subdir = "pdfs"
+                zip_path = os.path.join(zip_subdir, fname)
+                # Add file, at correct path
+                zf.write(file_path, zip_path)
+
+            if file.file is not None:
+                file_path = file.get_project_folder(file.filename())
+                fdir, fname = os.path.split(file_path)
+                zip_subdir = "txts"
+                zip_path = os.path.join(zip_subdir, fname)
+                # Add file, at correct path
+                zf.write(file_path, zip_path)
+
+        ZIPFILE_NAME = f"{project.project_folder}.zip"
+        # return as zipfile
+        response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'
+        return response

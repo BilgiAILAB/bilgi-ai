@@ -107,9 +107,14 @@
                                             {#                                                <br>#}
                                             {#                                                {% if forloop.parentloop.counter == forloop.counter %}#}
                                             <td class="text-center align-middle h2">
-                                                    <span data-toggle="modal"
-                                                          data-target="#fileListModal{{ forloop.counter }}"
-                                                          class="h2">{{ doc_dist|index_dict:forloop.counter0|length }}</span>
+                                                {% with doc_dist|index_dict:forloop.counter0|length as file_count %}
+
+                                                    <a href="#" data-toggle="modal"
+                                                            {% ifnotequal file_count 0 %}
+                                                       data-target="#fileListModal{{ forloop.counter }}"
+                                                            {% endifnotequal %}
+                                                       class="h2">{{ file_count }}</a>
+                                                {% endwith %}
 
                                                 <!-- Modal -->
                                                 <div class="modal fade"
@@ -131,38 +136,43 @@
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <div class="table-responsive">
+                                                            <form style="display: contents" method="post"
+                                                                  action="{% url 'download_files' project.id %}">
+                                                                {% csrf_token %}
+                                                                <div class="modal-body">
+                                                                    <div class="table-responsive">
 
-                                                                    <div class="bodycontainer scrollable">
-                                                                        <table class="table table-hover table-striped table-condensed table-scrollable">
-                                                                            <tbody>
-                                                                            {% for x in doc_dist|index_dict:forloop.counter0 %}
-                                                                                {% for file in project.get_files %}
-                                                                                    {% ifequal x forloop.counter0 %}
-                                                                                        <tr>
+                                                                        <div class="bodycontainer scrollable">
+                                                                            <table class="table table-hover table-striped table-condensed table-scrollable">
+                                                                                <tbody>
+                                                                                {% for x in doc_dist|index_dict:forloop.counter0 %}
+                                                                                    <tr>
+                                                                                        {% with project.get_files|index:x as file %}
                                                                                             <td style="font-size: small">{{ file.filename.title }}</td>
-                                                                                        </tr>
-                                                                                    {% endifequal %}
+                                                                                            <input hidden
+                                                                                                   name="files_to_download[]"
+                                                                                                   value="{{ file.id }}">
+
+                                                                                        {% endwith %}
+                                                                                    </tr>
                                                                                 {% endfor %}
-                                                                            {% endfor %}
 
-
-                                                                            </tbody>
-                                                                        </table>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">Close
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary">
-                                                                    Save
-                                                                    changes
-                                                                </button>
-                                                            </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit"
+                                                                            class="btn float-left btn-success">
+                                                                        Download Files
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Close
+                                                                    </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -199,14 +209,11 @@
                         <br>
                         <div class="row">
                             {% for topic_distribution in topic_distributions %}
-                                {% for file in files %}
-                                    {% if forloop.counter == forloop.parentloop.counter %}
-                                        <div class="col-4" data-file="{{ forloop.counter0 }}" style="display: none">
-                                        <section class="project-card-no-image">
+                                <div class="col-4" data-file="{{ forloop.counter0 }}" style="display: none">
+                                    <section class="project-card-no-image">
 
 
-
-                                        <h3 style="font-size: 24px;"> {{ file }}
+                                        <h3 style="font-size: 24px;"> {{ files|index:forloop.counter0 }}
                                             <span style="cursor: pointer" class="float-right remove-button text-danger"><i
                                                     data-toggle="tooltip"
                                                     class="icon ion-eye-disabled"
@@ -224,12 +231,10 @@
                                             </div>
 
                                         {% endfor %}
-                                    {% endif %}
 
-                                {% endfor %}
 
-                            </section>
-                            </div>
+                                    </section>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
