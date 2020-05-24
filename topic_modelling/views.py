@@ -138,7 +138,7 @@ def view_report(request, project_pk, algorithm, report_pk):
 
     content['breadcrumb'] = breadcrumb
 
-    graph = tsne_graph(report_output, topics, [file.filename() for file in files])
+    graph = tsne_graph(report_output, topics, [file.filename() for file in files], algorithm)
 
     content['graph'] = graph
 
