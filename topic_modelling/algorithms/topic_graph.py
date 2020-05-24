@@ -1,7 +1,7 @@
 from collections import Counter
 from sklearn.manifold import TSNE
 from bokeh.plotting import figure, output_file, show
-from bokeh.models import Label, HoverTool, Legend, value, LabelSet, ColumnDataSource
+from bokeh.models import Label, HoverTool, Legend, value, LabelSet, ColumnDataSource, LegendItem
 from bokeh.io import output_notebook
 from bokeh.resources import CDN
 from bokeh.embed import json_item, file_html
@@ -65,7 +65,7 @@ def tsne_graph(output, topic_names, doc_names):
 
     topic_weights = []
     for document in topic_distributions:
-        topic_weights.append([topic[1] for topic in document])
+        topic_weights.append([abs(float(topic[1])) for topic in document])
 
     colorArrayy = np.array(colorArray)
     topic_num = np.argmax(topic_weights, axis=1)
@@ -79,11 +79,15 @@ def tsne_graph(output, topic_names, doc_names):
         color=colorArrayy[topic_num],
         labels=labelss[topic_num],
         content=doc_names,
-        frequent_words=freq_per_doc))
+        frequent_words=freq_per_doc,
+        topic_no=topic_num
+    ))
     TOOLTIPS = [
         ("index", "$index"),
         ("desc", "@content"),
-        ("Keywords", "@frequent_words")]
+        ("Keywords", "@frequent_words"),
+        ("Topic No", "@labels")
+    ]
 
     plot = figure(title="t-SNE Clustering of {} LDA Topics".format(n_topics),
                   plot_width=900,
@@ -93,16 +97,29 @@ def tsne_graph(output, topic_names, doc_names):
                   tooltips=TOOLTIPS
                   )
 
-    plot.scatter(x='x',
+    r = plot.scatter(x='x',
                  y='y',
                  source=source,
                  color='color',
-                 legend='labels',
+                 legend_field='labels',
                  alpha=0.9,
                  size=10
                  )
+    '''
+    items_legend = []
+    order=0
+    for name in topic_names:
+        items_legend.append(LegendItem(label=name, renderers=[r], index=order))
+        order = order+1
+
+    legend = Legend(items=items_legend)
+    plot.add_layout(legend)
+    '''
     # hover tools
     hover = plot.select(dict(type=HoverTool))
     # hover.tooltips = {"content": "Title: @title"}
     plot.legend.location = "top_left"
+    print(topic_distributions)
+    print(topic_weights)
+    print(topic_num)
     return file_html(plot, CDN, "tsne_lda_graph")
