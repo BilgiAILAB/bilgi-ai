@@ -204,11 +204,11 @@
                         <br>
                         <div class="row">
                             {% for topic_distribution in topic_distributions %}
-                                <div class="col-4" data-file="{{ forloop.counter0 }}" style="display: none">
+                                <div class="col-md-4" data-file="{{ forloop.counter0 }}" style="display: none">
                                     <section class="project-card-no-image">
 
 
-                                        <h3 style="font-size: 24px;"> {{ files|index:forloop.counter0 }}
+                                        <h3 class="text-truncate" style="font-size: 24px;"> {{ files|index:forloop.counter0 }}
                                             <span style="cursor: pointer" class="float-right remove-button text-danger"><i
                                                     data-toggle="tooltip"
                                                     class="icon ion-eye-disabled"
@@ -217,10 +217,10 @@
                                         {% for topic in topic_distribution %}
 
                                             <div class="row">
-                                                <div class="col-4">
+                                                <div class="col-md-4">
                                                     <h6>{{ topics|index:topic.0 }}:</h6>
                                                 </div>
-                                                <div class="col-8">
+                                                <div class="col-md-8">
                                                     <h6 class="doc-topic-percentage">{{ topic.1 }}</h6>
                                                 </div>
                                             </div>
