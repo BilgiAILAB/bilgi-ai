@@ -267,7 +267,7 @@
         //REMOVE BUTTON
         $('.remove-button').click(function () {
             console.log($(this))
-            $(this).closest($("div")).fadeOut();
+            $(this).closest($("div")).hide();
         });
         //END REMOVE BUTTON
 
@@ -292,7 +292,7 @@
             var element = $('*[data-file=' + val + ']');
             console.log(element)
 
-            element.fadeIn()
+            element.show()
 
         });
 
@@ -301,7 +301,7 @@
 
             console.log(elements)
             elements.each(function (index, element) {
-                $(this).fadeIn()
+                $(this).show()
             });
 
 
@@ -437,8 +437,8 @@
         var x = parseInt($('#myRange').val())
         $('#myRangeValue').html(x)
         $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
-            $(`.tag-row-${index}:lt(10)`).fadeIn()
-            $(`.tag-row-${index}:gt(9)`).fadeOut()
+            $(`.tag-row-${index}:lt(10)`).show()
+            $(`.tag-row-${index}:gt(9)`).hide()
 
         });
 
@@ -458,8 +458,8 @@
                     $(this).next(value).html(this.value);
                     var xxx = this.value
                     $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
-                        $(`.tag-row-${index}:lt(${xxx})`).fadeIn()
-                        $(`.tag-row-${index}:gt(${xxx - 1})`).fadeOut()
+                        $(`.tag-row-${index}:lt(${xxx})`).show()
+                        $(`.tag-row-${index}:gt(${xxx - 1})`).hide()
 
                     });
                 });
