@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load index %}
+{% block head %}
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.2.min.js"
+            integrity="sha384-ufR9RFnRs6lniiaFvtJziE0YeidtAgBRH6ux2oUItHw5WTvE1zuk9uzhUU/FJXDp"
+            crossorigin="anonymous"></script>
+{% endblock %}
 
 {% block content %}
     <main class="page project-page">
@@ -260,7 +265,6 @@
                                         data-graph-url="{% url 'get_graph' project.id algorithm report.id 'graph_2d' %}"
                                         class="btn btn-outline-primary btn-block graph">LOAD GRAPH
                                 </button>
-                                {#                                {{ graph_2d|safe }}#}
                             </div>
                             <div class="tab-pane container fade" id="graph3d">
                                 <br>
@@ -268,7 +272,6 @@
                                         data-graph-url="{% url 'get_graph' project.id algorithm report.id 'graph_3d' %}"
                                         class="btn btn-outline-primary btn-block graph">LOAD GRAPH
                                 </button>
-                                {#                                {{ graph_3d|safe }}#}
                             </div>
                         </div>
                     </div>
@@ -303,9 +306,8 @@
 
             var graphUrl = $(this).data('graph-url');
             var parentDiv = $(this).closest("div");
-            $.ajax(graphUrl).done(function (html) {
-                parentDiv.html(html);
-                console.log(html)
+            $.get(graphUrl).done(function (graph) {
+                parentDiv.html(graph);
             });
 
         });
@@ -315,7 +317,6 @@
     <script>
         //REMOVE BUTTON
         $('.remove-button').click(function () {
-            console.log($(this))
             $(this).closest($("div")).hide();
         });
         //END REMOVE BUTTON
@@ -323,7 +324,6 @@
         //REMOVE BUTTON
         $('#set-topic-names').click(function () {
             var text = $(this).text()
-            console.log(text.includes("Edit"))
             $(this).text(text.includes("Edit") ? "Cancel" : "Edit Topic Names")
             $('.topic-input').toggle();
             $('.topic-text').toggle();
@@ -337,9 +337,7 @@
 
         $('#documents-add-button').click(function () {
             var val = $("#documents-select option:selected").val();
-            console.log(val)
             var element = $('*[data-file=' + val + ']');
-            console.log(element)
 
             element.show()
 
@@ -348,7 +346,6 @@
         $('#documents-show-all-button').click(function () {
             var elements = $('[data-file]');
 
-            console.log(elements)
             elements.each(function (index, element) {
                 $(this).show()
             });
