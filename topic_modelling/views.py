@@ -19,7 +19,7 @@ def topic_algorithms(request, pk):
     project = get_object_or_404(Project, pk=pk)
     reports = Report.objects.filter(project=project)
 
-    content = {'project': project, 'reports': reports}
+    content = {'project': project, 'reports': reports, 'title': f'Topic Modelling - {project.title}'}
 
     breadcrumb = {
         "Projects": reverse('all_projects'),
@@ -36,7 +36,8 @@ def apply_topic_algorithm(request, pk, algorithm):
     project = get_object_or_404(Project, pk=pk)
     reports = Report.objects.filter(project_id=pk, algorithm=algorithm.lower())
 
-    content = {'project': project, 'algorithm': algorithm, 'reports': reports}
+    content = {'project': project, 'algorithm': algorithm, 'reports': reports,
+               'title': f'{algorithm.upper()} - {project.title}'}
 
     breadcrumb = {
         "Projects": reverse('all_projects'),
@@ -121,7 +122,8 @@ def view_report(request, project_pk, algorithm, report_pk):
         'algorithm': algorithm,
         'files': [file.filename() for file in files],
         'topics': topics,
-        'report': report
+        'report': report,
+        'title': f'{algorithm.upper()} Report - {project.title}'
     }
 
     report_output = report.get_output()

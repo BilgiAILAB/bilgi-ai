@@ -4,10 +4,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from document_similarity.models import Report
 from document_similarity.algorithms.similarity_algorithms import documentsCosineSimilarity, documentsEuclideanDistance, \
     documentsJaccardSimilarity, documentsManhattanDistance
 from document_similarity.algorithms.word2vec import documentsCosineSimilarity_v2, documentsEuclideanDistance_v2
+from document_similarity.models import Report
 from project.models import Project
 
 
@@ -15,7 +15,8 @@ def similarity_algorithms(request, pk):
     project = get_object_or_404(Project, pk=pk)
     reports = Report.objects.filter(project_id=pk)
 
-    content = {'project': project, 'reports': reports}
+    content = {'project': project, 'reports': reports,
+               'title': f'Document Similarity - {project.title}'}
 
     breadcrumb = {
         "Projects": reverse('all_projects'),
@@ -32,7 +33,8 @@ def apply_similarity_algorithm(request, pk, algorithm):
     project = get_object_or_404(Project, pk=pk)
     reports = Report.objects.filter(project_id=pk, algorithm=algorithm.lower())
 
-    content = {'project': project, 'algorithm': algorithm, 'reports': reports, 'files': project.get_files()}
+    content = {'project': project, 'algorithm': algorithm, 'reports': reports, 'files': project.get_files(),
+               'title': f'{algorithm.upper()} - {project.title}'}
 
     breadcrumb = {
         "Projects": reverse('all_projects'),
@@ -102,7 +104,8 @@ def view_similarity_report(request, project_pk, algorithm, report_pk):
         'files': files,
         'report': report,
         'selected_document_index': report.selected_document_index,
-        'outputs': report.get_output()
+        'outputs': report.get_output(),
+        'title': f'{algorithm.upper()} Report - {project.title}'
     }
 
     breadcrumb = {

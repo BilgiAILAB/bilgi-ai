@@ -81,17 +81,12 @@
                                         </div>
 
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                        </button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                        <button type="button" class="btn btn-secondary ml-1" data-toggle="modal"
                                 data-target="#fileUploadModal">
                             <i class="icon ion-android-add icon"></i> &nbsp; Add New Files
                         </button>
@@ -136,39 +131,44 @@
 
                         <a href="{% url 'delete_project' project.id %}" type="button"
                            class="btn btn-danger float-right">
-                            <i class="icon ion-android-delete icon"></i> &nbsp; Remove Project
+                            <i class="icon ion-android-delete icon"></i> &nbsp; Remove
                         </a>
 
 
                     </div>
                 </div>
-                <h2 style="margin-top: 20px"> Select the process to apply for <span
-                        class="text-primary">{{ project.title }}</span></h2>
-                <div class="row" style="margin-top: 30px;">
+                <h2 class="my-4"> Select the process will be applied</h2>
+                <div class="row mt-3">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
                                 <a href="{% url 'similarity_algorithms' project.id %}" class="stretched-link"></a>
 
                                 <h4 class="card-title">Document Similarity</h4>
-                                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo
-                                    odio, dapibus ac
-                                    facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
-                                    metus.</p>
+                                <p class="card-text">Document similarity (or distance between documents) is a one of the
+                                    central themes in Information Retrieval. How humans usually define how similar are
+                                    documents? Usually documents treated as similar if they are semantically close and
+                                    describe similar concepts. On other hand “similarity” can be used in context of
+                                    duplicate detection.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 30px;">
+                <div class="row mt-3">
                     <div class="col">
                         <div class="card">
                             <div class="card-body">
                                 <a href="{% url 'topic_algorithms' project.id %}" class="stretched-link"></a>
                                 <h4 class="card-title">Topic Modelling</h4>
-                                <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo
-                                    odio, dapibus ac
-                                    facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget
-                                    metus.</p>
+                                <p class="card-text">Topic modelling provides us with methods to organize, understand
+                                    and summarize large collections of textual information. It helps in:
+                                    <br>
+                                <ul>
+                                    <li>Discovering hidden topical patterns that are present across the collection</li>
+                                    <li>Annotating documents according to these topics</li>
+                                    <li>Using these annotations to organize, search and summarize texts</li>
+                                </ul>
+                                </p>
                             </div>
                         </div>
                     </div>

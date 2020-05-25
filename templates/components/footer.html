@@ -1,7 +1,10 @@
 <footer class="page-footer">
     <div class="container">
-        <div class="links"><a href="../index.html">Home</a><a>Projects</a><a href="#">Projects</a></div>
-        {#    <div class="social-icons"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i#}
-        {#        class="icon ion-social-instagram-outline"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a></div>#}
+        <div class="links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'all_projects' %}">Projects</a>
+            <a href="projects-grid-cards.html">Documentation</a>
+
+        </div>
     </div>
 </footer>

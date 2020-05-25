@@ -13,14 +13,14 @@ from project.models import Project, ProjectFile
 def all_projects(request):
     projects = Project.objects.all()
 
-    content = {'projects': projects}
+    content = {'projects': projects, 'title': 'Projects'}
     return render(request, "project/project-list.html", content)
 
 
 def show_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
 
-    content = {'project': project}
+    content = {'project': project, 'title': project.title}
     breadcrumb = {
         "Projects": reverse('all_projects'),
         project.title: "",
@@ -50,7 +50,9 @@ def create_project(request):
 
         return redirect('all_projects')
 
-    return render(request, "project/project-new.html")
+    content = {'title': 'New Project'}
+
+    return render(request, "project/project-new.html", content)
 
 
 def delete_project(request, pk):
