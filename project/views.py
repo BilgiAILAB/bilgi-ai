@@ -109,8 +109,10 @@ def download(request, pk):
 
         # create the zipfile in memory using writestr
         # add a readme
-        # zf.writestr("README_NAME", "README_CONTENT")
-
+        zf.writestr("README.MD",
+                    f'''# File List
+Total {len(files)} files.
+''')
         project = get_object_or_404(Project, pk=pk)
 
         for file in files_to_zipped:

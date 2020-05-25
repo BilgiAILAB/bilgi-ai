@@ -106,77 +106,72 @@
                                             {#                                                {{ forloop.parentloop.counter0 }} {{ forloop.counter0 }}#}
                                             {#                                                <br>#}
                                             {#                                                {% if forloop.parentloop.counter == forloop.counter %}#}
-                                            <td class="text-center align-middle h2">
-                                                {% with doc_dist|index_dict:forloop.counter0|length as file_count %}
+                                            {% with doc_dist|index_dict:forloop.counter0|length as file_count %}
+                                                <td class="text-center align-middle h2 btn-outline-primary {% ifnotequal file_count 0 %}clickable{% endifnotequal %}"
+                                                    data-toggle="modal"
+                                                        {% ifnotequal file_count 0 %}
+                                                    data-target="#fileListModal{{ forloop.counter }}"
+                                                        {% endifnotequal %}>
 
-                                                    <a href="#" data-toggle="modal"
-                                                            {% ifnotequal file_count 0 %}
-                                                       data-target="#fileListModal{{ forloop.counter }}"
-                                                            {% endifnotequal %}
-                                                       class="h2">{{ file_count }}</a>
-                                                {% endwith %}
+                                                    {{ file_count }}
+                                                </td>
+                                            {% endwith %}
 
-                                                <!-- Modal -->
-                                                <div class="modal fade"
-                                                     id="fileListModal{{ forloop.counter }}"
-                                                     tabindex="-1"
-                                                     role="dialog"
-                                                     aria-labelledby="fileListModalLabel"
-                                                     aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-scrollable"
-                                                         role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="fileListModalLabel">
-                                                                    File
-                                                                    List</h5>
-                                                                <button type="button" class="close"
-                                                                        data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
+                                            <!-- Modal -->
+                                            <div class="modal fade"
+                                                 id="fileListModal{{ forloop.counter }}"
+                                                 tabindex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="fileListModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-scrollable"
+                                                     role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="fileListModalLabel">
+                                                                File
+                                                                List</h5>
+                                                            <button type="button" class="close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form style="display: contents" method="post"
+                                                              action="{% url 'download_files' project.id %}">
+                                                            {% csrf_token %}
+                                                            <div class="modal-body">
+
+                                                                <div class="bodycontainer scrollable">
+                                                                    <ul>
+                                                                        {% for x in doc_dist|index_dict:forloop.counter0 %}
+                                                                            <div class="row">
+                                                                                {% with project.get_files|index:x as file %}
+                                                                                    <li>{{ file.filename.title }}</li>
+                                                                                    <input hidden
+                                                                                           name="files_to_download[]"
+                                                                                           value="{{ file.id }}">
+
+                                                                                {% endwith %}
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="submit"
+                                                                        class="btn float-left btn-success">
+                                                                    Download Files
+                                                                </button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Close
                                                                 </button>
                                                             </div>
-                                                            <form style="display: contents" method="post"
-                                                                  action="{% url 'download_files' project.id %}">
-                                                                {% csrf_token %}
-                                                                <div class="modal-body">
-                                                                    <div class="table-responsive">
-
-                                                                        <div class="bodycontainer scrollable">
-                                                                            <table class="table table-hover table-striped table-condensed table-scrollable">
-                                                                                <tbody>
-                                                                                {% for x in doc_dist|index_dict:forloop.counter0 %}
-                                                                                    <tr>
-                                                                                        {% with project.get_files|index:x as file %}
-                                                                                            <td style="font-size: small">{{ file.filename.title }}</td>
-                                                                                            <input hidden
-                                                                                                   name="files_to_download[]"
-                                                                                                   value="{{ file.id }}">
-
-                                                                                        {% endwith %}
-                                                                                    </tr>
-                                                                                {% endfor %}
-
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="submit"
-                                                                            class="btn float-left btn-success">
-                                                                        Download Files
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Close
-                                                                    </button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
+                                                        </form>
                                                     </div>
                                                 </div>
-                                            </td>
+                                            </div>
                                             {#                                                {% endif %}#}
                                             {#                                            {% endfor %}#}
 
@@ -209,11 +204,11 @@
                         <br>
                         <div class="row">
                             {% for topic_distribution in topic_distributions %}
-                                <div class="col-4" data-file="{{ forloop.counter0 }}" style="display: none">
+                                <div class="col-md-4" data-file="{{ forloop.counter0 }}" style="display: none">
                                     <section class="project-card-no-image">
 
 
-                                        <h3 style="font-size: 24px;"> {{ files|index:forloop.counter0 }}
+                                        <h3 class="text-truncate" style="font-size: 24px;"> {{ files|index:forloop.counter0 }}
                                             <span style="cursor: pointer" class="float-right remove-button text-danger"><i
                                                     data-toggle="tooltip"
                                                     class="icon ion-eye-disabled"
@@ -222,10 +217,10 @@
                                         {% for topic in topic_distribution %}
 
                                             <div class="row">
-                                                <div class="col-4">
+                                                <div class="col-md-4">
                                                     <h6>{{ topics|index:topic.0 }}:</h6>
                                                 </div>
-                                                <div class="col-8">
+                                                <div class="col-md-8">
                                                     <h6 class="doc-topic-percentage">{{ topic.1 }}</h6>
                                                 </div>
                                             </div>
@@ -272,7 +267,7 @@
         //REMOVE BUTTON
         $('.remove-button').click(function () {
             console.log($(this))
-            $(this).closest($("div")).fadeOut();
+            $(this).closest($("div")).hide();
         });
         //END REMOVE BUTTON
 
@@ -297,7 +292,7 @@
             var element = $('*[data-file=' + val + ']');
             console.log(element)
 
-            element.fadeIn()
+            element.show()
 
         });
 
@@ -306,7 +301,7 @@
 
             console.log(elements)
             elements.each(function (index, element) {
-                $(this).fadeIn()
+                $(this).show()
             });
 
 
@@ -442,8 +437,8 @@
         var x = parseInt($('#myRange').val())
         $('#myRangeValue').html(x)
         $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
-            $(`.tag-row-${index}:lt(10)`).fadeIn()
-            $(`.tag-row-${index}:gt(9)`).fadeOut()
+            $(`.tag-row-${index}:lt(10)`).show()
+            $(`.tag-row-${index}:gt(9)`).hide()
 
         });
 
@@ -463,8 +458,8 @@
                     $(this).next(value).html(this.value);
                     var xxx = this.value
                     $('table > tbody  > tr > td:nth-child(2)').each(function (index, xd) {
-                        $(`.tag-row-${index}:lt(${xxx})`).fadeIn()
-                        $(`.tag-row-${index}:gt(${xxx - 1})`).fadeOut()
+                        $(`.tag-row-${index}:lt(${xxx})`).show()
+                        $(`.tag-row-${index}:gt(${xxx - 1})`).hide()
 
                     });
                 });
@@ -473,40 +468,49 @@
 
         rangeSlider();
 
-        {#// SORTING#}
-        {#$('th').click(function () {#}
-        {#    var table = $(this).parents('table').eq(0)#}
-        {#    var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))#}
-        {#    this.asc = !this.asc#}
-        {#    if (!this.asc) {#}
-        {#        rows = rows.reverse()#}
-        {#    }#}
-        {#    for (var i = 0; i < rows.length; i++) {#}
-        {#        table.append(rows[i])#}
-        {#    }#}
-        {##}
-        {#function comparer(index) {#}
-        {#    return function (a, b) {#}
-        {#        var valA = getCellValue(a, index), valB = getCellValue(b, index)#}
-        {#        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)#}
-        {#    }#}
-        {##}
-        {#function getCellValue(row, index) {#}
-        {#    return $(row).children('td').eq(index).text()#}
-        {#}#}
-            {##}
-            {#//SORTING END#}
+        //SORTING
 
-            //PARSING FLOAT
-            $('.doc-topic-percentage').each(function (index, item) {
-                item.innerText = parseFloat(item.innerText)
-            })
+        $('th').click(function () {
+            var table = $(this).parents('table').eq(0)
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+            this.asc = !this.asc
+            if (!this.asc) {
+                rows = rows.reverse()
+            }
+            for (var i = 0; i < rows.length; i++) {
+                table.append(rows[i])
+            }
+        })
+
+        function comparer(index) {
+            return function (a, b) {
+                var valA = getCellValue(a, index), valB = getCellValue(b, index)
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+            }
+        }
+
+        function getCellValue(row, index) {
+            return $(row).children('td').eq(index).text()
+        }
+
+        //END SORTING
+
+
+        //PARSING FLOAT
+        $('.doc-topic-percentage').each(function (index, item) {
+            item.innerText = parseFloat(item.innerText)
+        })
         //PARSE END
     </script>
 {% endblock %}
 
 {% block style %}
     <style>
+
+        .clickable {
+            cursor: pointer;
+        }
+
         .my-form {
             border-radius: 5px;
             border-color: #d4d4d4;
@@ -613,12 +617,6 @@
         .form-inline label {
             justify-content: normal;
         }
-
-
-        {#th {#}
-        {#    cursor: pointer;#}
-        {
-        #}#}
 
     </style>
 {% endblock %}
