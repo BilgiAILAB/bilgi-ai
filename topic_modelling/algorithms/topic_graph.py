@@ -1,13 +1,14 @@
 from collections import Counter
-from sklearn.manifold import TSNE
-from bokeh.plotting import figure
-from bokeh.models import HoverTool, ColumnDataSource
-from bokeh.resources import CDN
-from bokeh.embed import file_html
+
 import numpy as np
-import plotly.express as px
 import pandas as pd
 import plotly
+import plotly.express as px
+from bokeh.embed import file_html
+from bokeh.models import HoverTool, ColumnDataSource
+from bokeh.plotting import figure
+from bokeh.resources import CDN
+from sklearn.manifold import TSNE
 
 
 def tsne_graph_3d(output, topic_names, doc_names, algorithm):
@@ -15,7 +16,7 @@ def tsne_graph_3d(output, topic_names, doc_names, algorithm):
     topic_distributions = output.get('topic_distributions')
     data_tokens = output.get('data_tokens')
 
-    if algorithm.lower()=="hdp":
+    if algorithm.lower() == "hdp":
         topic_distributions = fill_with_zero(n_topics, topic_distributions)
 
     colorArray = [
@@ -93,10 +94,8 @@ def tsne_graph_3d(output, topic_names, doc_names, algorithm):
                         hover_data=['topic_name', 'file_name', 'frequent_words'],
                         )
 
-    html_plot = plotly.offline.plot(fig, filename='plotly3d.html', auto_open=False)
-    with open('plotly3d.html', 'r') as f:
-        html = f.read()
-    return html
+    html_plot = plotly.offline.plot(fig, output_type='div')
+    return html_plot
 
 
 def tsne_graph_2d(output, topic_names, doc_names, algorithm):
@@ -104,7 +103,7 @@ def tsne_graph_2d(output, topic_names, doc_names, algorithm):
     topic_distributions = output.get('topic_distributions')
     data_tokens = output.get('data_tokens')
 
-    if algorithm.lower()=="hdp":
+    if algorithm.lower() == "hdp":
         topic_distributions = fill_with_zero(n_topics, topic_distributions)
 
     colorArray = [
@@ -165,7 +164,6 @@ def tsne_graph_2d(output, topic_names, doc_names, algorithm):
     tsne_model = TSNE(n_components=2, verbose=1, random_state=0, angle=.99, init='pca')
     tsne_lda = tsne_model.fit_transform(topic_weights)
 
-
     labelss = np.array(topic_names)
     source = ColumnDataSource(dict(
         x=tsne_lda[:, 0],
@@ -191,19 +189,18 @@ def tsne_graph_2d(output, topic_names, doc_names, algorithm):
                   )
 
     r = plot.scatter(x='x',
-                 y='y',
-                 source=source,
-                 color='color',
-                 legend_field='labels',
-                 alpha=0.9,
-                 size=10
-                 )
+                     y='y',
+                     source=source,
+                     color='color',
+                     legend_field='labels',
+                     alpha=0.9,
+                     size=10
+                     )
 
     hover = plot.select(dict(type=HoverTool))
     # hover.tooltips = {"content": "Title: @title"}
     plot.legend.location = "top_left"
     return file_html(plot, CDN, "tsne_lda_graph")
-
 
 
 def fill_with_zero(n_topics, topic_distributions):
