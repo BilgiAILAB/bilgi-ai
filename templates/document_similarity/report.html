@@ -93,7 +93,7 @@
                         <tr>
                             <td class="align-middle">
                                 <button onclick="check_uncheck_checkbox()" class="btn btn-primary align-middle">
-                                    Select All
+                                    Select/Deselect All
                                 </button>
                             </td>
                             <td class="align-middle text-black-50">
@@ -106,8 +106,12 @@
                                 </button>
                             </td>
                             <td class="align-middle">
-                                <button id="download-submit" class="btn btn-success align-middle">
-                                    Download Selected Files
+                                <button onclick="toggleDownload()"
+                                        class="btn btn-secondary align-middle">
+                                    Cancel
+                                </button>
+                                <button disabled id="download-submit" class="btn btn-success align-middle">
+                                    Download Files
                                 </button>
                             </td>
                         </tr>
@@ -150,15 +154,17 @@
     <script>
         $("#download-files-box").click(function () {
 
-            uncheck_all()
+            uncheck_all();
 
-            $(".sticky-download").fadeToggle()
-            $(".download-input").toggle()
+            toggleDownload();
         });
 
-        $("#download-submit").click(function () {
-            $('#download-form').submit()
-        });
+        function toggleDownload() {
+            $("#download-files-box").fadeToggle();
+            $(".sticky-download").slideToggle();
+            $(".download-input").toggle();
+        }
+
 
         isChecked = false;
 
@@ -176,12 +182,14 @@
             $('input[name="files_to_download[]"]').each(function () {
                 this.checked = false;
             });
+            $(":checkbox").change()
         }
 
         function check_all() {
             $('input[name="files_to_download[]"]').each(function () {
                 this.checked = true;
             });
+            $(":checkbox").change()
         }
 
         $('.similarity-table tr').click(function (event) {
@@ -191,9 +199,8 @@
         });
 
         function select_above() {
-            uncheck_all()
+            uncheck_all();
             var similarity_above_value = $('input[name="similarity_above"]').val();
-            console.log(similarity_above_value);
 
             $('.similarity').each(function (index, elem) {
                 if (parseFloat(elem.innerText) > similarity_above_value) {
@@ -201,6 +208,20 @@
                 }
             });
         }
+
+        $(":checkbox").change(function () {
+            var numberOfChecked = $('input:checkbox:checked').length;
+            if (numberOfChecked > 0) {
+                $("#download-submit").removeAttr('disabled')
+            } else {
+                $("#download-submit").attr('disabled', 'disabled');
+            }
+            $("#download-submit").text(`Download ${numberOfChecked} files`)
+        });
+
+        $("#download-submit").click(function () {
+            $('#download-form').submit()
+        });
 
 
     </script>
