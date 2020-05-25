@@ -47,8 +47,6 @@ def create_project(request):
             elif file.name.endswith('.txt'):
                 file_instance = ProjectFile(file=file, project=project)
                 file_instance.save()
-            elif file.name.endswith('.zip'):
-                pass
 
         return redirect('all_projects')
 
@@ -84,8 +82,6 @@ def add_files(request, pk):
             elif file.name.endswith('.txt'):
                 file_instance = ProjectFile(file=file, project=project)
                 file_instance.save()
-            elif file.name.endswith('.zip'):
-                pass
 
         return redirect('show_project', pk=pk)
     return None
