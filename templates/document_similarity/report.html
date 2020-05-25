@@ -11,17 +11,18 @@
                 <div class="float-left ml-1 mb-1">
                     <span class="text-uppercase text-secondary">Total {{ files|length }} documents</span>
                 </div>
-                {#                <div class="float-right mr-1 mb-1">#}
-                {#                        <span class="text-uppercase text-primary">Coherence#}
-                {#                            value: {{ coherence_value|make_list|slice:':6'|join:'' }}</span>#}
-                {#                </div>#}
                 <div class="clearfix"></div>
             </div>
 
             <div class="row">
                 <div class="col-12">
                     <div class="project-card-no-image">
-                        <h3 style="font-size: 24px;">Selected File</h3>
+                        <h3 class="d-inline-block" style="font-size: 24px;">Selected File</h3>
+                        <div class="d-inline float-right">
+                            <button id="download-files-box" type="button" class="btn btn-primary">
+                                Download Files
+                            </button>
+                        </div>
 
                         <div class="table-responsive">
                             <table class="table">
@@ -29,6 +30,7 @@
                                 <tr>
                                     <th style="width: 15%">File name</th>
                                     <th style="width: 98%">Preview (first 200 chars)</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -45,49 +47,163 @@
                         </div>
 
                         <h3 style="font-size: 24px;">Document Similarity Table</h3>
+                        <form id="download-form" style="display: contents" method="post"
+                              action="{% url 'download_files' project.id %}">
+                            {% csrf_token %}
 
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th style="width: 15%">File name</th>
-                                    <th style="width: 1%">Similarity</th>
-                                    <th style="width: 98%">Preview (first 200 chars)</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for output in outputs %}
+                            <div class="table-responsive similarity-table">
+                                <table class="table">
+                                    <thead>
                                     <tr>
-                                        <td class="text-center h5 align-middle">{{ files|index:output.0 }}</td>
-                                        <td class="align-middle h2 similarity">{{ output.1|make_list|slice:':6'|join:'' }}</td>
-                                        <td class="align-middle h6">
-                                            {% with files|index:output.0 as file %}
-                                                {{ file.preview }}
-                                            {% endwith %}
-                                        </td>
+                                        <th></th>
+                                        <th style="width: 15%">File name</th>
+                                        <th style="width: 1%">Similarity</th>
+                                        <th style="width: 98%">Preview (first 200 chars)</th>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-
+                                    </thead>
+                                    <tbody>
+                                    {% for output in outputs %}
+                                        <tr>
+                                            {% with files|index:output.0 as file %}
+                                                <td class="align-middle h6">
+                                                    <input class="download-input" type="checkbox"
+                                                           name="files_to_download[]"
+                                                           value="{{ file.id }}">
+                                                </td>
+                                                <td class="text-center h5 align-middle">{{ file }}</td>
+                                                <td class="align-middle h2 similarity">{{ output.1|make_list|slice:':6'|join:'' }}</td>
+                                                <td class="align-middle h6">
+                                                    {{ file.preview }}
+                                                </td>
+                                            {% endwith %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
             {{ outputs }}
+            <div class="sticky-download">
+                <div class="container">
+                    <table style="height: 100px; width: 100%;">
+                        <tbody>
+                        <tr>
+                            <td class="align-middle">
+                                <button onclick="check_uncheck_checkbox()" class="btn btn-primary align-middle">
+                                    Select All
+                                </button>
+                            </td>
+                            <td class="align-middle text-black-50">
+                                or
+                            </td>
+                            <td class="align-middle">
+                                <input name="similarity_above" type="number" value="0.5" width="100px">
+                                <button onclick="select_above()" class="btn btn-primary align-middle">
+                                    Select Above
+                                </button>
+                            </td>
+                            <td class="align-middle">
+                                <button id="download-submit" class="btn btn-success align-middle">
+                                    Download Selected Files
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
         </section>
     </main>
+
+
 {% endblock %}
 
 {% block style %}
     <style>
+        .sticky-download {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            height: 10%;
+            max-height: 100px;
+            width: 100%;
+            background-color: white;
+            border-top: 5px solid gray;
+            color: white;
+            display: none;
+            text-align: center;
+        }
 
+        .download-input {
+            display: none;
+        }
     </style>
 {% endblock %}
 
 {% block script %}
+
+    <script>
+        $("#download-files-box").click(function () {
+
+            uncheck_all()
+
+            $(".sticky-download").fadeToggle()
+            $(".download-input").toggle()
+        });
+
+        $("#download-submit").click(function () {
+            $('#download-form').submit()
+        });
+
+        isChecked = false;
+
+        function check_uncheck_checkbox() {
+
+            if (isChecked) {
+                uncheck_all()
+            } else {
+                check_all()
+            }
+            isChecked = !isChecked;
+        }
+
+        function uncheck_all() {
+            $('input[name="files_to_download[]"]').each(function () {
+                this.checked = false;
+            });
+        }
+
+        function check_all() {
+            $('input[name="files_to_download[]"]').each(function () {
+                this.checked = true;
+            });
+        }
+
+        $('.similarity-table tr').click(function (event) {
+            if (event.target.type !== 'checkbox') {
+                $(':checkbox', this).trigger('click');
+            }
+        });
+
+        function select_above() {
+            uncheck_all()
+            var similarity_above_value = $('input[name="similarity_above"]').val();
+            console.log(similarity_above_value);
+
+            $('.similarity').each(function (index, elem) {
+                if (parseFloat(elem.innerText) > similarity_above_value) {
+                    $(':checkbox', $(this).closest('tr')).trigger('click');
+                }
+            });
+        }
+
+
+    </script>
 
     <script>
         $(".similarity").each(function (index, elem) {
