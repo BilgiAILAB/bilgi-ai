@@ -1,7 +1,7 @@
 import json
 
 import plotly
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
@@ -138,13 +138,23 @@ def view_report(request, project_pk, algorithm, report_pk):
 
     content['breadcrumb'] = breadcrumb
 
-    graph_2d = tsne_graph_2d(report_output, topics, [file.filename() for file in files], algorithm)
-    graph_3d = tsne_graph_3d(report_output, topics, [file.filename() for file in files], algorithm)
-
-    content['graph_2d'] = graph_2d
-    content['graph_3d'] = graph_3d
-
     return render(request, 'topic_modelling/report.html', content)
+
+
+def get_graph(request, project_pk, algorithm, report_pk, graph_type):
+    project = get_object_or_404(Project, pk=project_pk)
+    report = get_object_or_404(Report, pk=report_pk, algorithm=algorithm.lower())
+    files = project.get_files()
+    topics = report.get_topics()
+    report_output = report.get_output()
+
+    response = ""
+    if graph_type.lower() == 'graph_2d':
+        response = tsne_graph_2d(report_output, topics, [file.filename() for file in files], algorithm)
+    if graph_type.lower() == 'graph_3d':
+        response = tsne_graph_3d(report_output, topics, [file.filename() for file in files], algorithm)
+
+    return HttpResponse(response)
 
 
 def set_report_topics(request, project_pk, algorithm, report_pk):
