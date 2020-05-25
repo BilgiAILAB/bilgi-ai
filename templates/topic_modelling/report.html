@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% load index %}
+{% load static %}
 {% block head %}
-    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.2.min.js"
-            integrity="sha384-ufR9RFnRs6lniiaFvtJziE0YeidtAgBRH6ux2oUItHw5WTvE1zuk9uzhUU/FJXDp"
-            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/bokeh-2.0.2.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
