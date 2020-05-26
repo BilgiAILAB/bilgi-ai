@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from document_similarity.algorithms.similarity_algorithms import documentsCosineSimilarity, documentsEuclideanDistance, \
-    documentsJaccardSimilarity, documentsManhattanDistance
-from document_similarity.algorithms.word2vec import documentsCosineSimilarity_v2, documentsEuclideanDistance_v2
+from document_similarity.algorithms.similarity import TFIDFCosineSimilarity, TFIDFEuclideanDistance, \
+    documentsJaccardSimilarity, TFIDFManhattanDistance, word2VecCosineSimilarity, word2VecEuclideanDistance, \
+    word2VecManhattanDistance
 from document_similarity.models import Report
 from project.models import Project
 
@@ -65,17 +65,19 @@ def apply_similarity_algorithm(request, pk, algorithm):
             corpus.append(lines)
 
         if algorithm.lower() == 'tfidf-cos':
-            outputs = documentsCosineSimilarity(selected_document_index, corpus)
+            outputs = TFIDFCosineSimilarity(selected_document_index, corpus)
         elif algorithm.lower() == 'tfidf-euc':
-            outputs = documentsEuclideanDistance(selected_document_index, corpus)
-        elif algorithm.lower() == 'tfidf-jac':
+            outputs = TFIDFEuclideanDistance(selected_document_index, corpus)
+        elif algorithm.lower() == 'jaccard-sim':
             outputs = documentsJaccardSimilarity(selected_document_index, corpus)
         elif algorithm.lower() == 'tfidf-man':
-            outputs = documentsManhattanDistance(selected_document_index, corpus)
-        if algorithm.lower() == 'word2vec-cos':
-            outputs = documentsCosineSimilarity_v2(selected_document_index, corpus)
+            outputs = TFIDFManhattanDistance(selected_document_index, corpus)
+        elif algorithm.lower() == 'word2vec-cos':
+            outputs = word2VecCosineSimilarity(selected_document_index, corpus)
         elif algorithm.lower() == 'word2vec-euc':
-            outputs = documentsEuclideanDistance_v2(selected_document_index, corpus)
+            outputs = word2VecEuclideanDistance(selected_document_index, corpus)
+        elif algorithm.lower() == 'word2vec-man':
+            outputs = word2VecManhattanDistance(selected_document_index, corpus)
 
         content['outputs'] = outputs
         content['selected_document_index'] = selected_document_index

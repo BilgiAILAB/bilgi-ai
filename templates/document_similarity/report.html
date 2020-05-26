@@ -57,7 +57,15 @@
                                     <tr>
                                         <th></th>
                                         <th style="width: 15%">File name</th>
-                                        <th style="width: 1%">Similarity</th>
+                                        {% if 'euc' in algorithm|lower or 'man' in algorithm|lower %}
+                                            <th style="width: 1%">
+                                                Distance
+                                            </th>
+                                        {% else %}
+                                            <th style="width: 1%">
+                                                Similarity
+                                            </th>
+                                        {% endif %}
                                         <th style="width: 98%">Preview (first 200 chars)</th>
                                     </tr>
                                     </thead>

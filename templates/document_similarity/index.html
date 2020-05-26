@@ -28,14 +28,13 @@
 
                 <div class="project-card-no-image">
                     <h3 style="font-size: 24px;">Select Algorithm To Apply</h3>
-                    <h4 style="font-size: 24px;">TFIDF</h4>
 
                     <div class="row">
-                        <div class="col-md-6 my-1">
+                        <div class="col-md-4 my-1">
                             <div class="card">
                                 <div class="card-body">
                                     <h3>
-                                        Cosine Similarity
+                                        TFIDF-Cosine Similarity
                                     </h3>
                                     <a class="stretched-link"
                                        href="{% url 'apply_similarity_algorithm' project.id 'tfidf-cos' %}"></a>
@@ -43,11 +42,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 my-1">
+                        <div class="col-md-4 my-1">
                             <div class="card">
                                 <div class="card-body">
                                     <h3>
-                                        Euclidean Distance
+                                        TFIDF-Euclidean Distance
                                     </h3>
                                     <a class="stretched-link"
                                        href="{% url 'apply_similarity_algorithm' project.id 'tfidf-euc' %}"></a>
@@ -55,41 +54,40 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 my-1">
+                        <div class="col-md-4 my-1">
                             <div class="card">
                                 <div class="card-body">
                                     <h3>
-                                        Jaccard Similarity
-                                    </h3>
-                                    <a class="stretched-link"
-                                       href="{% url 'apply_similarity_algorithm' project.id 'tfidf-jac' %}"></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 my-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3>
-                                        Manhattan Distance
+                                        TFIDF-Manhattan Distance
                                     </h3>
                                     <a class="stretched-link"
                                        href="{% url 'apply_similarity_algorithm' project.id 'tfidf-man' %}"></a>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
-                    <br>
-                    <h4 style="font-size: 24px;">Word2Vec</h4>
 
                     <div class="row">
-                        <div class="col-md-6 my-1">
+                        <div class="col-md-4 my-1">
                             <div class="card">
                                 <div class="card-body">
                                     <h3>
-                                        Cosine Similarity
+                                        Jaccard Similarity
+                                    </h3>
+                                    <a class="stretched-link"
+                                       href="{% url 'apply_similarity_algorithm' project.id 'jaccard-sim' %}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4 my-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3>
+                                        Word2Vec-Cosine Similarity
                                     </h3>
                                     <a class="stretched-link"
                                        href="{% url 'apply_similarity_algorithm' project.id 'word2vec-cos' %}"></a>
@@ -97,11 +95,11 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 my-1">
+                        <div class="col-md-4 my-1">
                             <div class="card">
                                 <div class="card-body">
                                     <h3>
-                                        Euclidean Distance
+                                        Word2Vec-Euclidean Distance
                                     </h3>
                                     <a class="stretched-link"
                                        href="{% url 'apply_similarity_algorithm' project.id 'word2vec-euc' %}"></a>
@@ -109,10 +107,20 @@
                             </div>
                         </div>
 
+                        <div class="col-md-4 my-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3>
+                                        Word2Vec-Manhattan Distance
+                                    </h3>
+                                    <a class="stretched-link"
+                                       href="{% url 'apply_similarity_algorithm' project.id 'word2vec-man' %}"></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
                 </div>
+
 
                 <div class="project-card-no-image">
                     <h3 style="font-size: 24px;">History of All Algorithms</h3>
