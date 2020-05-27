@@ -6,7 +6,36 @@ from sklearn.cluster import KMeans
 from sklearn import metrics
 from gensim.models import LdaModel
 from topic_modelling.algorithms import distributions, preprocess
+import plotly.graph_objects as go
 
+
+def kmeans_optimum_value(corpus, start, end, step):
+    model = KeyedVectors.load_word2vec_format("trmodel", binary=True)
+
+    def document_vector(doc):
+        doc = [word for word in doc if word in model.vocab]
+        return np.mean(model[doc], axis=0)
+
+    doc_vectors = [document_vector(c) for c in similarity_algorithms.alldocclean(corpus)]
+
+    s_scores = []
+    k_values = range(start, end, step)
+
+    for i in k_values:
+        i_scores = []
+        for j in range(10):
+            kmeans_model = KMeans(n_clusters=i, init='k-means++', n_init=40)
+            kmeans_model.fit(doc_vectors)
+            labels = kmeans_model.labels_.tolist()
+            i_scores.append(metrics.silhouette_score(doc_vectors, labels, metric='cosine'))
+        print(i_scores)
+        s_scores.append(np.mean(i_scores))
+
+    fig = go.Figure(data=go.Scatter(x=[k for k in k_values], y=s_scores))
+    fig.update_layout(title="Finding Optimum k",
+                      xaxis_title='Cluster Numbers, k',
+                      yaxis_title='Silhouette Score')
+    return fig
 
 def w2v_kmeans(corpus, n_clusters):
     model = KeyedVectors.load_word2vec_format("trmodel", binary=True)
