@@ -8,6 +8,7 @@ from django.urls import reverse
 from project.models import Project
 # Create your views here.
 from topic_modelling.algorithms.hdp_web import HDP
+from topic_modelling.algorithms.kmeans_web import w2v_kmeans, kmeans_optimum_value
 from topic_modelling.algorithms.lda_web import LDA, lda_optimum_coherence
 from topic_modelling.algorithms.lsa_web import LSA, lsa_optimum_coherence
 from topic_modelling.algorithms.nmf_web import NMF, nmf_optimum_coherence
@@ -73,6 +74,9 @@ def apply_topic_algorithm(request, pk, algorithm):
             elif algorithm.lower() == 'nmf':
                 fig = nmf_optimum_coherence(corpus, start, end, step)
 
+            elif algorithm.lower() == 'w2v-kmeans':
+                fig = kmeans_optimum_value(corpus, start, end, step)
+
             content["data"] = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
             return render(request, 'topic_modelling/params.html', content)
@@ -92,6 +96,9 @@ def apply_topic_algorithm(request, pk, algorithm):
 
         elif algorithm.lower() == 'nmf':
             output = NMF(corpus, n_topic)
+
+        elif algorithm.lower() == 'w2v-kmeans':
+            output = w2v_kmeans(corpus, n_topic)
 
         content.update(output)
         content["files"] = [file.filename() for file in files]

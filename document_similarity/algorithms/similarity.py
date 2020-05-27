@@ -2,7 +2,7 @@ import math
 import os
 import re
 import string
-
+from django.conf import settings
 import nltk
 import numpy as np
 from nltk.tokenize import word_tokenize
@@ -212,7 +212,8 @@ def TFIDFManhattanDistance(doc, alldoc):
 
 
 from gensim.models import KeyedVectors
-model = KeyedVectors.load_word2vec_format(f"{os.path.dirname(__file__)}/trmodel", binary=True)
+
+model = KeyedVectors.load_word2vec_format(f"{settings.BASE_DIR}/trmodel", binary=True)
 
 
 def document_vector(doc):
