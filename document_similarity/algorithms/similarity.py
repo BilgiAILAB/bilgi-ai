@@ -213,10 +213,11 @@ def TFIDFManhattanDistance(doc, alldoc):
 
 from gensim.models import KeyedVectors
 
-model = KeyedVectors.load_word2vec_format(f"{settings.BASE_DIR}/trmodel", binary=True)
 
 
 def document_vector(doc):
+    model = KeyedVectors.load_word2vec_format(f"{settings.BASE_DIR}/trmodel", binary=True)
+
     doc = [word for word in doc if word in model.vocab]
     return np.mean(model[doc], axis=0)
 
