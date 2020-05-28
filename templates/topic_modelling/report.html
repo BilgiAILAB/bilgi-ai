@@ -264,20 +264,35 @@
 
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div class="tab-pane container active" id="graph2d">
-                                <br>
-                                <button
-                                        data-graph-url="{% url 'get_graph' project.id algorithm report.id 'graph_2d' %}"
-                                        class="btn btn-outline-primary btn-block graph">LOAD GRAPH
-                                </button>
-                            </div>
-                            <div class="tab-pane container fade" id="graph3d">
-                                <br>
-                                <button id="graph2d_load"
-                                        data-graph-url="{% url 'get_graph' project.id algorithm report.id 'graph_3d' %}"
-                                        class="btn btn-outline-primary btn-block graph">LOAD GRAPH
-                                </button>
-                            </div>
+                            {% with topics|length as topic_count %}
+                                <div class="tab-pane container active" id="graph2d">
+                                    <br>
+                                    <button
+                                            {% if topic_count < 2 %}disabled{% endif %}
+                                            data-graph-url="{% url 'get_graph' project.id algorithm report.id 'graph_2d' %}"
+                                            class="btn btn-outline-primary btn-block graph">
+                                        {% if topic_count < 2 %}
+                                            2D Graph needs at least 2 topics. You have {{ topic_count }} topic.
+                                        {% else %}
+                                            LOAD GRAPH
+                                        {% endif %}
+                                    </button>
+                                </div>
+
+                                <div class="tab-pane container fade" id="graph3d">
+                                    <br>
+                                    <button
+                                            {% if topic_count < 3 %}disabled{% endif %}
+                                            data-graph-url="{% url 'get_graph' project.id algorithm report.id 'graph_3d' %}"
+                                            class="btn btn-outline-primary btn-block graph">
+                                        {% if topic_count < 3 %}
+                                            3D Graph needs at least 3 topics. You have {{ topic_count }} topic(s).
+                                        {% else %}
+                                            LOAD GRAPH
+                                        {% endif %}
+                                    </button>
+                                </div>
+                            {% endwith %}
                         </div>
                     </div>
                 </div>
