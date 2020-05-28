@@ -19,8 +19,17 @@ class Report(models.Model):
     def get_topics(self):
         return json.loads(self.topics)
 
-    def coherence(self):
-        return self.get_output()["coherence_value"]
+    def coherence_value(self):
+        try:
+            return self.get_output()["coherence_value"]
+        except KeyError:
+            return None
+
+    def silhouette_score(self):
+        try:
+            return self.get_output()["silhouette_score"]
+        except KeyError:
+            return None
 
     def topic_counts(self):
         return len(self.get_output()["word_distributions"])

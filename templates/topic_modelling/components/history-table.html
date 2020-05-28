@@ -5,7 +5,7 @@
             <tr>
                 <th>Algorithm</th>
                 <th>Number of Topics</th>
-                <th>Coherence</th>
+                <th>Coherence/Silhouette</th>
                 <th>Date</th>
                 <th>Action</th>
             </tr>
@@ -15,7 +15,12 @@
                 <tr>
                     <td class="text-uppercase">{{ report.algorithm }}</td>
                     <td>{{ report.topic_counts }}</td>
-                    <td>{{ report.coherence|make_list|slice:':6'|join:'' }}</td>
+                    {% if  report.coherence_value %}
+                        <td>{{ report.coherence_value|make_list|slice:':6'|join:'' }}</td>
+                    {% elif report.silhouette_score %}
+                        <td>{{ report.silhouette_score|make_list|slice:':6'|join:'' }}</td>
+                    {% endif %}
+
                     <td>{{ report.date }}</td>
                     <td>
                         <a href="{% url 'view_report' report.project.id report.algorithm report.id %}"

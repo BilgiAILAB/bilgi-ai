@@ -16,8 +16,14 @@
                     <span class="text-uppercase text-secondary">Total {{ filecount }} documents</span>
                 </div>
                 <div class="float-right mr-1 mb-1">
-                        <span class="text-uppercase text-primary">Coherence
-                            value: {{ coherence_value|make_list|slice:':6'|join:'' }}</span>
+                        <span class="text-uppercase text-primary">
+                            {% if coherence_value %}
+                                Coherence Value: {{ coherence_value|make_list|slice:':6'|join:'' }}
+                            {% endif %}
+                            {% if silhouette_score %}
+                                Silhouette Score: {{ silhouette_score|make_list|slice:':6'|join:'' }}
+                            {% endif %}
+                        </span>
                 </div>
                 <div class="clearfix"></div>
             </div>

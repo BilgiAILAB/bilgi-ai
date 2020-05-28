@@ -86,7 +86,7 @@ def w2v_kmeans(corpus, n_clusters):
         word_distributions.append(distributions.word_distribution(model=lda_model, n_topic=n_topic)[0])
     silhouette_score = metrics.silhouette_score(doc_vectors, labels, metric='cosine')
     output = {"filecount": doc_number,
-              "coherence_value": float(silhouette_score),
+              "silhouette_score": float(silhouette_score),
               "word_distributions": word_distributions,
               "topic_distributions": topic_distributions,
               "doc_dist": doc_dist,
