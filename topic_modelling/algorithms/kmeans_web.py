@@ -5,13 +5,13 @@ from gensim.models import KeyedVectors
 from gensim.models import LdaModel
 from sklearn import metrics
 from sklearn.cluster import KMeans
-
+from nltk.tokenize import RegexpTokenizer
 from document_similarity.algorithms import similarity_algorithms
 from topic_modelling.algorithms import distributions, preprocess
 
 
 def kmeans_optimum_value(corpus, start, end, step):
-    doc_vectors = doc_vector_generator(corpus)
+    doc_vectors, cleaned_data = doc_vector_generator(corpus)
 
     s_scores = []
     k_values = range(start, end, step)
@@ -39,12 +39,14 @@ def doc_vector_generator(corpus):
         doc = [word for word in doc if word in model.vocab]
         return np.mean(model[doc], axis=0)
 
-    doc_vectors = [document_vector(c) for c in similarity_algorithms.alldocclean(corpus)]
-    return doc_vectors
+    cleaned_data = similarity_algorithms.alldocclean(corpus)
+    doc_vectors = [document_vector(c) for c in cleaned_data]
+
+    return doc_vectors, cleaned_data
 
 
 def w2v_kmeans(corpus, n_clusters):
-    doc_vectors = doc_vector_generator(corpus)
+    doc_vectors, cleaned_data_tokens = doc_vector_generator(corpus)
 
     kmeans_model = KMeans(n_clusters=n_clusters, init='k-means++', n_init=40)
     kmeans_model.fit(doc_vectors)
@@ -88,6 +90,8 @@ def w2v_kmeans(corpus, n_clusters):
               "word_distributions": word_distributions,
               "topic_distributions": topic_distributions,
               "doc_dist": doc_dist,
-              "data_tokens": [[]]
+              "data_tokens": cleaned_data_tokens,
+              "labels": labels,
+              "doc_vectors": [doc_vec.tolist() for doc_vec in doc_vectors]
               }
     return output
