@@ -1,0 +1,70 @@
+<div class="loading">
+    <div class="row">
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+<style>
+    .loading {
+        background: white;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<script>
+    var loading = true;
+
+    function r(f) {
+        /in/.test(document.readyState) ? setTimeout('r(' + f + ')', 9) : f()
+    }
+
+    // use like
+    r(function () {
+        $('.loading').hide()
+        loading = false;
+
+        $('a').click(function () {
+            $('.loading').show()
+            loading = true;
+        });
+
+        $("form").submit(function (e) {
+            {#$('.loading').toggle()#}
+            if (loading) {
+                e.preventDefault();
+            }
+            if (!loading) {
+                var btn = $("button[type=submit]", this)
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>\n' +
+                    '  <span class="sr-only">Loading...</span>' + ' Running')
+            } else {
+                var btn = $("button[type=submit]", this)
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>\n' +
+                    '  <span class="sr-only">Loading...</span>' + ' Please be patient')
+            }
+            loading = true;
+        });
+
+    });
+
+</script>
