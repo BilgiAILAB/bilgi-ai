@@ -134,13 +134,13 @@
                                                  role="dialog"
                                                  aria-labelledby="fileListModalLabel"
                                                  aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-scrollable"
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable"
                                                      role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="fileListModalLabel">
-                                                                File
-                                                                List</h5>
+                                                                File List of {{ topics|index:forloop.counter0 }}
+                                                            </h5>
                                                             <button type="button" class="close"
                                                                     data-dismiss="modal"
                                                                     aria-label="Close">
@@ -152,20 +152,32 @@
                                                             {% csrf_token %}
                                                             <div class="modal-body">
 
-                                                                <div class="bodycontainer scrollable">
-                                                                    <ul>
-                                                                        {% for x in doc_dist|index_dict:forloop.counter0 %}
-                                                                            <div class="row">
-                                                                                {% with project.get_files|index:x as file %}
-                                                                                    <li>{{ file.filename.title }}</li>
-                                                                                    <input hidden
-                                                                                           name="files_to_download[]"
-                                                                                           value="{{ file.id }}">
+                                                                <div class="row">
+                                                                    <div class="col-md-3 my-content">
+                                                                        <div class="file-list">
+                                                                            <ul>
+                                                                                {% for x in doc_dist|index_dict:forloop.counter0 %}
+                                                                                    {% with project.get_files|index:x as file %}
+                                                                                        <li onclick="previewFile(this)"
+                                                                                            data-file-url="{% url 'full_view_to_file' file.id %}">
+                                                                                            {{ file.filename.title }}
+                                                                                            <input hidden
+                                                                                                   name="files_to_download[]"
+                                                                                                   value="{{ file.id }}">
+                                                                                        </li>
 
-                                                                                {% endwith %}
-                                                                            </div>
-                                                                        {% endfor %}
-                                                                    </ul>
+
+                                                                                    {% endwith %}
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-9 my-content">
+                                                                        <h2 class="file-preview-title">Select File</h2>
+                                                                        <hr>
+                                                                        <pre class="file-preview">
+                                                                        </pre>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -316,6 +328,20 @@
 {% endblock %}
 
 {% block script %}
+    <script>
+        function previewFile(e) {
+            var element = $(e);
+            var fileUrl = element.data('file-url');
+            console.log(fileUrl)
+            var previewBox = element.closest(".row").find(".file-preview")
+            var fileTitleH2 = element.closest(".row").find(".file-preview-title")
+            fileTitleH2.text(element.text())
+            $.get(fileUrl).done(function (data) {
+                previewBox.html(data);
+            });
+
+        }
+    </script>
     <script>
         //LOAD GRAPH
         $('.graph').click(function () {
@@ -682,6 +708,46 @@
 
         .form-inline label {
             justify-content: normal;
+        }
+
+        .scrollable {
+            overflow-y: scroll;
+            position: absolute;
+        }
+
+        .my-content {
+            height: 75vh;
+            overflow: auto;
+        }
+
+        .file-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .file-list li {
+            padding: 0 10px;
+            cursor: pointer;
+        }
+
+        .file-list li:hover {
+            padding: 0 10px;
+            background: dimgray !important;
+        }
+
+        .file-list li:nth-child(odd) {
+            background: lightgray;
+        }
+
+        .file-list li:nth-child(even) {
+            background: white;
+        }
+
+        .file-preview {
+            height: 75%;
+            padding: 0 10px;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
     </style>

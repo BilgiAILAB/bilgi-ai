@@ -26,9 +26,12 @@ class ProjectFile(models.Model):
     def get_project_folder(self, filename):
         return f'data/projects/{self.project.project_folder}/{filename}'
 
-    def preview(self, n_char=200):
+    def preview(self, full_view=False):
         file_read = open(self.file.path, "r", encoding='utf8')
-        lines = file_read.read()[:n_char]
+        if full_view:
+            lines = file_read.read()
+        else:
+            lines = file_read.read()[:200]
         file_read.close()
         return lines
 
