@@ -5,8 +5,8 @@ from gensim.models import KeyedVectors
 from gensim.models import LdaModel
 from sklearn import metrics
 from sklearn.cluster import KMeans
-from nltk.tokenize import RegexpTokenizer
-from document_similarity.algorithms import similarity_algorithms
+
+from document_similarity.algorithms import similarity
 from topic_modelling.algorithms import distributions, preprocess
 
 
@@ -39,7 +39,7 @@ def doc_vector_generator(corpus):
         doc = [word for word in doc if word in model.vocab]
         return np.mean(model[doc], axis=0)
 
-    cleaned_data = similarity_algorithms.alldocclean(corpus)
+    cleaned_data = similarity.alldocclean(corpus)
     doc_vectors = [document_vector(c) for c in cleaned_data]
 
     return doc_vectors, cleaned_data

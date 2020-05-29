@@ -2,9 +2,10 @@ import math
 import os
 import re
 import string
-from django.conf import settings
+
 import nltk
 import numpy as np
+from django.conf import settings
 from nltk.tokenize import word_tokenize
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -172,11 +173,12 @@ def manhattan_distance(a, b):
 def TFIDFCosineSimilarity(doc, alldoc):
     arr = TFIDF(alldoc)
     simArr = []
+    doc_text = arr[doc].values()
     for i in range(len(arr)):
         temp = []
         if doc != i:
             temp.append(i)
-            temp.append(cosine_similarity(arr[doc].values(), arr[i].values()))
+            temp.append(cosine_similarity(doc_text, arr[i].values()))
             simArr.append(temp)
     return simArr
 
@@ -184,9 +186,10 @@ def TFIDFCosineSimilarity(doc, alldoc):
 def TFIDFEuclideanDistance(doc, alldoc):
     arr = TFIDF(alldoc)
     simArr = []
+    doc_text = arr[doc].values()
     for i in range(len(arr)):
         if doc != i:
-            temp = [i, Euclidean(arr[doc].values(), arr[i].values())]
+            temp = [i, Euclidean(doc_text, arr[i].values())]
             simArr.append(temp)
     return simArr
 
@@ -194,9 +197,10 @@ def TFIDFEuclideanDistance(doc, alldoc):
 def documentsJaccardSimilarity(doc, alldoc):
     arr = alldocclean(alldoc)
     simArr = []
+    doc_text = arr[doc]
     for i in range(len(arr)):
         if doc != i:
-            temp = [i, jaccard_similarity(arr[doc], arr[i])]
+            temp = [i, jaccard_similarity(doc_text, arr[i])]
             simArr.append(temp)
     return simArr
 
@@ -204,15 +208,15 @@ def documentsJaccardSimilarity(doc, alldoc):
 def TFIDFManhattanDistance(doc, alldoc):
     arr = TFIDF(alldoc)
     simArr = []
+    doc_text = arr[doc].values()
     for i in range(len(arr)):
-        if (doc != i):
-            temp = [i, manhattan_distance(arr[doc].values(), arr[i].values())]
+        if doc != i:
+            temp = [i, manhattan_distance(doc_text, arr[i].values())]
             simArr.append(temp)
     return simArr
 
 
 from gensim.models import KeyedVectors
-
 
 
 def document_vector(doc):
@@ -225,9 +229,10 @@ def document_vector(doc):
 def word2VecCosineSimilarity(doc, alldoc):
     arr = alldocclean(alldoc)
     simArr = []
+    doc_text = document_vector(arr[doc])
     for i in range(len(arr)):
         if doc != i:
-            temp = [i, cosine_similarity(document_vector(arr[doc]), document_vector(arr[i]))]
+            temp = [i, cosine_similarity(doc_text, document_vector(arr[i]))]
             simArr.append(temp)
     return simArr
 
@@ -235,17 +240,20 @@ def word2VecCosineSimilarity(doc, alldoc):
 def word2VecEuclideanDistance(doc, alldoc):
     arr = alldocclean(alldoc)
     simArr = []
+    doc_text = document_vector(arr[doc])
     for i in range(len(arr)):
-        temp = [i, Euclidean(document_vector(arr[doc]), document_vector(arr[i]))]
-        simArr.append(temp)
+        if doc != i:
+            temp = [i, Euclidean(doc_text, document_vector(arr[i]))]
+            simArr.append(temp)
     return simArr
 
 
 def word2VecManhattanDistance(doc, alldoc):
     arr = alldocclean(alldoc)
     simArr = []
+    doc_text = document_vector(arr[doc])
     for i in range(len(arr)):
         if doc != i:
-            temp = [i, manhattan_distance(document_vector(arr[doc]), document_vector(arr[i]))]
+            temp = [i, manhattan_distance(doc_text, document_vector(arr[i]))]
             simArr.append(temp)
     return simArr
