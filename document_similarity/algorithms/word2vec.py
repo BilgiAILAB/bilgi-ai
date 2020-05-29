@@ -1,7 +1,8 @@
 import math
+import os
 import re
 import string
-import os
+
 import numpy as np
 from gensim.models import KeyedVectors
 from nltk.tokenize import word_tokenize
@@ -9,10 +10,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from document_similarity.algorithms.similarity_algorithms import stopWords
 
-model = KeyedVectors.load_word2vec_format(f"{os.path.dirname(__file__)}/trmodel", binary=True)
-
 
 def document_vector(doc):
+    model = KeyedVectors.load_word2vec_format(f"{os.path.dirname(__file__)}/trmodel", binary=True)
     doc = [word for word in doc if word in model.vocab]
     return np.mean(model[doc], axis=0)
 
