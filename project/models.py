@@ -7,7 +7,6 @@ from django.utils.text import slugify
 
 class Project(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField(max_length=1024)
     project_folder = models.CharField(max_length=32)
     date = models.DateTimeField(auto_now_add=True)
 
