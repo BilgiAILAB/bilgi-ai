@@ -20,12 +20,12 @@ def topic_algorithms(request, pk):
     project = get_object_or_404(Project, pk=pk)
     reports = Report.objects.filter(project=project)
 
-    content = {'project': project, 'reports': reports, 'title': f'Topic Modelling - {project.title}'}
+    content = {'project': project, 'reports': reports, 'title': f'Topic Modeling - {project.title}'}
 
     breadcrumb = {
         "Projects": reverse('all_projects'),
         project.title: reverse('show_project', args=[project.id]),
-        "Topic Modelling": ""
+        "Topic Modeling": ""
     }
 
     content['breadcrumb'] = breadcrumb
@@ -43,7 +43,7 @@ def apply_topic_algorithm(request, pk, algorithm):
     breadcrumb = {
         "Projects": reverse('all_projects'),
         project.title: reverse('show_project', args=[project.id]),
-        "Topic Modelling": reverse('topic_algorithms', args=[pk]),
+        "Topic Modeling": reverse('topic_algorithms', args=[pk]),
         algorithm.upper(): ""
         # algorithm.upper(): reverse('apply_topic_algorithm', args=[pk, algorithm])
     }
@@ -140,7 +140,7 @@ def view_report(request, project_pk, algorithm, report_pk):
     breadcrumb = {
         "Projects": reverse('all_projects'),
         project.title: reverse('show_project', args=[project.id]),
-        "Topic Modelling": reverse('topic_algorithms', args=[project_pk]),
+        "Topic Modeling": reverse('topic_algorithms', args=[project_pk]),
         algorithm.upper(): reverse('apply_topic_algorithm', args=[project_pk, algorithm]),
         f"Report (id:{report.id})": ""
     }
