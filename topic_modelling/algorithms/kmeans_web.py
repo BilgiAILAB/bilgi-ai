@@ -78,7 +78,7 @@ def w2v_kmeans(corpus, n_clusters):
                              num_topics=n_topic,
                              random_state=100,
                              update_every=1,
-                             chunksize=50,
+                             #chunksize=50,
                              passes=10,
                              alpha='auto',
                              per_word_topics=True,

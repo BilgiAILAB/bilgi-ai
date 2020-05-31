@@ -23,7 +23,7 @@ def preprocess(corpus):
         """
         valid_characters = 'abcçdefgğhıijklmnoöpqrsştuüvwxyzQWERTYUIOPĞÜASDFGHJKLŞİZXCVBNMÖÇ1234567890 '
         text = ''.join([x for x in text if x in valid_characters])
-        #text = " ".join([word_tag[0] for word_tag in list(tag(text)) if word_tag[1]=='Noun_Nom' or word_tag[1]=='Adj'])
+        text = " ".join([word_tag[0] for word_tag in list(tag(text)) if word_tag[1]=='Noun_Nom' or word_tag[1]=='Adj'])
         lower_map = {
             ord(u'I'): u'ı',
             ord(u'İ'): u'i',
