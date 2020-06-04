@@ -22,12 +22,12 @@ def index(request):
     return render(request, 'documentation/index.html', content)
 
 
-def show_documentation(request, pk):
-    mains = MainTopic.objects.all()
-    md = get_object_or_404(DocumentationContent, pk=pk)
-
-    content = {'mains': mains, 'md': md, 'title': 'Documentation'}
-    return render(request, 'documentation/index.html', content)
+# def show_documentation(request, pk):
+#     mains = MainTopic.objects.all()
+#     md = get_object_or_404(DocumentationContent, pk=pk)
+#
+#     content = {'mains': mains, 'md': md, 'title': 'Documentation'}
+#     return render(request, 'documentation/index.html', content)
 
 
 @login_required

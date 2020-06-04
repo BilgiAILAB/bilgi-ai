@@ -29,10 +29,9 @@
                             {% for main in mains %}
                                 {#                                <h1 class="mt-2 text-lg-left">{{ main.name }}</h1>#}
                                 {% for documentation in main.documentations %}
-                                    <h2 id="{{ documentation.id }}"
-                                        class="mt-2 text-lg-left">{{ documentation.name }}</h2>
-                                    <hr>
-                                    {{ documentation.content|safe_markdown }}
+                                    <div id="{{ documentation.id }}">
+                                        {{ documentation.content|safe_markdown }}
+                                    </div>
                                 {% endfor %}
                             {% endfor %}
                         </div>
