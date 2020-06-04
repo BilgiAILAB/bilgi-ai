@@ -8,8 +8,26 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from martor.utils import LazyEncoder
+
+from documentation.models import MainTopic, DocumentationContent
+
+
+def index(request):
+    mains = MainTopic.objects.all()
+
+    content = {'mains': mains, 'title': 'Documentation'}
+    return render(request, 'documentation/index.html', content)
+
+
+def show_documentation(request, pk):
+    mains = MainTopic.objects.all()
+    md = get_object_or_404(DocumentationContent, pk=pk)
+
+    content = {'mains': mains, 'md': md, 'title': 'Documentation'}
+    return render(request, 'documentation/index.html', content)
 
 
 @login_required

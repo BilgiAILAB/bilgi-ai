@@ -19,7 +19,7 @@
                                 You can create project and start using the tools.
                             </p>
                             <a class="btn btn-primary" href="{% url 'all_projects' %}" role="button">Get Started</a>
-                            <a class="btn btn-outline-primary " role="button" href="{% url 'all_projects' %}">Documentation</a>
+                            <a class="btn btn-outline-primary " role="button" href="{% url 'documentation' %}">Documentation</a>
                         </div>
                         <div class="col-md-3">
                             <div class="avatar"
@@ -81,25 +81,35 @@
 
         <section class="testimonials text-center bg-light">
             <div class="container">
-                <h2 class="mb-5">Developer Team</h2>
+                <h2 class="mb-4">Team</h2>
                 <div class="row">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="mx-auto testimonial-item mb-5 mb-lg-0">
+                            <img class="rounded-circle img-fluid mb-3"
+                                 src="{% static 'img/avatars/tuuba_hoca.jpeg' %}"/>
+                            <h5>Tuğba Yıldız</h5>
+                            <h6>Thesis Advisor</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
                     <div class="col-lg-4">
                         <div class="mx-auto testimonial-item mb-5 mb-lg-0">
                             <img class="rounded-circle img-fluid mb-3"
                                  src="{% static 'img/avatars/enes.jpg' %}"/>
                             <h5>Hanefi Enes Gül</h5>
                             <h6>Topic Modeling</h6>
-                            <p class="font-weight-light mb-0">&quot;This is fantastic! Thanks so much guys!&quot;</p>
+                            {#                            <p class="font-weight-light mb-0">&quot;This is fantastic! Thanks so much guys!&quot;</p>#}
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="mx-auto testimonial-item mb-5 mb-lg-0">
                             <img class="rounded-circle img-fluid mb-3"
-                                 src="{% static 'img/avatars/simge.jpeg' %}"/>
+                                 src="{% static 'img/avatars/simge.jpg' %}"/>
                             <h5>Simge Erek</h5>
                             <h6>Document Similarity</h6>
-                            <p class="font-weight-light mb-0">&quot;Bootstrap is amazing. I&#39;ve been using it to
-                                create lots of super nice landing pages.&quot;</p>
+                            {#                            <p class="font-weight-light mb-0">&quot;Bootstrap is amazing. I&#39;ve been using it to#}
+                            {#                                create lots of super nice landing pages.&quot;</p>#}
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -108,8 +118,8 @@
                                  src="{% static 'img/avatars/ibrahim.jpeg' %}"/>
                             <h5>İbrahim Doğan</h5>
                             <h6>Web Application</h6>
-                            <p class="font-weight-light mb-0">&quot;Thanks so much for making these free resources
-                                available to us!&quot;</p>
+                            {#                            <p class="font-weight-light mb-0">&quot;Thanks so much for making these free resources#}
+                            {#                                available to us!&quot;</p>#}
                         </div>
                     </div>
                     <!--<div class="col-lg-4 mx-auto">

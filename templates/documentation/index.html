@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load martortags %}
+{% block content %}
+    <main class="page project-page mt-5">
+        <section class="portfolio-block project mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 mt-5">
+                        <div class="fixed">
+                            <ol type="I">
+                                {% for main in mains %}
+                                    <li>
+                                        <h5 class="mt-2 text-lg-left">{{ main.name }}</h5>
+                                        <ul>
+                                            {% for documentation in main.documentations %}
+                                                <li style="list-style-type: circle;"><a
+                                                        href="{% url 'show_documentation' documentation.id %}">{{ documentation.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 mt-5">
+                        <div class="container">
+                            {{ md.content|safe_markdown }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+{% endblock %}
+
+{% block style %}
+    <style>
+        @media (min-width: 992px) {
+            .fixed {
+                position: fixed;
+                top: 100px;
+                bottom: 0;
+            }
+        }
+    </style>
+{% endblock %}
