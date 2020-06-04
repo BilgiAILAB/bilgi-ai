@@ -11,6 +11,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 # removing stopwords from text
+from nlp import model
+
+
 def stopwords(text):
     # for adding new stopwords in ntlk-stopwords
     file = open(f"{os.path.dirname(__file__)}/turkce-stop-words.txt")
@@ -220,8 +223,6 @@ from gensim.models import KeyedVectors
 
 
 def document_vector(doc):
-    model = KeyedVectors.load_word2vec_format(f"{settings.BASE_DIR}/trmodel", binary=True)
-
     doc = [word for word in doc if word in model.vocab]
     return np.mean(model[doc], axis=0)
 

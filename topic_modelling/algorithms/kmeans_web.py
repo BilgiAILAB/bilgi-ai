@@ -1,12 +1,11 @@
 import numpy as np
 import plotly.graph_objects as go
-from django.conf import settings
-from gensim.models import KeyedVectors
 from gensim.models import LdaModel
 from sklearn import metrics
 from sklearn.cluster import KMeans
 
 from document_similarity.algorithms import similarity
+from nlp import model
 from topic_modelling.algorithms import distributions, preprocess
 
 
@@ -33,8 +32,6 @@ def kmeans_optimum_value(corpus, start, end, step):
 
 
 def doc_vector_generator(corpus):
-    model = KeyedVectors.load_word2vec_format(f"{settings.BASE_DIR}/trmodel", binary=True)
-
     def document_vector(doc):
         doc = [word for word in doc if word in model.vocab]
         return np.mean(model[doc], axis=0)
@@ -78,7 +75,7 @@ def w2v_kmeans(corpus, n_clusters):
                              num_topics=n_topic,
                              random_state=100,
                              update_every=1,
-                             #chunksize=50,
+                             # chunksize=50,
                              passes=10,
                              alpha='auto',
                              per_word_topics=True,
