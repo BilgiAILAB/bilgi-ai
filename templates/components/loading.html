@@ -54,7 +54,8 @@
         $('.loading').hide()
         loading = false;
 
-        $('a').click(function () {
+        $('a').not('.page-in-link').click(function () {
+            $(this).href
             $('.loading').show()
             loading = true;
         });

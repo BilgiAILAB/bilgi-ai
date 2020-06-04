@@ -13,8 +13,9 @@
                                         <h5 class="mt-2 text-lg-left">{{ main.name }}</h5>
                                         <ul>
                                             {% for documentation in main.documentations %}
-                                                <li style="list-style-type: circle;"><a
-                                                        href="{% url 'show_documentation' documentation.id %}">{{ documentation.name }}</a>
+                                                <li style="list-style-type: circle;">
+                                                    <a class="page-in-link scroll"
+                                                       href="#{{ documentation.id }}">{{ documentation.name }}</a>
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -25,7 +26,15 @@
                     </div>
                     <div class="col-lg-9 mt-5">
                         <div class="container">
-                            {{ md.content|safe_markdown }}
+                            {% for main in mains %}
+                                {#                                <h1 class="mt-2 text-lg-left">{{ main.name }}</h1>#}
+                                {% for documentation in main.documentations %}
+                                    <h2 id="{{ documentation.id }}"
+                                        class="mt-2 text-lg-left">{{ documentation.name }}</h2>
+                                    <hr>
+                                    {{ documentation.content|safe_markdown }}
+                                {% endfor %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -45,4 +54,15 @@
             }
         }
     </style>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('.scroll').click(function () {
+            console.log($($(this).attr('href')).offset().top)
+            $('html, body').animate({
+                scrollTop: $($(this).attr('href')).offset().top - 100
+            }, 500);
+        });
+    </script>
 {% endblock %}
