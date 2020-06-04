@@ -27,12 +27,16 @@
                     <div class="col-lg-9 mt-5">
                         <div class="container">
                             {% for main in mains %}
-                                {#                                <h1 class="mt-2 text-lg-left">{{ main.name }}</h1>#}
-                                {% for documentation in main.documentations %}
-                                    <div id="{{ documentation.id }}">
-                                        {{ documentation.content|safe_markdown }}
-                                    </div>
-                                {% endfor %}
+                                <div class="project-card-no-image">
+                                    <h3 style="font-size: 24px;">{{ main.name }}</h3>
+
+                                    {% for documentation in main.documentations %}
+                                        <div id="{{ documentation.id }}">
+                                            {{ documentation.content|safe_markdown }}
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
