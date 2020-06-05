@@ -1,5 +1,6 @@
-from gensim.models import LdaModel
 import plotly.graph_objects as go
+from gensim.models import LdaModel
+
 from topic_modelling.algorithms import distributions, preprocess, coherence
 
 
@@ -8,7 +9,7 @@ def lda_optimum_coherence(corpus, start, end, step):
     topic_numbers = []
     coherence_values = []
 
-    for num_topics in range(start, end, step):
+    for num_topics in range(start, end + 1, step):
         lda = LdaModel(corpus=corpus,
                        id2word=id2word,
                        num_topics=num_topics,
@@ -40,7 +41,8 @@ def LDA(corpus, n_topic):
     coherence_v = coherence.coherence_value(model=lda_model, tokens=data_tokens, dictionary=id2word)
     word_distributions = distributions.word_distribution(model=lda_model, n_topic=n_topic)
     topic_distributions = distributions.lda_topic_distribution(doc_number=doc_number, model=lda_model, corpus=corpus)
-    doc_dist = distributions.lda_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lda_model, corpus=corpus)
+    doc_dist = distributions.lda_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lda_model,
+                                                  corpus=corpus)
 
     output = {"filecount": doc_number,
               "coherence_value": float(coherence_v),

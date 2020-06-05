@@ -1,9 +1,10 @@
 import numpy as np
+import plotly.graph_objects as go
 from gensim.models import CoherenceModel
 from sklearn.decomposition import NMF as sk_NMF
 from sklearn.feature_extraction.text import TfidfVectorizer
+
 from topic_modelling.algorithms import preprocess, topic_distance
-import plotly.graph_objects as go
 
 
 def nmf_optimum_coherence(corpus, start, end, step):
@@ -11,7 +12,7 @@ def nmf_optimum_coherence(corpus, start, end, step):
     topic_numbers = []
     coherence_values = []
 
-    for num_topics in range(start, end, step):
+    for num_topics in range(start, end + 1, step):
         vectorizer = TfidfVectorizer()
         A = vectorizer.fit_transform(cleaned_data)
         nmf_model = sk_NMF(n_components=num_topics, init='nndsvd')

@@ -30,7 +30,8 @@
 
                 {% ifnotequal algorithm|lower 'hdp' %}
                     <div class="project-card-no-image">
-                        <h3 style="font-size: 24px;">Step <span class="text-uppercase">{{ algorithm }}</span></h3>
+                        <h3 style="font-size: 24px;">Explore Optimum Topic Number <span class="text-uppercase">{{ algorithm }}</span></h3>
+
 
                         <form method="post">
                             {% csrf_token %}

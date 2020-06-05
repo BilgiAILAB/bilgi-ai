@@ -1,6 +1,7 @@
-from gensim.models import LsiModel
-from topic_modelling.algorithms import distributions, preprocess, coherence
 import plotly.graph_objects as go
+from gensim.models import LsiModel
+
+from topic_modelling.algorithms import distributions, preprocess, coherence
 
 
 def lsa_optimum_coherence(corpus, start, end, step):
@@ -8,7 +9,7 @@ def lsa_optimum_coherence(corpus, start, end, step):
     topic_numbers = []
     coherence_values = []
 
-    for num_topics in range(start, end, step):
+    for num_topics in range(start, end + 1, step):
         lsi_model = LsiModel(corpus=corpus, num_topics=num_topics, id2word=id2word)
         coh = coherence.coherence_value(model=lsi_model, tokens=data_tokens, dictionary=id2word)
         topic_numbers.append(num_topics)
@@ -24,7 +25,8 @@ def LSA(corpus, n_topic):
     coherence_v = coherence.coherence_value(model=lsi_model, tokens=data_tokens, dictionary=id2word)
     word_distributions = distributions.word_distribution(model=lsi_model, n_topic=n_topic)
     topic_distributions = distributions.lsi_topic_distribution(doc_number=doc_number, model=lsi_model, corpus=corpus)
-    doc_dist = distributions.lsi_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lsi_model, corpus=corpus)
+    doc_dist = distributions.lsi_doc_distribution(n_topic=n_topic, doc_number=doc_number, model=lsi_model,
+                                                  corpus=corpus)
     output = {"filecount": doc_number,
               "coherence_value": float(coherence_v),
               "word_distributions": word_distributions,
@@ -34,7 +36,6 @@ def LSA(corpus, n_topic):
               }
 
     return output
-
 
     # def my_converter(o):
     #     return o.__str__()
