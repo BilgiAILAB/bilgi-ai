@@ -59,11 +59,12 @@ def tokenizer(text):
 
 
 # preprocessing for texts
-def preprocessing(doc):
-    cleaned = doc
+def preprocessing(cleaned):
     cleaned = remove_whitespace(cleaned)
     cleaned = remove_numbers(cleaned)
     cleaned = remove_punctuations(cleaned)
+    valid_characters = 'abcçdefgğhıijklmnoöpqrsştuüvwxyzQWERTYUIOPĞÜASDFGHJKLŞİZXCVBNMÖÇ1234567890 '
+    cleaned = ''.join([x for x in cleaned if x in valid_characters])
     cleaned = text_lowercase(cleaned)
     cleaned = stopwords(cleaned)
     cleaned = tokenizer(cleaned)
