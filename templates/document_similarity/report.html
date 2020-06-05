@@ -93,7 +93,6 @@
                     </div>
                 </div>
             </div>
-            {{ outputs }}
             <div class="sticky-download">
                 <div class="container">
                     <table style="height: 100px; width: 100%;">
@@ -235,10 +234,20 @@
     </script>
 
     <script>
-        $(".similarity").each(function (index, elem) {
+
+        if({% if 'vec-euc' in algorithm|lower or 'man' in algorithm|lower %} true {% else %} false {% endif %}){
+            $(".similarity").each(function (index, elem) {
+            $(this).css('background-color', LightenDarkenColor("#41EB6F", parseFloat(elem.innerText)));
+            console.log(parseFloat(elem.innerText) * 100)
+        });
+        } else{
+            $(".similarity").each(function (index, elem) {
             $(this).css('background-color', LightenDarkenColor("#41EB6F", (0.6 - parseFloat(elem.innerText)) * 100));
             console.log(parseFloat(elem.innerText) * 100)
         });
+        }
+
+
 
         function LightenDarkenColor(col, amt) {
 
