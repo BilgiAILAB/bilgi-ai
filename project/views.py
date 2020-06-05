@@ -114,7 +114,7 @@ Total {len(files)} files.
 
         for file in files:
             if file.file_pdf != "":  # if pdf exists
-                file_path = file.get_project_folder(file.filename_pdf())
+                file_path = 'media/' + file.get_project_folder(file.filename_pdf())
                 fdir, fname = os.path.split(file_path)
                 zip_subdir = "pdfs"
                 zip_path = os.path.join(zip_subdir, fname)
@@ -122,7 +122,7 @@ Total {len(files)} files.
                 zf.write(file_path, zip_path)
 
             if file.file is not None:
-                file_path = file.get_project_folder(file.filename())
+                file_path = 'media/' + file.get_project_folder(file.filename())
                 fdir, fname = os.path.split(file_path)
                 zip_subdir = "txts"
                 zip_path = os.path.join(zip_subdir, fname)

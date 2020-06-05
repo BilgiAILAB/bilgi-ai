@@ -23,7 +23,7 @@ class Project(models.Model):
 
 class ProjectFile(models.Model):
     def get_project_folder(self, filename):
-        return f'media/data/projects/{self.project.project_folder}/{filename}'
+        return f'data/projects/{self.project.project_folder}/{filename}'
 
     def preview(self, full_view=False):
         file_read = open(self.file.path, "r", encoding='utf8')
