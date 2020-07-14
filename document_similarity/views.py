@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
 from document_similarity.algorithms.similarity import TFIDFCosineSimilarity, TFIDFEuclideanDistance, \
-    documentsJaccardSimilarity, TFIDFManhattanDistance, word2VecCosineSimilarity, word2VecEuclideanDistance, \
+    TFIDFManhattanDistance, word2VecCosineSimilarity, word2VecEuclideanDistance, \
     word2VecManhattanDistance
 from document_similarity.models import Report
 from project.models import Project
@@ -68,8 +68,6 @@ def apply_similarity_algorithm(request, pk, algorithm):
             outputs = TFIDFCosineSimilarity(selected_document_index, corpus)
         elif algorithm.lower() == 'tfidf-euc':
             outputs = TFIDFEuclideanDistance(selected_document_index, corpus)
-        elif algorithm.lower() == 'jaccard-sim':
-            outputs = documentsJaccardSimilarity(selected_document_index, corpus)
         elif algorithm.lower() == 'tfidf-man':
             outputs = TFIDFManhattanDistance(selected_document_index, corpus)
         elif algorithm.lower() == 'word2vec-cos':

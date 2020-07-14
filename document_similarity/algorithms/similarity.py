@@ -5,10 +5,10 @@ import string
 
 import nltk
 import numpy as np
-from django.conf import settings
+import pandas as pd
 from nltk.tokenize import word_tokenize
-from sklearn.metrics.pairwise import cosine_similarity
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances, manhattan_distances
 
 # removing stopwords from text
 from nlp import model
@@ -71,11 +71,31 @@ def preprocessing(cleaned):
     return cleaned
 
 
+# preprocessing for texts
+def preprocessing_(doc):
+    cleaned = doc
+    cleaned = remove_whitespace(cleaned)
+    cleaned = remove_numbers(cleaned)
+    cleaned = remove_punctuations(cleaned)
+    cleaned = text_lowercase(cleaned)
+    cleaned = stopwords(cleaned)
+    return cleaned
+
+
 # preprocessing for all documents
 def alldocclean(alldocuments):
     predocs = []
     for i in alldocuments:
         predoc = preprocessing(i)
+        predocs.append(predoc)
+    return predocs  # predocs contains all cleared texts
+
+
+# preprocessing for all documents
+def alldocclean_(alldocuments):
+    predocs = []
+    for i in alldocuments:
+        predoc = preprocessing_(i)
         predocs.append(predoc)
     return predocs  # predocs contains all cleared texts
 
@@ -152,16 +172,12 @@ def TFIDF(alldocuments):
     return tfidfs
 
 
-def cosine_similarity(vector1, vector2):
+def cosine_similarity_(vector1, vector2):
     dot_product = sum(p * q for p, q in zip(vector1, vector2))
     magnitude = math.sqrt(sum([val ** 2 for val in vector1])) * math.sqrt(sum([val ** 2 for val in vector2]))
     if not magnitude:
         return 0
     return dot_product / magnitude
-
-
-def Euclidean(vec1, vec2):
-    return math.sqrt(sum(math.pow((v1 - v2), 2) for v1, v2 in zip(vec1, vec2)))
 
 
 def jaccard_similarity(vec1, vec2):
@@ -170,57 +186,55 @@ def jaccard_similarity(vec1, vec2):
     return len(intersection) / len(union)
 
 
-def manhattan_distance(a, b):
-    return sum(abs(e1 - e2) for e1, e2 in zip(a, b))
-
-
 def TFIDFCosineSimilarity(doc, alldoc):
-    arr = TFIDF(alldoc)
-    simArr = []
-    doc_text = arr[doc].values()
-    for i in range(len(arr)):
-        temp = []
-        if doc != i:
-            temp.append(i)
-            temp.append(cosine_similarity(doc_text, arr[i].values()))
-            simArr.append(temp)
-    return simArr
+    cleantext = alldocclean_(alldoc)
+    tfidf = TfidfVectorizer()
+    tfs = tfidf.fit_transform(cleantext)
+    df = pd.DataFrame(tfs.toarray(), columns=tfidf.get_feature_names())
+    cossim = cosine_similarity(df)
+    cossimdf = pd.DataFrame(cossim)
+    cossimpair = []
+    for index in range(len(alldoc)):
+        if (doc != index):
+            temp = []
+            temp.append(index)
+            temp.append(cossimdf.at[index, doc])
+            cossimpair.append(temp)
+    return cossimpair
 
 
 def TFIDFEuclideanDistance(doc, alldoc):
-    arr = TFIDF(alldoc)
-    simArr = []
-    doc_text = arr[doc].values()
-    for i in range(len(arr)):
-        if doc != i:
-            temp = [i, Euclidean(doc_text, arr[i].values())]
-            simArr.append(temp)
-    return simArr
-
-
-def documentsJaccardSimilarity(doc, alldoc):
-    arr = alldocclean(alldoc)
-    simArr = []
-    doc_text = arr[doc]
-    for i in range(len(arr)):
-        if doc != i:
-            temp = [i, jaccard_similarity(doc_text, arr[i])]
-            simArr.append(temp)
-    return simArr
+    cleantext = alldocclean_(alldoc)
+    tfidf = TfidfVectorizer()
+    tfs = tfidf.fit_transform(cleantext)
+    df = pd.DataFrame(tfs.toarray(), columns=tfidf.get_feature_names())
+    eucsim = euclidean_distances(df)
+    eucsimdf = pd.DataFrame(eucsim)
+    eucsimpair = []
+    for index in range(len(alldoc)):
+        if (doc != index):
+            temp = []
+            temp.append(index)
+            temp.append(eucsimdf.at[index, doc])
+            eucsimpair.append(temp)
+    return eucsimpair
 
 
 def TFIDFManhattanDistance(doc, alldoc):
-    arr = TFIDF(alldoc)
-    simArr = []
-    doc_text = arr[doc].values()
-    for i in range(len(arr)):
-        if doc != i:
-            temp = [i, manhattan_distance(doc_text, arr[i].values())]
-            simArr.append(temp)
-    return simArr
-
-
-from gensim.models import KeyedVectors
+    cleantext = alldocclean_(alldoc)
+    tfidf = TfidfVectorizer()
+    tfs = tfidf.fit_transform(cleantext)
+    df = pd.DataFrame(tfs.toarray(), columns=tfidf.get_feature_names())
+    mansim = manhattan_distances(df)
+    mansimdf = pd.DataFrame(mansim)
+    mansimpair = []
+    for index in range(len(alldoc)):
+        if (doc != index):
+            temp = []
+            temp.append(index)
+            temp.append(mansimdf.at[index, doc])
+            mansimpair.append(temp)
+    return mansimpair
 
 
 def document_vector(doc):
@@ -234,7 +248,7 @@ def word2VecCosineSimilarity(doc, alldoc):
     doc_text = document_vector(arr[doc])
     for i in range(len(arr)):
         if doc != i:
-            temp = [i, cosine_similarity(doc_text, document_vector(arr[i]))]
+            temp = [i, cosine_similarity_(doc_text, document_vector(arr[i]))]
             simArr.append(temp)
     return simArr
 
@@ -259,3 +273,11 @@ def word2VecManhattanDistance(doc, alldoc):
             temp = [i, manhattan_distance(doc_text, document_vector(arr[i]))]
             simArr.append(temp)
     return simArr
+
+
+def Euclidean(vec1, vec2):
+    return math.sqrt(sum(math.pow((v1 - v2), 2) for v1, v2 in zip(vec1, vec2)))
+
+
+def manhattan_distance(a, b):
+    return sum(abs(e1 - e2) for e1, e2 in zip(a, b))
