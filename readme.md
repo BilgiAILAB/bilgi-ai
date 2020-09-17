@@ -20,11 +20,11 @@ python manage.py runserver
 ```
 5. Go to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) to see the website.
 
-# Read Report
+# Read the Report
 
-You can find report from [https://docs.google.com/document/d/1afgEeB5FLSDd_L277uXEU_pVHAQZpND2IAH9s4Sl4pc/edit?usp=sharing](here): 
+You can read the report from [here](https://docs.google.com/document/d/1afgEeB5FLSDd_L277uXEU_pVHAQZpND2IAH9s4Sl4pc/edit?usp=sharing) 
 
-# Preview (just for quick view to report)
+# Preview (just for quick view to the report)
 
 
 WEB APPLICATION BASED ON TOPIC MODELING AND DOCUMENT SIMILARITY
