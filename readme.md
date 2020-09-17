@@ -57,58 +57,25 @@ Faculty of Engineering and Natural Science
 Istanbul Bilgi University![](https://lh3.googleusercontent.com/7rf4v_2WJZxltEXKKyaa11hEEuspGeUkhCHkNjY2OABdbQYifq3n802PNGjxFIkKBbDoW0IhdbzKzCDSwRX8GlU9Y9nwUln_bwp_OZK4V1cQ1rkdSZ7Y4a-WP10HiSZxERutrvLN)
 
 Table of Contents
-
-[Abstract  5](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.4ybd9pw14osx)
-
-[1.Introduction  6](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.mcw58juwpjf)
-
-[2. Literature Search  7](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.3izfo03zrfgy)
-
-[3.Methodology](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.njnss4tynjri) 10
-
-[3.1 Datasets](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.x1w514kwv420) 10
-
-[3.2 Methods](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.5lguylfii8is) 10
-
-[4. Experimental Setup](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.ljibadg4qbev) 18
-
-[4.1 Document Similarity  1](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.t9cnvpp6yj7)8
-
-[4.2 Topic Modeling  2](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.5jzmljhmciik)2
-
-[5. Experimental Results](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.qqp409lc0315) 28
-
-5.1 Topic Modeling  28
-
-5.2 Document Similarity  [2](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.qqp409lc0315)9
-
-[6. Web Platform](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.a61f2j2xebh4) 32
-
-[6.1 Workflow](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.73gwc7sewqen) 33
-
-[7. Future Works](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.oa7s1qkpx4qc) 34
-
-[REFERENCES](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.py4axlfnai70) 35
-
-[APPENDIX](https://docs.google.com/document/d/1rHo_0mgJjvNOn273066w3lfhGIx6XsY4_p4eLWou7hs/edit#heading=h.uqmw9ad37efh) 37
+Abstract	5
+1.Introduction	6
+2. Literature Search	7
+3.Methodology	10
+3.1 Datasets	10
+3.2 Methods	10
+4. Experimental Setup	18
+4.1 Document Similarity	18
+4.2 Topic Modeling	22
+5. Experimental Results	28
+      5.1 Topic Modeling	28
+      5.2 Document Similarity	29
+6. Web Platform	32
+6.1 Workflow	33
+7. Future Works	34
+REFERENCES	35
+APPENDIX	37
 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
 Table of Figures
 
   
@@ -117,13 +84,7 @@ Figure 1: Skip gram and CBOW structure [17]
 
 Figure 2: Database Schema in UML format
 
-  
-  
-  
-  
-  
-  
-  
+ 
 
 Table of Tables
 
@@ -140,45 +101,15 @@ Table 5 : 5 most similar news are shown for TF-IDF approaches
 Table 6 : 5 most similar news are shown for Word2Vec approaches
 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
 # Abstract
 
 With the development of technology, speed of accessing data has increased. This speed allows human to produce more data. Because there are too many to read, human understood that this process should be automated and started to research. Researchers found that the big collection of data can processed with mathematics and statistics, there are many algorithms designed to measure similarity between texts and classify texts. This article focuses on algorithms and conducted experimental studies on various data sets. The aim of this project is to provide the user with wide and different options, so that it can easily perform discovery and analysis with the similarity between documents or topic modeling through the web interface. The flow as follows, user is uploading its data collection, select which type of work to done either text similarity or topic modeling, then the model is generating the outcome.
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
 # 1.Introduction
 
-# In the past, research on a subject was possible with books and printed sources. As the internet became widespread, our access to information became easier and this led to an increase in the number of resources. Such many resources made it impossible for human beings to read them all.
+In the past, research on a subject was possible with books and printed sources. As the internet became widespread, our access to information became easier and this led to an increase in the number of resources. Such many resources made it impossible for human beings to read them all.
 
 Before writing an article on a topic, researchers read several articles on the topic they are researching. However, each article may not contain the topic that the researcher would like to address directly, requiring the researcher to read more articles, i.e. effort and time, to find the specific topic he / she is looking for.
 
@@ -192,7 +123,7 @@ Central task of this project is to giving opportunity to user to try different t
 
 # 2. Literature Search
 
-# There are many different approaches to measuring, comparing and evaluating the similarity between documents, such as corpus-based, knowledge-based, and string-based similarity. Many articles have been published examining these approaches. Two different studies by Mamdouh Farouk [4] and Weal H. Gomao & Aly A. Fahmy [5] have examined three different approaches for sentence similarity and have shown that combined approaches work better. At the same time, Aditi G. et.al also discussed the features, performances, advantages and disadvantages of the two similarity approaches to help choose the best similarity approach [6]. Didik Dwi Prasetya et.al compared the four different text similarity approaches and showed that the semantic similarity was more rational [7].
+There are many different approaches to measuring, comparing and evaluating the similarity between documents, such as corpus-based, knowledge-based, and string-based similarity. Many articles have been published examining these approaches. Two different studies by Mamdouh Farouk [4] and Weal H. Gomao & Aly A. Fahmy [5] have examined three different approaches for sentence similarity and have shown that combined approaches work better. At the same time, Aditi G. et.al also discussed the features, performances, advantages and disadvantages of the two similarity approaches to help choose the best similarity approach [6]. Didik Dwi Prasetya et.al compared the four different text similarity approaches and showed that the semantic similarity was more rational [7].
 
 Similarity measures and text representation methods have a major impact on the performance of text similarity. P. Sitikhu et.al compared three different approaches to measure the semantic similarity between short texts [8]. They showed that the TF-idf-cosine similarity approach had higher accuracy value. Erwan Morean et.al showed that combining various similarity measures would provide better performance [9]. Radha Mothukuri et.al also proposed a new measure of similarity to reduce feature set noise [10].
 
